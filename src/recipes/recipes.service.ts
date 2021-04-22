@@ -15,13 +15,16 @@ export class RecipesService {
   ) {}
 
   async findAllFromORM(): Promise<Recipe[]> {
-    return this.recipeRepository.find({});
+    return await this.recipeRepository.find({
+    });
   }
 //   recipes = RECIPES;
 
   async create(data: NewRecipeInput): Promise<Recipe> {
     const newRecipe = this.recipeRepository.create(data);
-
+    this.recipeRepository.save(newRecipe);
+    console.log(this.recipeRepository)
+    console.log(newRecipe)
     return newRecipe;
   }
 
