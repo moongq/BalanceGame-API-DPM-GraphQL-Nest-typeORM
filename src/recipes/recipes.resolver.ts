@@ -12,7 +12,22 @@ const pubSub = new PubSub();
 @Resolver(of => Recipe)
 export class RecipesResolver {
   constructor(private readonly recipesService: RecipesService) {}
-
+  
+  @Query(returns => [Recipe])
+  async recipes(): Promise<Recipe[]> {
+    const recipes = await this.recipesService.findAllFromORM();
+    return recipes;
+  }
+  
+  
+  @Mutation(returns => Recipe)
+  async create(
+    @Args('newRecipeData') newRecipeData: NewRecipeInput,
+  ): Promise<Recipe> {
+    const recipe = await this.recipesService.create(newRecipeData);
+    
+    return recipe;
+  }
 
   @Query(ruturns => String)
   sayHello(): String {
@@ -29,19 +44,7 @@ export class RecipesResolver {
     return recipe;
   }
 
-  @Query(returns => [Recipe])
-  recipes(): Recipe[] {
-    return this.recipesService.findAll();
-  }
 
-  @Mutation(returns => Recipe)
-  async addRecipe(
-    @Args('newRecipeData') newRecipeData: NewRecipeInput,
-  ): Promise<Recipe> {
-    const recipe = await this.recipesService.addRecipe(newRecipeData);
-    
-    return recipe;
-  }
 
   @Mutation(returns => [Recipe])
   async updateRecipe(

@@ -1,14 +1,29 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Inject } from '@nestjs/common';
 import { NewRecipeInput } from './dto/new-recipe.input';
 import { RecipesArgs } from './dto/recipes.args';
 import { Recipe } from './models/recipe.model';
 import { RECIPES } from '../mocks/recipes.mock';
 import { UpdateRecipeInput } from './dto/update-recipe.input';
+import { Repository } from 'typeorm';
 
 @Injectable()
 export class RecipesService {
 
+  constructor(
+    @Inject('RECIPE_REPOSITORY')
+    private recipeRepository: Repository<Recipe>,
+  ) {}
+
+  async findAllFromORM(): Promise<Recipe[]> {
+    return this.recipeRepository.find({});
+  }
 //   recipes = RECIPES;
+
+  async create(data: NewRecipeInput): Promise<Recipe> {
+    const newRecipe = this.recipeRepository.create(data);
+
+    return newRecipe;
+  }
 
   recipes = [
     { id: '1', title: 'Recipe #1', description: "This is the description for the Recipe #1",  },
@@ -20,9 +35,11 @@ export class RecipesService {
     { id: '7', title: 'Recipe #7', description: "This is the description for the Recipe #7",  },
   ];
 
-  create(data: NewRecipeInput): {id: string, title: string, description: string} {
-    return {} as any;
-  }
+  // create(data: NewRecipeInput): {id: string, title: string, description: string} {
+  //   return {} as any;
+  // }
+
+
 
 
   async findOneById(id: string): Promise<Recipe> {
