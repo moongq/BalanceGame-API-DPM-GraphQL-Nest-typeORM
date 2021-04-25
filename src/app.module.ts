@@ -1,8 +1,8 @@
 import { Module } from '@nestjs/common';
 import { AppService } from './app.service';
 import { GraphQLModule } from '@nestjs/graphql';
-import { RecipesModule } from './recipes/recipes.module';
-import { DatabaseModule } from './database/database.module';
+import { RecipesModule } from './recipe/recipe.module';
+import { DatabaseModule } from './loaders/database/database.module';
 
 @Module({
   imports: [

@@ -1,5 +1,5 @@
 import { Connection, Repository } from 'typeorm';
-import { Recipe } from './models/recipe.model';
+import { Recipe } from './recipe.model';
 
 export const recipeProviders = [
   {

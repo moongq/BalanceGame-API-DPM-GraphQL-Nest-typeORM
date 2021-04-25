@@ -1,6 +1,4 @@
 import { createConnection } from 'typeorm';
-import {} from '../recipes/models/recipe.model';
-               '../**/models/**.model'
 
 export const databaseProviders = [
   {
@@ -13,8 +11,7 @@ export const databaseProviders = [
       password: 'chldbflehdrmfkal',
       database: 'name0421',
       entities: [
-          __dirname + '/../**/models/*.model{.ts,.js}',
-        //   __dirname + '../**/*.models/**.model{.ts,.js}'
+          __dirname + '/../../**/*.model{.ts,.js}',
       ],
       synchronize: true,
     }),
