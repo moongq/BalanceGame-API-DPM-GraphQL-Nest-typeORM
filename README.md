@@ -7,10 +7,13 @@ GraphQL + NestJS + typeORM + AWS RDS
 ```npm install```
 
 ## RDS 셋팅
-"src/loaders/database/database.providers.ts"에 DB 정보를 적으세요.
+root 에 
+- config/.dev.env
+- config/.prod.env
+두파일 추가하시고 DB 내용 추가하셔야 합니다. 
 
 ## 실행
 ```npm start:dev```
 
-## test
-```npm run test```
+## 프로덕션 실행
+```npm run start:prod```
