@@ -15,6 +15,8 @@ describe('ProductService', () => {
         ],
     }).compile();
     service = module.get<RecipesService>(RecipesService);
+    console.log(process.env.NODE_ENV)
+    console.log(process.env.DB_NAME)
   });
 
   it('should be defined', () => {
