@@ -3,6 +3,7 @@ import { AppService } from './app.service';
 import { GraphQLModule } from '@nestjs/graphql';
 import { RecipesModule } from './recipe/recipe.module';
 import { DatabaseModule } from './loaders/database/database.module';
+import { ConfigModule } from '@nestjs/config';
 
 @Module({
   imports: [
@@ -10,7 +11,10 @@ import { DatabaseModule } from './loaders/database/database.module';
     GraphQLModule.forRoot({
       autoSchemaFile: true,
     }),
-    DatabaseModule
+    DatabaseModule,
+    ConfigModule.forRoot({
+      envFilePath: `.env.${process.env.NODE_ENV}`,
+    })
   ],
   providers: [],
 })
