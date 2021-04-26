@@ -11,10 +11,11 @@ root 에
 - config/.dev.env
 - config/.prod.env<br>
 두파일 추가하시고 DB 내용 추가하셔야 합니다. 
-DB_HOST=
-DB_USERNAME=
-DB_PASSWORD=
-DB_NAME=
+<br>
+DB_HOST=<br>
+DB_USERNAME=<br>
+DB_PASSWORD=<br>
+DB_NAME=<br>
 
 ## 실행
 ```npm start:dev```
