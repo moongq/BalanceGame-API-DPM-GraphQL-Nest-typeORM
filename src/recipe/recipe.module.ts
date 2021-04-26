@@ -1,14 +1,12 @@
 import { Module } from '@nestjs/common';
 import { RecipesResolver } from './recipe.resolver';
-
-import { DatabaseModule } from '../loaders/database/database.module';
-import { recipeProviders } from './recipe.providers';
 import { RecipesService } from './recipe.service';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { Recipe } from './recipe.model';
 
 @Module({
-  imports: [DatabaseModule],
+  imports: [TypeOrmModule.forFeature([Recipe])],
   providers: [
-    ...recipeProviders,
     RecipesResolver, 
     RecipesService
   ],

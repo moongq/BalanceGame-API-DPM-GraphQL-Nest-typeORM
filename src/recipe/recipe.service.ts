@@ -5,12 +5,13 @@ import { Recipe } from './recipe.model';
 import { RECIPES } from '../mocks/recipes.mock';
 import { UpdateRecipeInput } from './dtos/update-recipe.input';
 import { Repository } from 'typeorm';
+import { InjectRepository } from '@nestjs/typeorm';
 
 @Injectable()
 export class RecipesService {
 
   constructor(
-    @Inject('RECIPE_REPOSITORY')
+    @InjectRepository(Recipe)
     private recipeRepository: Repository<Recipe>,
   ) {}
 

@@ -2,20 +2,33 @@ import { Module } from '@nestjs/common';
 import { AppService } from './app.service';
 import { GraphQLModule } from '@nestjs/graphql';
 import { RecipesModule } from './recipe/recipe.module';
-import { DatabaseModule } from './loaders/database/database.module';
 import { ConfigModule } from '@nestjs/config';
+import { TypeOrmModule } from '@nestjs/typeorm';
+
 
 @Module({
   imports: [
-    RecipesModule,
+    ConfigModule.forRoot({
+      envFilePath: process.env.NODE_ENV === 'dev' ? 'config/.dev.env' : 'config/.prod.env'
+    }),
+    TypeOrmModule.forRoot({
+      type: 'mysql',
+      host: process.env.DB_HOST,
+      port: 3306,
+      username: process.env.DB_USERNAME,
+      password: process.env.DB_PASSWORD,
+      database: process.env.DB_NAME,
+      entities: [
+          __dirname + '/**/*.model{.ts,.js}',
+      ],
+      synchronize: true,
+    }),
     GraphQLModule.forRoot({
       autoSchemaFile: true,
     }),
-    DatabaseModule,
-    ConfigModule.forRoot({
-      envFilePath: process.env.NODE_ENV === 'dev' ? 'config/.dev.env' : 'config/.prod.env'
-    })
+    RecipesModule,
   ],
   providers: [],
 })
+
 export class AppModule {}
