@@ -2,7 +2,6 @@ import { Injectable, Inject } from '@nestjs/common';
 import { NewRecipeInput } from './dtos/new-recipe.input';
 import { RecipesArgs } from './dtos/recipes.args';
 import { Recipe } from './recipe.model';
-import { RECIPES } from '../mocks/recipes.mock';
 import { UpdateRecipeInput } from './dtos/update-recipe.input';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
