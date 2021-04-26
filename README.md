@@ -9,8 +9,12 @@ GraphQL + NestJS + typeORM + AWS RDS
 ## RDS 셋팅
 root 에 
 - config/.dev.env
-- config/.prod.env
+- config/.prod.env<br>
 두파일 추가하시고 DB 내용 추가하셔야 합니다. 
+DB_HOST=
+DB_USERNAME=
+DB_PASSWORD=
+DB_NAME=
 
 ## 실행
 ```npm start:dev```
