@@ -5,6 +5,7 @@ import { RecipesModule } from './recipe/recipe.module';
 import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { UserModule } from './user/user.module';
+import { UserProfileModule } from './user-profile/user-profile.module';
 
 
 @Module({
@@ -29,6 +30,7 @@ import { UserModule } from './user/user.module';
     }),
     RecipesModule,
     UserModule,
+    UserProfileModule,
   ],
   providers: [],
 })

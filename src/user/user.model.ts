@@ -1,5 +1,6 @@
 import { ObjectType, Field, ID } from '@nestjs/graphql';
-import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, OneToOne, JoinColumn, UpdateDateColumn, CreateDateColumn } from 'typeorm';
+import { UserProfile } from '../user-profile/user-profile.model'
 
 @ObjectType()
 @Entity()
@@ -16,17 +17,21 @@ export class User {
   @Field(type => String)
   platform_type: string;
 
+  @OneToOne(type => UserProfile)
+  @JoinColumn()
+  profile: UserProfile;
+
   // :TODO enum으로 수정?
   // @Column()
   // @Field(type => String)
   // status: string;
 
-  @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP'})
-  @Field(type => String)
+  @CreateDateColumn({ type: 'timestamp'})
+  @Field(type => Date)
   created_at: string;
 
-  // :TODO
-  // @Column()
-  // @Field(type => String)
-  // updated_at: string;
+  @UpdateDateColumn({type: "timestamp"})
+  @Field(type => Date)
+  updatedAt: Date;
+
 }
