@@ -4,6 +4,7 @@ import { GraphQLModule } from '@nestjs/graphql';
 import { RecipesModule } from './recipe/recipe.module';
 import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { UserModule } from './user/user.module';
 
 
 @Module({
@@ -27,6 +28,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
       autoSchemaFile: true,
     }),
     RecipesModule,
+    UserModule,
   ],
   providers: [],
 })

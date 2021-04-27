@@ -1,7 +1,6 @@
 import { Field, ID, ObjectType } from '@nestjs/graphql';
 import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
 
-
 @ObjectType()
 @Entity()
 export class Recipe {
@@ -10,11 +9,11 @@ export class Recipe {
   id: string;
 
   @Column()
-  @Field()
+  @Field(type => String)
   title: string;
 
   @Column()
-  @Field({ nullable: true })
+  @Field(type => String, { nullable: true })
   description?: string;
 
 }

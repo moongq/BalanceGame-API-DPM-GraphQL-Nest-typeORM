@@ -42,9 +42,7 @@ mutation {
    * 
    */
   @Mutation(returns => Recipe)
-  async create(
-    @Args('newRecipeData') newRecipeData: NewRecipeInput,
-  ): Promise<Recipe> {
+  async create(@Args('newRecipeData') newRecipeData: NewRecipeInput): Promise<Recipe> {
     const recipe = await this.recipesService.create(newRecipeData);
     
     return recipe;
