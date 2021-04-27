@@ -10,18 +10,18 @@ export class UserProfileService {
 
   constructor(
     @InjectRepository(UserProfile)
-    private userRepository: Repository<UserProfile>,
+    private userProfileRepository: Repository<UserProfile>,
   ) {}
 
   
   create(createUserProfileInput: CreateUserProfileInput) {
-    const newUserProfile = this.userRepository.create(createUserProfileInput);
+    const newUserProfile = this.userProfileRepository.create(createUserProfileInput);
     
-    return this.userRepository.save(newUserProfile);
+    return this.userProfileRepository.save(newUserProfile);
   }
 
   findAll() {
-    const userProfiles = this.userRepository.find({});
+    const userProfiles = this.userProfileRepository.find({});
 
     return userProfiles;
   }

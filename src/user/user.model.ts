@@ -18,10 +18,6 @@ export class User {
   @Column()
   platform_type: string;
 
-  @Field(type => UserProfile)
-  @OneToOne(type => UserProfile)
-  @JoinColumn()
-  profile: UserProfile;
 
   // :TODO enum으로 수정?
   // @Column()

@@ -5,9 +5,9 @@ import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
 @Entity()
 export class Recipe {
 
-  @Field(type => ID)
-  @PrimaryGeneratedColumn()
-  id: number;
+  @Field()
+  @PrimaryGeneratedColumn("uuid")
+  id: string;
 
   @Field(type => String)
   @Column()

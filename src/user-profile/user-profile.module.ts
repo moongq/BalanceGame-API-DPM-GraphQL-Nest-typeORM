@@ -12,5 +12,8 @@ import { UserProfile } from './user-profile.model';
     UserProfileResolver, 
     UserProfileService
   ],
+  exports: [
+    UserProfileService
+  ]
 })
 export class UserProfileModule {}
