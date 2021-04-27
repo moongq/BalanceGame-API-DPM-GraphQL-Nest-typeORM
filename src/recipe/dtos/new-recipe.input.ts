@@ -3,8 +3,8 @@ import { IsOptional, Length, MaxLength } from 'class-validator';
 
 @InputType()
 export class NewRecipeInput {
-  @Field()
-  id: string;
+  // @Field()
+  // id: number;
 
   @Field()
   @MaxLength(30)

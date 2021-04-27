@@ -4,8 +4,8 @@ import { IsOptional, Length, MaxLength } from 'class-validator';
 @InputType()
 export class CreateUserInput {
 
-  @Field()
-  id: string;
+  // @Field({nullable: true})
+  // id: string;
 
   @Field()
   social_id: string;

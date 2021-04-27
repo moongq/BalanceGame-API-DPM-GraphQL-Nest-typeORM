@@ -21,10 +21,8 @@ export class RecipesService {
 
   async create(data: NewRecipeInput): Promise<Recipe> {
     const newRecipe = this.recipeRepository.create(data);
-    this.recipeRepository.save(newRecipe);
-    console.log(this.recipeRepository)
-    console.log(newRecipe)
-    return newRecipe;
+    
+    return this.recipeRepository.save(newRecipe);
   }
 
 }

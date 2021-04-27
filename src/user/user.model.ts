@@ -5,18 +5,20 @@ import { UserProfile } from '../user-profile/user-profile.model'
 @ObjectType()
 @Entity()
 export class User {
-  @PrimaryGeneratedColumn()
-  @Field(type => ID)
+  
+  @Field()
+  @PrimaryGeneratedColumn("uuid")
   id: string;
   
-  @Column()
   @Field(type => String)
+  @Column()
   social_id: string;
 
-  @Column()
   @Field(type => String)
+  @Column()
   platform_type: string;
 
+  @Field(type => UserProfile)
   @OneToOne(type => UserProfile)
   @JoinColumn()
   profile: UserProfile;
@@ -26,12 +28,12 @@ export class User {
   // @Field(type => String)
   // status: string;
 
-  @CreateDateColumn({ type: 'timestamp'})
   @Field(type => Date)
+  @CreateDateColumn({ type: 'timestamp'})
   created_at: string;
 
-  @UpdateDateColumn({type: "timestamp"})
   @Field(type => Date)
+  @UpdateDateColumn({type: "timestamp"})
   updatedAt: Date;
 
 }

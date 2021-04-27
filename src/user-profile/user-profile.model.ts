@@ -2,6 +2,7 @@ import { ObjectType, Field, Int, ID } from '@nestjs/graphql';
 import { Entity, Column, PrimaryGeneratedColumn, OneToOne, UpdateDateColumn, CreateDateColumn } from 'typeorm';
 
 @ObjectType()
+@Entity()
 export class UserProfile {
   @PrimaryGeneratedColumn()
   id: number;
