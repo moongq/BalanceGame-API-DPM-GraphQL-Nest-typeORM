@@ -4,12 +4,9 @@ import { Entity, Column, PrimaryGeneratedColumn, OneToOne, UpdateDateColumn, Cre
 @ObjectType()
 @Entity()
 export class UserProfile {
-  @PrimaryGeneratedColumn()
-  id: number;
-  
-  @Column()
-  @Field(type => String)
-  email: string;
+  @Field()
+  @PrimaryGeneratedColumn("uuid")
+  id: string;
 
   @Column()
   @Field(type => String)
