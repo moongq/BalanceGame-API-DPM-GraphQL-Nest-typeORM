@@ -4,10 +4,6 @@ import { CreateUserProfileInput } from 'src/user-profile/dto/create-user-profile
 
 @InputType()
 export class CreateUserInput {
-
-  // @Field({nullable: true})
-  // id: string;
-
   @Field()
   social_id: string;
 

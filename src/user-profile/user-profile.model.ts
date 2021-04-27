@@ -8,13 +8,6 @@ export class UserProfile {
   @PrimaryGeneratedColumn("uuid")
   id: string;
 
-
-  @Field(type => UserProfile)
-  @OneToOne(type => UserProfile)
-  @JoinColumn()
-  user_id: string;
-
-
   @Column()
   @Field(type => String)
   email: string;

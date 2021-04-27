@@ -1,4 +1,5 @@
 import { ObjectType, Field, ID } from '@nestjs/graphql';
+import { UserProfileService } from 'src/user-profile/user-profile.service';
 import { Entity, Column, PrimaryGeneratedColumn, OneToOne, JoinColumn, UpdateDateColumn, CreateDateColumn } from 'typeorm';
 import { UserProfile } from '../user-profile/user-profile.model'
 
@@ -17,7 +18,6 @@ export class User {
   @Field(type => String)
   @Column()
   platform_type: string;
-
 
   // :TODO enum으로 수정?
   // @Column()

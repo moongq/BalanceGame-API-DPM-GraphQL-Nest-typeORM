@@ -2,7 +2,6 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CreateUserProfileInput } from './dto/create-user-profile.input';
-import { UpdateUserProfileInput } from './dto/update-user-profile.input';
 import { UserProfile } from './user-profile.model';
 
 @Injectable()
@@ -14,13 +13,13 @@ export class UserProfileService {
   ) {}
 
   
-  create(createUserProfileInput: CreateUserProfileInput) {
+  create(createUserProfileInput: CreateUserProfileInput): Promise<UserProfile> {
     const newUserProfile = this.userProfileRepository.create(createUserProfileInput);
-    
+    console.log(newUserProfile)
     return this.userProfileRepository.save(newUserProfile);
   }
 
-  findAll() {
+  findAll(): Promise<UserProfile[]> {
     const userProfiles = this.userProfileRepository.find({});
 
     return userProfiles;

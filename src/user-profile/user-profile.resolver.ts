@@ -2,7 +2,6 @@ import { Resolver, Query, Mutation, Args, Int, ResolveField, ResolveProperty } f
 import { UserProfileService } from './user-profile.service';
 import { UserProfile } from './user-profile.model';
 import { CreateUserProfileInput } from './dto/create-user-profile.input';
-import { UpdateUserProfileInput } from './dto/update-user-profile.input';
 
 @Resolver(() => UserProfile)
 export class UserProfileResolver {

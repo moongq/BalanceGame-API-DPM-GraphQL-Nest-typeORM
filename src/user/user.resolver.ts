@@ -2,9 +2,8 @@ import { Resolver, Query, Mutation, Args, Int, ResolveProperty, Parent, ResolveF
 import { UserService } from './user.service';
 import { User } from './user.model';
 import { CreateUserInput } from './dto/create-user.input';
-import { UpdateUserInput } from './dto/update-user.input';
 import { UserProfile } from '../user-profile/user-profile.model';
-import { UserProfileService } from 'src/user-profile/user-profile.service';
+import { UserProfileService } from '../user-profile/user-profile.service';
 
 @Resolver(() => User)
 export class UserResolver {
@@ -25,14 +24,17 @@ export class UserResolver {
   */
   @Mutation(returns => User)
   async createUser(@Args('createUserInput') createUserInput: CreateUserInput): Promise<User> {
-    return await this.userService.create(createUserInput);
+    console.log(createUserInput)
+    const user = await this.userService.create(createUserInput);
+    return user;
   }
 
-  @ResolveField()
-  async profile(@Parent() parent): Promise<UserProfile> {
-    const { user_id, email, nickname, user_image} = parent
-    return await this.userProfileService.create({user_id, email, nickname, user_image})
-  }
+  // @ResolveField()
+  // async userProfile(@Parent() parent): Promise<UserProfile> {
+  //   console.log(parent)
+  //   const { email, nickname, user_image} = parent;
+  //   return await this.userProfileService.create({ email, nickname, user_image})
+  // }
 
   /** Usage
 {
