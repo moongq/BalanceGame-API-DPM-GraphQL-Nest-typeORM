@@ -1,5 +1,6 @@
 import { ObjectType, Field, Int, ID } from '@nestjs/graphql';
 import { Entity, Column, PrimaryGeneratedColumn, OneToOne, UpdateDateColumn, CreateDateColumn, JoinColumn } from 'typeorm';
+import { User } from '../user/user.model';
 
 @ObjectType()
 @Entity()
@@ -23,6 +24,9 @@ export class UserProfile {
   @Column()
   @Field(type => Int)
   level: string;
+
+  @OneToOne(() => User, user=> user.profile)
+  user: User;
 
   @CreateDateColumn({ type: 'timestamp'})
   @Field(type => Date)

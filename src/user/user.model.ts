@@ -19,6 +19,10 @@ export class User {
   @Column()
   platform_type: string;
 
+  @OneToOne(type => UserProfile, profile => profile.user, {eager: true}) 
+  @JoinColumn()
+  profile: UserProfile
+
   // :TODO enum으로 수정?
   // @Column()
   // @Field(type => String)
@@ -26,7 +30,7 @@ export class User {
 
   @Field(type => Date)
   @CreateDateColumn({ type: 'timestamp'})
-  created_at: string;
+  created_at: Date;
 
   @Field(type => Date)
   @UpdateDateColumn({type: "timestamp"})
