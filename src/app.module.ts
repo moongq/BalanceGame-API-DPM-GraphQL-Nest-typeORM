@@ -23,7 +23,7 @@ import { UserProfileModule } from './user-profile/user-profile.module';
       entities: [
           __dirname + '/**/*.model{.ts,.js}',
       ],
-      synchronize: true,
+      synchronize: false,
     }),
     GraphQLModule.forRoot({
       autoSchemaFile: true,
