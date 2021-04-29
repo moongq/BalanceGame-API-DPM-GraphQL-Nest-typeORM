@@ -1,5 +1,5 @@
 import { ObjectType, Field, ID } from '@nestjs/graphql';
-import { UserProfileService } from 'src/user-profile/user-profile.service';
+import { UserProfileService } from '../user-profile/user-profile.service';
 import { Entity, Column, PrimaryGeneratedColumn, OneToOne, JoinColumn, UpdateDateColumn, CreateDateColumn } from 'typeorm';
 import { UserProfile } from '../user-profile/user-profile.model'
 
@@ -13,11 +13,15 @@ export class User {
   
   @Field(type => String)
   @Column()
-  social_id: string;
+  socialId: string;
 
   @Field(type => String)
   @Column()
-  platform_type: string;
+  platformType: string;
+
+  @OneToOne(type => UserProfile, profile => profile.user, {eager: true}) 
+  @JoinColumn()
+  profile: UserProfile
 
   // :TODO enum으로 수정?
   // @Column()
@@ -26,7 +30,7 @@ export class User {
 
   @Field(type => Date)
   @CreateDateColumn({ type: 'timestamp'})
-  created_at: string;
+  createdAt: string;
 
   @Field(type => Date)
   @UpdateDateColumn({type: "timestamp"})

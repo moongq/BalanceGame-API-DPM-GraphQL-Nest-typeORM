@@ -1,4 +1,5 @@
 import { ObjectType, Field, Int, ID } from '@nestjs/graphql';
+import { User } from 'src/user/user.model';
 import { Entity, Column, PrimaryGeneratedColumn, OneToOne, UpdateDateColumn, CreateDateColumn, JoinColumn } from 'typeorm';
 
 @ObjectType()
@@ -18,7 +19,7 @@ export class UserProfile {
 
   @Column()
   @Field(type => String)
-  user_image: string;
+  userImage: string;
 
   @Column()
   @Field(type => Int)
@@ -26,10 +27,13 @@ export class UserProfile {
 
   @CreateDateColumn({ type: 'timestamp'})
   @Field(type => Date)
-  created_at: string;
+  createdAt: string;
 
   @UpdateDateColumn({type: "timestamp"})
   @Field(type => Date)
   updatedAt: Date;
+  
+  @OneToOne(() => User, user=> user.profile)
+  user: User;
 
 }

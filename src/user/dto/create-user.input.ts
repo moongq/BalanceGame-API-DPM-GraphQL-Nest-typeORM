@@ -5,10 +5,10 @@ import { CreateUserProfileInput } from 'src/user-profile/dto/create-user-profile
 @InputType()
 export class CreateUserInput {
   @Field()
-  social_id: string;
+  socialId: string;
 
   @Field()
-  platform_type?: string;
+  platformType?: string;
 
   @Field()
   profile: CreateUserProfileInput;
