@@ -6,16 +6,16 @@ import { UserProfile } from './user-profile.model';
 
 @Injectable()
 export class UserProfileService {
-
   constructor(
     @InjectRepository(UserProfile)
-    private userProfileRepository: Repository<UserProfile>,
+    private userProfileRepository: Repository<UserProfile>
   ) {}
 
-  
   create(createUserProfileInput: CreateUserProfileInput): Promise<UserProfile> {
-    const newUserProfile = this.userProfileRepository.create(createUserProfileInput);
-    console.log(newUserProfile)
+    const newUserProfile = this.userProfileRepository.create(
+      createUserProfileInput
+    );
+    console.log(newUserProfile);
     return this.userProfileRepository.save(newUserProfile);
   }
 
