@@ -10,10 +10,7 @@ import { UserProfileModule } from './user-profile/user-profile.module';
 @Module({
   imports: [
     ConfigModule.forRoot({
-      envFilePath:
-        process.env.NODE_ENV === 'development'
-          ? 'config/.dev.env'
-          : 'config/.prod.env',
+      envFilePath: process.env.NODE_ENV === 'development' ? 'config/.dev.env' : 'config/.prod.env',
     }),
     TypeOrmModule.forRoot({
       type: 'mysql',
