@@ -10,5 +10,4 @@ export class CreateUserProfileInput {
 
   @Field()
   userImage: string;
-
 }

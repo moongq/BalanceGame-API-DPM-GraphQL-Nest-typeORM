@@ -7,7 +7,6 @@ import { User } from './user.model';
 
 @Injectable()
 export class UserService {
-
   constructor(
     @InjectRepository(User)
     private userRepository: Repository<User>,
@@ -15,15 +14,14 @@ export class UserService {
   ) {}
 
   async create(data: CreateUserInput): Promise<User> {
-    
     const userProfile = await this.userProfileService.create(data.profile);
     const newUser = this.userRepository.create({
       socialId: data.socialId,
       platformType: data.platformType,
-      profile: userProfile
+      profile: userProfile,
     });
     // console.log(newUser);
-    
+
     return await this.userRepository.save(newUser);
   }
 
@@ -36,7 +34,6 @@ export class UserService {
   // create(createUserInput: CreateUserInput) {
   //   return 'This action adds a new user';
   // }
-
 
   // findOne(id: number) {
   //   return `This action returns a #${id} user`;

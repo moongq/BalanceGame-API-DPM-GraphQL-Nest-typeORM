@@ -8,21 +8,18 @@ import { InjectRepository } from '@nestjs/typeorm';
 
 @Injectable()
 export class RecipesService {
-
   constructor(
     @InjectRepository(Recipe)
-    private recipeRepository: Repository<Recipe>,
+    private recipeRepository: Repository<Recipe>
   ) {}
 
   async findAllFromORM(): Promise<Recipe[]> {
-    return await this.recipeRepository.find({
-    });
+    return await this.recipeRepository.find({});
   }
 
   async create(data: NewRecipeInput): Promise<Recipe> {
     const newRecipe = this.recipeRepository.create(data);
-    
+
     return this.recipeRepository.save(newRecipe);
   }
-
 }

@@ -9,10 +9,9 @@ import { RecipesService } from './recipe.service';
 
 const pubSub = new PubSub();
 
-@Resolver(of => Recipe)
+@Resolver((of) => Recipe)
 export class RecipesResolver {
   constructor(private readonly recipesService: RecipesService) {}
-  
 
   /**
    * Query example
@@ -23,13 +22,12 @@ export class RecipesResolver {
     }
   }
    */
-  @Query(returns => [Recipe])
+  @Query((returns) => [Recipe])
   async recipes(): Promise<Recipe[]> {
     const recipes = await this.recipesService.findAllFromORM();
     return recipes;
   }
-  
-  
+
   /**
    * Query Example
 mutation {
@@ -41,11 +39,12 @@ mutation {
    * 
    * 
    */
-  @Mutation(returns => Recipe)
-  async create(@Args('newRecipeData') newRecipeData: NewRecipeInput): Promise<Recipe> {
+  @Mutation((returns) => Recipe)
+  async create(
+    @Args('newRecipeData') newRecipeData: NewRecipeInput
+  ): Promise<Recipe> {
     const recipe = await this.recipesService.create(newRecipeData);
-    
+
     return recipe;
   }
-
 }

@@ -1,4 +1,4 @@
-import { Resolver, Query, Mutation, Args, Int, ResolveField, ResolveProperty } from '@nestjs/graphql';
+import { Resolver, Mutation, Args } from '@nestjs/graphql';
 import { UserProfileService } from './user-profile.service';
 import { UserProfile } from './user-profile.model';
 import { CreateUserProfileInput } from './dto/create-user-profile.input';
@@ -8,11 +8,12 @@ export class UserProfileResolver {
   constructor(private readonly userProfileService: UserProfileService) {}
 
   @Mutation(() => UserProfile)
-  async createUserProfile(@Args('createUserProfileInput') createUserProfileInput: CreateUserProfileInput) {
+  async createUserProfile(
+    @Args('createUserProfileInput')
+    createUserProfileInput: CreateUserProfileInput
+  ) {
     return await this.userProfileService.create(createUserProfileInput);
   }
-
-
 
   // @Query(() => [UserProfile], { name: 'userProfile' })
   // findAll() {

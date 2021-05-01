@@ -1,4 +1,13 @@
-import { Resolver, Query, Mutation, Args, Int, ResolveProperty, Parent, ResolveField } from '@nestjs/graphql';
+import {
+  Resolver,
+  Query,
+  Mutation,
+  Args,
+  Int,
+  ResolveProperty,
+  Parent,
+  ResolveField,
+} from '@nestjs/graphql';
 import { UserService } from './user.service';
 import { User } from './user.model';
 import { CreateUserInput } from './dto/create-user.input';
@@ -9,9 +18,8 @@ import { UserProfileService } from '../user-profile/user-profile.service';
 export class UserResolver {
   constructor(
     private readonly userService: UserService,
-    private readonly userProfileService: UserProfileService  
+    private readonly userProfileService: UserProfileService
   ) {}
-
 
   /** Usage
   mutation {
@@ -22,9 +30,11 @@ export class UserResolver {
    }
  }
   */
-  @Mutation(returns => User)
-  async createUser(@Args('createUserInput') createUserInput: CreateUserInput): Promise<User> {
-    console.log(createUserInput)
+  @Mutation((returns) => User)
+  async createUser(
+    @Args('createUserInput') createUserInput: CreateUserInput
+  ): Promise<User> {
+    console.log(createUserInput);
     const user = await this.userService.create(createUserInput);
     return user;
   }
@@ -45,7 +55,7 @@ export class UserResolver {
   }
 }
    */
-  @Query(returns => [User], { name: 'user' })
+  @Query((returns) => [User], { name: 'user' })
   findAll() {
     return this.userService.findAll();
   }

@@ -7,11 +7,13 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { UserModule } from './user/user.module';
 import { UserProfileModule } from './user-profile/user-profile.module';
 
-
 @Module({
   imports: [
     ConfigModule.forRoot({
-      envFilePath: process.env.NODE_ENV === 'dev' ? 'config/.dev.env' : 'config/.prod.env'
+      envFilePath:
+        process.env.NODE_ENV === 'development'
+          ? 'config/.dev.env'
+          : 'config/.prod.env',
     }),
     TypeOrmModule.forRoot({
       type: 'mysql',
@@ -20,9 +22,7 @@ import { UserProfileModule } from './user-profile/user-profile.module';
       username: process.env.DB_USERNAME,
       password: process.env.DB_PASSWORD,
       database: process.env.DB_NAME,
-      entities: [
-          __dirname + '/**/*.model{.ts,.js}',
-      ],
+      entities: [__dirname + '/**/*.model{.ts,.js}'],
       synchronize: false,
     }),
     GraphQLModule.forRoot({
@@ -34,5 +34,4 @@ import { UserProfileModule } from './user-profile/user-profile.module';
   ],
   providers: [],
 })
-
 export class AppModule {}

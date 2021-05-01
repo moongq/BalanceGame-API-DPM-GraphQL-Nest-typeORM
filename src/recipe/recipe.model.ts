@@ -4,17 +4,15 @@ import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
 @ObjectType()
 @Entity()
 export class Recipe {
-
   @Field()
-  @PrimaryGeneratedColumn("uuid")
+  @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @Field(type => String)
+  @Field((type) => String)
   @Column()
   title: string;
 
-  @Field(type => String, { nullable: true })
+  @Field((type) => String, { nullable: true })
   @Column()
   description?: string;
-
 }
