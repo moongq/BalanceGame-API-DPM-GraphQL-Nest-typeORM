@@ -20,7 +20,7 @@ export class UserProfileService {
     
     userProfile.email = createUserProfileInput.email;
     userProfile.nickname = createUserProfileInput.nickname;
-    userProfile.user_image = createUserProfileInput.user_image;
+    userProfile.userImage = createUserProfileInput.userImage;
     await userProfileRepository.save(userProfile);
     return userProfile;
   }

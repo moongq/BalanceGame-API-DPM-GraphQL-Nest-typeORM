@@ -21,8 +21,8 @@ export class UserService {
     
     const userProfile = await this.userProfileService.create(data.profile);
     const newUser = this.userRepository.create({
-      social_id: data.social_id,
-      platform_type: data.platform_type,
+      socialId: data.socialId,
+      platformType: data.platformType,
       profile: userProfile
     });
     // console.log(newUser);

@@ -9,6 +9,6 @@ export class CreateUserProfileInput {
   nickname: string;
 
   @Field()
-  user_image: string;
+  userImage: string;
 
 }

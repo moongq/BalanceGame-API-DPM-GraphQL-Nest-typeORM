@@ -13,11 +13,11 @@ export class User {
   
   @Field(type => String)
   @Column()
-  social_id: string;
+  socialId: string;
 
   @Field(type => String)
   @Column()
-  platform_type: string;
+  platformType: string;
 
   @OneToOne(type => UserProfile, profile => profile.user, {eager: true}) 
   @JoinColumn()
@@ -30,7 +30,7 @@ export class User {
 
   @Field(type => Date)
   @CreateDateColumn({ type: 'timestamp'})
-  created_at: Date;
+  createdAt: Date;
 
   @Field(type => Date)
   @UpdateDateColumn({type: "timestamp"})

@@ -19,7 +19,7 @@ export class UserProfile {
 
   @Column()
   @Field(type => String)
-  user_image: string;
+  userImage: string;
 
   @Column()
   @Field(type => Int)
@@ -30,7 +30,7 @@ export class UserProfile {
 
   @CreateDateColumn({ type: 'timestamp'})
   @Field(type => Date)
-  created_at: string;
+  createdAt: string;
 
   @UpdateDateColumn({type: "timestamp"})
   @Field(type => Date)
