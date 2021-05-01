@@ -1,7 +1,7 @@
-import { Resolver, Mutation, Args } from '@nestjs/graphql';
-import { UserProfileService } from './user-profile.service';
-import { UserProfile } from './user-profile.model';
-import { CreateUserProfileInput } from './dto/create-user-profile.input';
+import { Resolver, Mutation, Args } from "@nestjs/graphql";
+import { UserProfileService } from "./user-profile.service";
+import { UserProfile } from "./user-profile.model";
+import { CreateUserProfileInput } from "./dto/create-user-profile.input";
 
 @Resolver(() => UserProfile)
 export class UserProfileResolver {
@@ -9,7 +9,7 @@ export class UserProfileResolver {
 
   @Mutation(() => UserProfile)
   async createUserProfile(
-    @Args('createUserProfileInput')
+    @Args("createUserProfileInput")
     createUserProfileInput: CreateUserProfileInput
   ) {
     return await this.userProfileService.create(createUserProfileInput);
