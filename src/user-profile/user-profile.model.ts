@@ -1,5 +1,5 @@
-import { ObjectType, Field, Int, ID } from '@nestjs/graphql';
-import { User } from 'src/user/user.model';
+import { ObjectType, Field, Int, ID } from "@nestjs/graphql";
+import { User } from "../user/user.model";
 import {
   Entity,
   Column,
@@ -8,13 +8,13 @@ import {
   UpdateDateColumn,
   CreateDateColumn,
   JoinColumn,
-} from 'typeorm';
+} from "typeorm";
 
 @ObjectType()
 @Entity()
 export class UserProfile {
   @Field()
-  @PrimaryGeneratedColumn('uuid')
+  @PrimaryGeneratedColumn("uuid")
   id: string;
 
   @Column()
@@ -33,11 +33,11 @@ export class UserProfile {
   @Field((type) => Int)
   level: string;
 
-  @CreateDateColumn({ type: 'timestamp' })
+  @CreateDateColumn({ type: "timestamp" })
   @Field((type) => Date)
   createdAt: string;
 
-  @UpdateDateColumn({ type: 'timestamp' })
+  @UpdateDateColumn({ type: "timestamp" })
   @Field((type) => Date)
   updatedAt: Date;
 

@@ -1,15 +1,16 @@
-import { Injectable } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
-import { UserProfileService } from 'src/user-profile/user-profile.service';
-import { Repository } from 'typeorm';
-import { CreateUserInput } from './dto/create-user.input';
-import { User } from './user.model';
+import { Injectable } from "@nestjs/common";
+import { InjectRepository } from "@nestjs/typeorm";
+import { UserProfileService } from "../user-profile/user-profile.service";
+import { Repository } from "typeorm";
+import { CreateUserInput } from "./dto/create-user.input";
+import { User } from "./user.model";
 
 @Injectable()
 export class UserService {
   constructor(
     @InjectRepository(User)
     private userRepository: Repository<User>,
+
     private userProfileService: UserProfileService
   ) {}
 
