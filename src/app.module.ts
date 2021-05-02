@@ -7,7 +7,7 @@ import { TypeOrmModule } from "@nestjs/typeorm";
 import { UserModule } from "./user/user.module";
 import { UserProfileModule } from "./user-profile/user-profile.module";
 import { BalanceGameModule } from "./balance-game/balance-game.module";
-import { BalanceGameSelectionModule } from './balance-game-selection/balance-game-selection.module';
+import { BalanceGameSelectionModule } from "./balance-game-selection/balance-game-selection.module";
 
 @Module({
   imports: [
