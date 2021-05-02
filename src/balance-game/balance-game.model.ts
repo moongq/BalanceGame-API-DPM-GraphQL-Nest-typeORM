@@ -8,10 +8,11 @@ import {
   JoinColumn,
   UpdateDateColumn,
   CreateDateColumn,
-  OneToMany,
   ManyToOne,
   RelationId,
+  OneToMany,
 } from "typeorm";
+import { BalanceGameSelection } from "../balance-game-selection/balance-game-selection.model";
 
 @ObjectType()
 @Entity()
@@ -27,6 +28,9 @@ export class BalanceGame {
   @Field()
   @Column()
   userId: string;
+
+  @OneToMany((type) => BalanceGameSelection, (balanceGameSelection) => balanceGameSelection.balanceGame)
+  balanceGameSelections: BalanceGameSelection[];
 
   @Field((type) => String)
   @Column()
