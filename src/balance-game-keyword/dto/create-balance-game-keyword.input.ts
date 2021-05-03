@@ -4,4 +4,7 @@ import { InputType, Int, Field } from "@nestjs/graphql";
 export class CreateBalanceGameKeywordInput {
   @Field()
   name: string;
+
+  @Field()
+  balanceGameId?: string;
 }

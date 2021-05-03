@@ -7,5 +7,6 @@ import { BalanceGameKeyword } from "./balance-game-keyword.model";
 @Module({
   imports: [TypeOrmModule.forFeature([BalanceGameKeyword])],
   providers: [BalanceGameKeywordResolver, BalanceGameKeywordService],
+  exports: [BalanceGameKeywordService],
 })
 export class BalanceGameKeywordModule {}
