@@ -24,12 +24,27 @@ export class BalanceGameService {
     console.log("createBanalceGameInput");
     console.log(createBalanceGameInput);
 
-    const newBalanceGame = await this.balanceGameRepository.create(createBalanceGameInput);
+    const newBalanceGame = await this.balanceGameRepository.create({
+      userId: createBalanceGameInput.userId,
+      description: createBalanceGameInput.description,
+    });
+
     const savedBalanceGame = await this.balanceGameRepository.save(newBalanceGame);
+    console.log("====savedBalanceGame======");
     console.log(savedBalanceGame);
 
-    const gameKeywords = await this.balanceGameKeywordService.create(createBalanceGameInput.balanceGameKeywords);
+    const keywordData = {
+      balanceGameId: savedBalanceGame.id,
+      name: createBalanceGameInput.balanceGameKeywords[0].name,
+    };
 
+    const gameKeywords = await this.balanceGameKeywordService.create(keywordData);
+    console.log("savedKeyword");
+    console.log(gameKeywords);
+
+    savedBalanceGame.balanceGameKeywords = [gameKeywords];
+    console.log("====RETURN VALUE====");
+    console.log(savedBalanceGame);
     return savedBalanceGame;
   }
 
