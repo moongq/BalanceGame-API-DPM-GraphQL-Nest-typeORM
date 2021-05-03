@@ -12,6 +12,7 @@ import {
 } from "typeorm";
 import { UserProfile } from "../user-profile/user-profile.model";
 import { BalanceGame } from "../balance-game/balance-game.model";
+import { BalanceGameSelectionVote } from "../balance-game-selection-vote/balance-game-selection-vote.model";
 
 @ObjectType()
 @Entity()
@@ -35,10 +36,13 @@ export class User {
   @OneToMany((type) => BalanceGame, (balanceGame) => balanceGame.user)
   balanceGames: BalanceGame[];
 
+  @OneToMany((type) => BalanceGameSelectionVote, (balanceGameSelectionVote) => balanceGameSelectionVote.user)
+  balanceGameSelectionVotes: BalanceGameSelectionVote[];
+
   // :TODO enum으로 수정?
-  // @Column()
-  // @Field(type => String)
-  // status: string;
+  @Field((type) => String)
+  @Column()
+  status: string;
 
   @Field((type) => Date)
   @CreateDateColumn({ type: "timestamp" })

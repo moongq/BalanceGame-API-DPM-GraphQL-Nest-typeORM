@@ -9,6 +9,7 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from "typeorm";
+import { BalanceGameSelectionVote } from "../balance-game-selection-vote/balance-game-selection-vote.model";
 import { BalanceGame } from "../balance-game/balance-game.model";
 import { User } from "../user/user.model";
 
@@ -27,6 +28,12 @@ export class BalanceGameSelection {
   @Column()
   balanceGameId: string;
 
+  @OneToMany(
+    (type) => BalanceGameSelectionVote,
+    (balanceGameSelectionVote) => balanceGameSelectionVote.balanceGameSelection
+  )
+  balanceGameSelectionVotes: BalanceGameSelectionVote[];
+
   @Field()
   @Column()
   title: string;
@@ -34,6 +41,10 @@ export class BalanceGameSelection {
   @Field()
   @Column()
   titleColor: string;
+
+  @Field()
+  @Column()
+  description: string;
 
   @Field()
   @Column()

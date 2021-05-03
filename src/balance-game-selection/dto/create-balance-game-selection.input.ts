@@ -12,6 +12,9 @@ export class CreateBalanceGameSelectionInput {
   titleColor?: string;
 
   @Field()
+  description?: string;
+
+  @Field()
   backgroundColor?: string;
 
   @Field()
