@@ -32,22 +32,19 @@ export class BalanceGame {
   @Column()
   userId: string;
 
-  @OneToMany((type) => BalanceGameSelection, (balanceGameSelection) => balanceGameSelection.balanceGame, {
-    eager: true,
-  })
+  @OneToMany((type) => BalanceGameSelection, (balanceGameSelection) => balanceGameSelection.balanceGame)
   balanceGameSelections: BalanceGameSelection[];
 
   @OneToMany(
     (type) => BalanceGameSelectionVote,
-    (balanceGameSelectionVote) => balanceGameSelectionVote.balanceGameSelection,
-    { eager: true }
+    (balanceGameSelectionVote) => balanceGameSelectionVote.balanceGameSelection
   )
   balanceGameSelectionVotes: BalanceGameSelectionVote;
 
-  @OneToMany((type) => BalanceGameThumb, (balanceGameThumb) => balanceGameThumb.balanceGame, { eager: true })
+  @OneToMany(() => BalanceGameThumb, (balanceGameThumb) => balanceGameThumb.balanceGame)
   balanceGameThumbs: BalanceGameThumb[];
 
-  @OneToMany(() => BalanceGameKeyword, (balanceGaneKeyword) => balanceGaneKeyword.balanceGame, { eager: true })
+  @OneToMany(() => BalanceGameKeyword, (balanceGaneKeyword) => balanceGaneKeyword.balanceGame)
   balanceGameKeywords: BalanceGameKeyword[];
 
   @Field((type) => String)
