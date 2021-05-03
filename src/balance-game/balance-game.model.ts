@@ -15,6 +15,7 @@ import {
 import { BalanceGameSelection } from "../balance-game-selection/balance-game-selection.model";
 import { BalanceGameSelectionVote } from "../balance-game-selection-vote/balance-game-selection-vote.model";
 import { BalanceGameThumb } from "../balance-game-thumb/balance-game-thumb.model";
+import { BalanceGameKeyword } from "../balance-game-keyword/balance-game-keyword.model";
 
 @ObjectType()
 @Entity()
@@ -42,6 +43,9 @@ export class BalanceGame {
 
   @OneToMany(() => BalanceGameThumb, (balanceGameThumb) => balanceGameThumb.balanceGame)
   balanceGameThumbs: BalanceGameThumb[];
+
+  @OneToMany(() => BalanceGameKeyword, (balanceGaneKeyword) => balanceGaneKeyword.balanceGame)
+  balanceGameKeywords: BalanceGameKeyword[];
 
   @Field((type) => String)
   @Column()

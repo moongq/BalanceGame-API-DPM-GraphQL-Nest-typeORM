@@ -10,6 +10,7 @@ import { BalanceGameModule } from "./balance-game/balance-game.module";
 import { BalanceGameSelectionModule } from "./balance-game-selection/balance-game-selection.module";
 import { BalanceGameSelectionVoteModule } from './balance-game-selection-vote/balance-game-selection-vote.module';
 import { BalanceGameThumbModule } from './balance-game-thumb/balance-game-thumb.module';
+import { BalanceGameKeywordModule } from './balance-game-keyword/balance-game-keyword.module';
 
 @Module({
   imports: [
@@ -36,6 +37,7 @@ import { BalanceGameThumbModule } from './balance-game-thumb/balance-game-thumb.
     BalanceGameSelectionModule,
     BalanceGameSelectionVoteModule,
     BalanceGameThumbModule,
+    BalanceGameKeywordModule,
   ],
   providers: [],
 })
