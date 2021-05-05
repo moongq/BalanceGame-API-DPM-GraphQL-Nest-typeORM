@@ -20,10 +20,13 @@ import { UserProfileModule } from './user-profile/user-profile.module';
       password: process.env.DB_PASSWORD,
       database: process.env.DB_NAME,
       entities: [__dirname + '/**/*.model{.ts,.js}'],
-      synchronize: false,
+      synchronize: true,
     }),
     GraphQLModule.forRoot({
       autoSchemaFile: true,
+      context: ({req}) => {
+        headers: req.headers; 
+      }
     }),
     RecipesModule,
     UserModule,
