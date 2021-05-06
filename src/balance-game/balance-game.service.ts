@@ -7,6 +7,7 @@ import { BalanceGameModule } from "./balance-game.module";
 import { CreateBalanceGameInput } from "./dto/create-balance-game.input";
 import { UpdateBalanceGameInput } from "./dto/update-balance-game.input";
 import { BalanceGameKeywordService } from "../balance-game-keyword/balance-game-keyword.service";
+import { identity } from "rxjs";
 
 @Injectable()
 export class BalanceGameService {
@@ -21,40 +22,33 @@ export class BalanceGameService {
   ) {}
 
   async create(createBalanceGameInput: CreateBalanceGameInput): Promise<BalanceGame> {
-    console.log("createBanalceGameInput");
-    console.log(createBalanceGameInput);
-
     const newBalanceGame = await this.balanceGameRepository.create({
       userId: createBalanceGameInput.userId,
       description: createBalanceGameInput.description,
     });
 
     const savedBalanceGame = await this.balanceGameRepository.save(newBalanceGame);
-    console.log("====savedBalanceGame======");
-    console.log(savedBalanceGame);
 
-    const keywordData = {
-      balanceGameId: savedBalanceGame.id,
-      name: createBalanceGameInput.balanceGameKeywords[0].name,
-    };
+    for (let keyword of createBalanceGameInput.balanceGameKeywords) {
+      keyword.balanceGameId = savedBalanceGame.id
+    }
 
-    const gameKeywords = await this.balanceGameKeywordService.create(keywordData);
-    console.log("savedKeyword");
-    console.log(gameKeywords);
+    const gameKeywords = await this.balanceGameKeywordService.createBulk(createBalanceGameInput.balanceGameKeywords);
 
-    savedBalanceGame.balanceGameKeywords = [gameKeywords];
-    console.log("====RETURN VALUE====");
-    console.log(savedBalanceGame);
+    savedBalanceGame.balanceGameKeywords = gameKeywords;
     return savedBalanceGame;
   }
 
+
   async findAll(): Promise<BalanceGame[]> {
-    return await this.balanceGameRepository.find({});
+    return await this.balanceGameRepository.find({ relations: ["balanceGameKeywords"]});
   }
 
-  // findOne(id: number) {
-  //   return `This action returns a #${id} balanceGame`;
-  // }
+  async findOne(id: string): Promise<BalanceGame> {
+    return await this.balanceGameRepository.findOne(
+      { id: id,}, 
+      { relations: ["balanceGameKeywords"]});
+  }
 
   // update(id: number, updateBalanceGameInput: UpdateBalanceGameInput) {
   //   return `This action updates a #${id} balanceGame`;

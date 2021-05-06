@@ -19,7 +19,7 @@ export class BalanceGameKeywordService {
     return savedKeyword;
   }
 
-  async createBuck(createBalanceGameKeywordInputs: [CreateBalanceGameKeywordInput]): Promise<BalanceGameKeyword[]> {
+  async createBulk(createBalanceGameKeywordInputs: [CreateBalanceGameKeywordInput]): Promise<BalanceGameKeyword[]> {
     const newKeyword = await this.keywordRepository.create(createBalanceGameKeywordInputs);
     const savedKeyword = await this.keywordRepository.save(newKeyword);
 

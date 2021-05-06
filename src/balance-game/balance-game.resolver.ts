@@ -23,10 +23,10 @@ export class BalanceGameResolver {
     return balanceGames;
   }
 
-  // @Query(() => BalanceGame, { name: "balanceGame" })
-  // findOne(@Args("id", { type: () => Int }) id: number) {
-  //   return this.balanceGameService.findOne(id);
-  // }
+  @Query(() => BalanceGame, { name: "balanceGame" })
+  async findOne(@Args("id") id: string): Promise<BalanceGame> {
+    return this.balanceGameService.findOne(id);
+  }
 
   // @Mutation(() => BalanceGame)
   // updateBalanceGame(@Args("updateBalanceGameInput") updateBalanceGameInput: UpdateBalanceGameInput) {
