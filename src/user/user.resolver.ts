@@ -52,16 +52,14 @@ export class UserResolver {
     console.log("test", loginUserInput);
     
     const userOauthTest = await this.userService.kakaoToken(loginUserInput.socialKey);
-    console.log(userOauthTest);
+    
     return userOauthTest;
   }
 
   @Query((returns) => User, { name: 'mypage' })
   @UseGuards(new AuthGuard())
   async myPage(@Token('user') token: String) {
-    console.log(token);
     const userData = await this.userService.findOne(token);
-    console.log(userData);
     
     return userData;
   }

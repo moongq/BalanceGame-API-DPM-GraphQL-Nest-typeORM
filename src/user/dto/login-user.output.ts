@@ -7,4 +7,7 @@ export class LoginUserOutput {
 
   @Field()
   email: string | null;
+
+  @Field()
+  status: string;
 }

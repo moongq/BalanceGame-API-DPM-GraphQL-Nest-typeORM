@@ -11,8 +11,7 @@ export class AuthGuard implements CanActivate {
       return false;
     }
     ctx.user = await this.validateToken(ctx.headers.authorization);
-    console.log("au", ctx.headers.authorization);
-    console.log("ctx", ctx.user);
+    
     return true;
   }
   

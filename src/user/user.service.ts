@@ -50,10 +50,11 @@ export class UserService {
       // console.log(kakaoRes);
       const data = kakaoRes.data;
       const kakaoId = data.id;
-      const kakaoEmail = data.kakao_account.email;
-      
-      if (!this.getUserByOauth(kakaoId, "kakao")) {
-        console.log("createUser");
+      const kakaoEmail = data.kakao_account?.email;
+      let status = "LOGIN";
+      // 가입 여부 체크
+      const getUser = await this.getUserByOauth(kakaoId, "kakao");
+      if (!getUser) {
         await this.oauthCreateUser({
           socialId: kakaoId,
           platformType: "kakao",
@@ -62,13 +63,15 @@ export class UserService {
             nickname: "",
             userImage: ""
           }
-        })  
+        });
+        status = "REGISTER";
       }
       const jwtToken = jwt.sign(kakaoId, 'secret');
 
       return {
         jwt: jwtToken,
-        email: kakaoEmail
+        email: kakaoEmail,
+        status: status
       };
     } catch (e) {
       console.log(e);
@@ -81,8 +84,9 @@ export class UserService {
     return jwt.sign(user, "secret");
   }
 
-  getUserByOauth(socialId: string, platformType: string) {
-    return this.userRepository.findOne({
+  async getUserByOauth(socialId: string, platformType: string) {
+    
+    return await this.userRepository.findOne({
       socialId: socialId,
       platformType: platformType
     })
