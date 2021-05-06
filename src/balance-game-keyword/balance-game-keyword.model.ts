@@ -21,7 +21,7 @@ export class BalanceGameKeyword {
   @Column()
   name: string;
 
-  @ManyToOne(() => BalanceGame, (balanceGame) => balanceGame.balanceGameThumbs)
+  @ManyToOne(() => BalanceGame, (balanceGame) => balanceGame.balanceGameKeywords)
   @JoinColumn({ name: "balanceGameId" })
   balanceGame: BalanceGame;
 

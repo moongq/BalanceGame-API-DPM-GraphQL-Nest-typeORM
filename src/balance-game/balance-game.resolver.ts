@@ -17,13 +17,16 @@ export class BalanceGameResolver {
 
   @Query(() => [BalanceGame], { name: "balanceGames" })
   async findAll(): Promise<BalanceGame[]> {
-    return await this.balanceGameService.findAll();
+    const balanceGames = await this.balanceGameService.findAll();
+
+    console.log(balanceGames);
+    return balanceGames;
   }
 
-  // @Query(() => BalanceGame, { name: "balanceGame" })
-  // findOne(@Args("id", { type: () => Int }) id: number) {
-  //   return this.balanceGameService.findOne(id);
-  // }
+  @Query(() => BalanceGame, { name: "balanceGame" })
+  async findOne(@Args("id") id: string): Promise<BalanceGame> {
+    return this.balanceGameService.findOne(id);
+  }
 
   // @Mutation(() => BalanceGame)
   // updateBalanceGame(@Args("updateBalanceGameInput") updateBalanceGameInput: UpdateBalanceGameInput) {
