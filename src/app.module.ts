@@ -11,6 +11,7 @@ import { BalanceGameSelectionModule } from "./balance-game-selection/balance-gam
 import { BalanceGameSelectionVoteModule } from './balance-game-selection-vote/balance-game-selection-vote.module';
 import { BalanceGameThumbModule } from './balance-game-thumb/balance-game-thumb.module';
 import { BalanceGameKeywordModule } from './balance-game-keyword/balance-game-keyword.module';
+import { CommentModule } from './comment/comment.module';
 
 @Module({
   imports: [
@@ -38,6 +39,7 @@ import { BalanceGameKeywordModule } from './balance-game-keyword/balance-game-ke
     BalanceGameSelectionVoteModule,
     BalanceGameThumbModule,
     BalanceGameKeywordModule,
+    CommentModule,
   ],
   providers: [],
 })
