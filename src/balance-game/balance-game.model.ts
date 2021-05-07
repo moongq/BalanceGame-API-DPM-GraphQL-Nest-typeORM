@@ -17,6 +17,7 @@ import { BalanceGameSelectionVote } from "../balance-game-selection-vote/balance
 import { BalanceGameThumb } from "../balance-game-thumb/balance-game-thumb.model";
 import { BalanceGameKeyword } from "../balance-game-keyword/balance-game-keyword.model";
 import { Comment } from "../comment/comment.model"
+import { Notification } from "src/notification/notification.model";
 
 @ObjectType()
 @Entity()
@@ -50,6 +51,9 @@ export class BalanceGame {
 
   @OneToMany(() => BalanceGameKeyword, (balanceGaneKeyword) => balanceGaneKeyword.balanceGame, { eager: true })
   balanceGameKeywords: BalanceGameKeyword[];
+
+  @OneToMany((type) => Notification, (notification) => notification.balanceGame)
+  notifications: Notification[];
 
   @OneToMany(() => Comment, (comment) => comment.balanceGame)
   comments: Comment[];

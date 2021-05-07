@@ -1,8 +1,9 @@
 import { ObjectType, Field, Int } from '@nestjs/graphql';
 import { BalanceGame } from '../balance-game/balance-game.model';
-import { Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm';
 import { User } from '../user/user.model';
 import { Reply } from 'src/reply/reply.model';
+import { Notification } from '../notification/notification.model'
 
 @ObjectType()
 @Entity()
@@ -30,6 +31,9 @@ export class Comment {
   @OneToMany(() => Reply, (reply) => reply.comment)
   replies: Reply[]
 
+  @OneToMany(() => Notification, (notification) => notification.comment)
+  notifications: Notification[];
+
   @Field(() => String)
   @Column()
   content: string;
@@ -47,7 +51,7 @@ export class Comment {
   createdAt: string;
 
   @Field((type) => Date)
-  @CreateDateColumn({ type: "timestamp" })
+  @UpdateDateColumn({ type: "timestamp" })
   updatedAt: Date;
 
 }

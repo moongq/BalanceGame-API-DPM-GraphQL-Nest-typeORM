@@ -13,6 +13,7 @@ import { BalanceGameThumbModule } from './balance-game-thumb/balance-game-thumb.
 import { BalanceGameKeywordModule } from './balance-game-keyword/balance-game-keyword.module';
 import { CommentModule } from './comment/comment.module';
 import { ReplyModule } from './reply/reply.module';
+import { NotificationModule } from './notification/notification.module';
 
 @Module({
   imports: [
@@ -42,6 +43,7 @@ import { ReplyModule } from './reply/reply.module';
     BalanceGameKeywordModule,
     CommentModule,
     ReplyModule,
+    NotificationModule,
   ],
   providers: [],
 })

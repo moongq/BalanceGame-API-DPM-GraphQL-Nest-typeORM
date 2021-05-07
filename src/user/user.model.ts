@@ -16,6 +16,7 @@ import { BalanceGameSelectionVote } from "../balance-game-selection-vote/balance
 import { BalanceGameThumb } from "../balance-game-thumb/balance-game-thumb.model";
 import { Comment } from "../comment/comment.model"
 import { Reply } from "src/reply/reply.model";
+import { Notification } from "../notification/notification.model"
 
 @ObjectType()
 @Entity()
@@ -44,6 +45,9 @@ export class User {
 
   @OneToMany(() => BalanceGameThumb, (balanceGameThumb) => balanceGameThumb.user)
   balanceGameThumbs: BalanceGameThumb[];
+
+  @OneToMany((type) => Notification, (notification) => notification.user)
+  notifications: Notification[];
 
   @OneToMany(() => Comment, (comment) => comment.user)
   comments: Comment[];
