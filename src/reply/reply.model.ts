@@ -1,12 +1,12 @@
 import { ObjectType, Field, Int } from '@nestjs/graphql';
 import { BalanceGame } from '../balance-game/balance-game.model';
-import { Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 import { User } from '../user/user.model';
-import { Reply } from 'src/reply/reply.model';
+import { Comment } from '../comment/comment.model';
 
 @ObjectType()
 @Entity()
-export class Comment {
+export class Reply {
   @Field()
   @PrimaryGeneratedColumn("uuid")
   id: string;
@@ -27,8 +27,13 @@ export class Comment {
   @Column()
   balanceGameId: string;
 
-  @OneToMany(() => Reply, (reply) => reply.comment)
-  replies: Reply[]
+  @ManyToOne(() => Comment, (comment) => comment.replies)
+  @JoinColumn({ name: "commentId"})
+  comment: Comment;
+  
+  @Field()
+  @Column()
+  commentId: string;
 
   @Field(() => String)
   @Column()
@@ -49,5 +54,4 @@ export class Comment {
   @Field((type) => Date)
   @CreateDateColumn({ type: "timestamp" })
   updatedAt: Date;
-
 }

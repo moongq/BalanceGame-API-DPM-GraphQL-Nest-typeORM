@@ -15,6 +15,7 @@ import { BalanceGame } from "../balance-game/balance-game.model";
 import { BalanceGameSelectionVote } from "../balance-game-selection-vote/balance-game-selection-vote.model";
 import { BalanceGameThumb } from "../balance-game-thumb/balance-game-thumb.model";
 import { Comment } from "../comment/comment.model"
+import { Reply } from "src/reply/reply.model";
 
 @ObjectType()
 @Entity()
@@ -45,7 +46,10 @@ export class User {
   balanceGameThumbs: BalanceGameThumb[];
 
   @OneToMany(() => Comment, (comment) => comment.user)
-  comments: Comment;
+  comments: Comment[];
+
+  @OneToMany(() => Reply, (reply) => reply.user)
+  replies: Reply[]
 
   // :TODO enum으로 수정?
   @Field((type) => String)
