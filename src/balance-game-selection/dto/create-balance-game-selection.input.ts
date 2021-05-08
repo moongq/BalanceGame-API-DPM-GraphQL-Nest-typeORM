@@ -3,16 +3,16 @@ import { InputType, Int, Field } from "@nestjs/graphql";
 @InputType()
 export class CreateBalanceGameSelectionInput {
   @Field()
-  balanceGameId: string;
-
-  @Field()
-  title: string;
-
-  @Field()
-  titleColor?: string;
+  balanceGameId?: string;
 
   @Field()
   description?: string;
+
+  @Field()
+  subText?: string;
+
+  @Field()
+  textColor?: string;
 
   @Field()
   backgroundColor?: string;
@@ -21,5 +21,5 @@ export class CreateBalanceGameSelectionInput {
   backgroundImage?: string;
 
   @Field()
-  order?: string;
+  order?: number;
 }
