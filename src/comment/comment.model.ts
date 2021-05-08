@@ -29,7 +29,7 @@ export class Comment {
   @Column()
   userId: string;
 
-  @ManyToOne((type) => BalanceGame, (balanceGame) => balanceGame.comments)
+  @ManyToOne((type) => BalanceGame, (balanceGame) => balanceGame.comments, { onDelete: "CASCADE" })
   @JoinColumn({ name: "balanceGameId" })
   balanceGame: BalanceGame;
 

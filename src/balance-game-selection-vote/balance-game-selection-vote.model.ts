@@ -27,7 +27,7 @@ export class BalanceGameSelectionVote {
   @Column()
   userId: string;
 
-  @ManyToOne((type) => BalanceGame, (balanceGame) => balanceGame.balanceGameSelectionVotes)
+  @ManyToOne((type) => BalanceGame, (balanceGame) => balanceGame.balanceGameSelectionVotes, { onDelete: "CASCADE" })
   @JoinColumn({ name: "balanceGameId" })
   balanceGame: BalanceGame;
 
@@ -35,7 +35,9 @@ export class BalanceGameSelectionVote {
   @Column()
   balanceGameId: string;
 
-  @ManyToOne(() => BalanceGameSelection, (balanceGameSelection) => balanceGameSelection.balanceGameSelectionVotes)
+  @ManyToOne(() => BalanceGameSelection, (balanceGameSelection) => balanceGameSelection.balanceGameSelectionVotes, {
+    onDelete: "CASCADE",
+  })
   @JoinColumn({ name: "balanceGameSelectionId" })
   balanceGameSelection: BalanceGameSelection;
 

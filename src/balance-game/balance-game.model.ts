@@ -60,7 +60,7 @@ export class BalanceGame {
 
   @Field((type) => String)
   @Column()
-  description: string;
+  title: string;
 
   @Field((type) => Int)
   @Column()
@@ -68,7 +68,7 @@ export class BalanceGame {
 
   @Field((type) => Int)
   @Column()
-  thumbsUp: number;
+  thumbs: number;
 
   @Field((type) => String)
   @Column()

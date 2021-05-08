@@ -24,14 +24,13 @@ export class BalanceGameService {
   async create(createBalanceGameInput: CreateBalanceGameInput): Promise<BalanceGame> {
     const newBalanceGame = await this.balanceGameRepository.create({
       userId: createBalanceGameInput.userId,
-      description: createBalanceGameInput.description,
+      title: createBalanceGameInput.title,
     });
 
     const savedBalanceGame = await this.balanceGameRepository.save(newBalanceGame);
 
-
     for (let keyword of createBalanceGameInput.balanceGameKeywords) {
-      keyword.balanceGameId = savedBalanceGame.id
+      keyword.balanceGameId = savedBalanceGame.id;
     }
 
     const gameKeywords = await this.balanceGameKeywordService.createBulk(createBalanceGameInput.balanceGameKeywords);
@@ -40,15 +39,12 @@ export class BalanceGameService {
     return savedBalanceGame;
   }
 
-
   async findAll(): Promise<BalanceGame[]> {
-    return await this.balanceGameRepository.find({ relations: ["balanceGameKeywords"]});
+    return await this.balanceGameRepository.find({ relations: ["balanceGameKeywords"] });
   }
 
   async findOne(id: string): Promise<BalanceGame> {
-    return await this.balanceGameRepository.findOne(
-      { id: id,}, 
-      { relations: ["balanceGameKeywords"]});
+    return await this.balanceGameRepository.findOne({ id: id }, { relations: ["balanceGameKeywords"] });
   }
 
   // update(id: number, updateBalanceGameInput: UpdateBalanceGameInput) {

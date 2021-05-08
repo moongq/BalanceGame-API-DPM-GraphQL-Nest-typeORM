@@ -20,7 +20,7 @@ export class BalanceGameSelection {
   @PrimaryGeneratedColumn("uuid")
   id: string;
 
-  @ManyToOne((type) => BalanceGame, (balanceGame) => balanceGame.balanceGameSelections)
+  @ManyToOne((type) => BalanceGame, (balanceGame) => balanceGame.balanceGameSelections, { onDelete: "CASCADE" })
   @JoinColumn({ name: "balanceGameId" })
   balanceGame: BalanceGame;
 
