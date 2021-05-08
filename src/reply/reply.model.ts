@@ -1,8 +1,8 @@
-import { ObjectType, Field, Int } from '@nestjs/graphql';
-import { BalanceGame } from '../balance-game/balance-game.model';
-import { Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
-import { User } from '../user/user.model';
-import { Comment } from '../comment/comment.model';
+import { ObjectType, Field, Int } from "@nestjs/graphql";
+import { BalanceGame } from "../balance-game/balance-game.model";
+import { Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
+import { User } from "../user/user.model";
+import { Comment } from "../comment/comment.model";
 
 @ObjectType()
 @Entity()
@@ -22,15 +22,15 @@ export class Reply {
   @ManyToOne((type) => BalanceGame, (balanceGame) => balanceGame.comments)
   @JoinColumn({ name: "balanceGameId" })
   balanceGame: BalanceGame;
-  
+
   @Field()
   @Column()
   balanceGameId: string;
 
   @ManyToOne(() => Comment, (comment) => comment.replies)
-  @JoinColumn({ name: "commentId"})
+  @JoinColumn({ name: "commentId" })
   comment: Comment;
-  
+
   @Field()
   @Column()
   commentId: string;
@@ -39,10 +39,6 @@ export class Reply {
   @Column()
   content: string;
 
-  @Field(() => Int)
-  @Column({ default: 0})
-  order: number;
-  
   @Field((type) => String)
   @Column()
   status: string;

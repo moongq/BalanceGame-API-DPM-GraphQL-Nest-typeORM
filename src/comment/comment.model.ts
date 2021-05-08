@@ -1,9 +1,18 @@
-import { ObjectType, Field, Int } from '@nestjs/graphql';
-import { BalanceGame } from '../balance-game/balance-game.model';
-import { Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm';
-import { User } from '../user/user.model';
-import { Reply } from 'src/reply/reply.model';
-import { Notification } from '../notification/notification.model'
+import { ObjectType, Field, Int } from "@nestjs/graphql";
+import { BalanceGame } from "../balance-game/balance-game.model";
+import {
+  Column,
+  CreateDateColumn,
+  Entity,
+  JoinColumn,
+  ManyToOne,
+  OneToMany,
+  PrimaryGeneratedColumn,
+  UpdateDateColumn,
+} from "typeorm";
+import { User } from "../user/user.model";
+import { Reply } from "src/reply/reply.model";
+import { Notification } from "../notification/notification.model";
 
 @ObjectType()
 @Entity()
@@ -23,13 +32,13 @@ export class Comment {
   @ManyToOne((type) => BalanceGame, (balanceGame) => balanceGame.comments)
   @JoinColumn({ name: "balanceGameId" })
   balanceGame: BalanceGame;
-  
+
   @Field()
   @Column()
   balanceGameId: string;
 
   @OneToMany(() => Reply, (reply) => reply.comment)
-  replies: Reply[]
+  replies: Reply[];
 
   @OneToMany(() => Notification, (notification) => notification.comment)
   notifications: Notification[];
@@ -38,10 +47,6 @@ export class Comment {
   @Column()
   content: string;
 
-  @Field(() => Int)
-  @Column({ default: 0})
-  order: number;
-  
   @Field((type) => String)
   @Column()
   status: string;
@@ -53,5 +58,4 @@ export class Comment {
   @Field((type) => Date)
   @UpdateDateColumn({ type: "timestamp" })
   updatedAt: Date;
-
 }

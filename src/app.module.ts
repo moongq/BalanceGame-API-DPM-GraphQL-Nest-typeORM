@@ -8,12 +8,12 @@ import { UserModule } from "./user/user.module";
 import { UserProfileModule } from "./user-profile/user-profile.module";
 import { BalanceGameModule } from "./balance-game/balance-game.module";
 import { BalanceGameSelectionModule } from "./balance-game-selection/balance-game-selection.module";
-import { BalanceGameSelectionVoteModule } from './balance-game-selection-vote/balance-game-selection-vote.module';
-import { BalanceGameThumbModule } from './balance-game-thumb/balance-game-thumb.module';
-import { BalanceGameKeywordModule } from './balance-game-keyword/balance-game-keyword.module';
-import { CommentModule } from './comment/comment.module';
-import { ReplyModule } from './reply/reply.module';
-import { NotificationModule } from './notification/notification.module';
+import { BalanceGameSelectionVoteModule } from "./balance-game-selection-vote/balance-game-selection-vote.module";
+import { BalanceGameThumbModule } from "./balance-game-thumb/balance-game-thumb.module";
+import { BalanceGameKeywordModule } from "./balance-game-keyword/balance-game-keyword.module";
+import { CommentModule } from "./comment/comment.module";
+import { ReplyModule } from "./reply/reply.module";
+import { NotificationModule } from "./notification/notification.module";
 
 @Module({
   imports: [

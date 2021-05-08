@@ -1,13 +1,12 @@
-import { Injectable } from '@nestjs/common';
-import { CreateCommentInput } from './dto/create-comment.input';
-import { UpdateCommentInput } from './dto/update-comment.input';
-import { Comment } from "./comment.model"
-import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { Injectable } from "@nestjs/common";
+import { CreateCommentInput } from "./dto/create-comment.input";
+import { UpdateCommentInput } from "./dto/update-comment.input";
+import { Comment } from "./comment.model";
+import { InjectRepository } from "@nestjs/typeorm";
+import { Repository } from "typeorm";
 
 @Injectable()
 export class CommentService {
-
   constructor(
     @InjectRepository(Comment)
     private commentRepository: Repository<Comment>
@@ -16,7 +15,7 @@ export class CommentService {
   async create(createCommentInput: CreateCommentInput): Promise<Comment> {
     const newComment = await this.commentRepository.create(createCommentInput);
     const savedComment = await this.commentRepository.save(newComment);
-    
+
     return savedComment;
   }
 

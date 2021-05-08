@@ -16,7 +16,7 @@ import { BalanceGameSelection } from "../balance-game-selection/balance-game-sel
 import { BalanceGameSelectionVote } from "../balance-game-selection-vote/balance-game-selection-vote.model";
 import { BalanceGameThumb } from "../balance-game-thumb/balance-game-thumb.model";
 import { BalanceGameKeyword } from "../balance-game-keyword/balance-game-keyword.model";
-import { Comment } from "../comment/comment.model"
+import { Comment } from "../comment/comment.model";
 import { Notification } from "src/notification/notification.model";
 
 @ObjectType()
