@@ -9,5 +9,6 @@ import { BalanceGameSelection } from "./balance-game-selection.model";
 @Module({
   imports: [TypeOrmModule.forFeature([BalanceGameSelection, BalanceGame, User])],
   providers: [BalanceGameSelectionResolver, BalanceGameSelectionService],
+  exports: [BalanceGameSelectionService],
 })
 export class BalanceGameSelectionModule {}

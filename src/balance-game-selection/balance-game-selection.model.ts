@@ -36,15 +36,15 @@ export class BalanceGameSelection {
 
   @Field()
   @Column()
-  title: string;
-
-  @Field()
-  @Column()
-  titleColor: string;
-
-  @Field()
-  @Column()
   description: string;
+
+  @Field()
+  @Column()
+  textColor: string;
+
+  @Field()
+  @Column()
+  subText: string;
 
   @Field()
   @Column()
@@ -56,7 +56,7 @@ export class BalanceGameSelection {
 
   @Field()
   @Column()
-  order: string;
+  order: number;
 
   @Field()
   @Column()

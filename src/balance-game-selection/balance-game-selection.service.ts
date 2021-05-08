@@ -23,6 +23,15 @@ export class BalanceGameSelectionService {
     return createdSelection;
   }
 
+  async createBulk(
+    createBalanceGameSelectionInputs: [CreateBalanceGameSelectionInput]
+  ): Promise<BalanceGameSelection[]> {
+    const newSelections = await this.balanceGameSelectionRepository.create(createBalanceGameSelectionInputs);
+    const savedSelections = await this.balanceGameSelectionRepository.save(newSelections);
+
+    return savedSelections;
+  }
+
   async findAll(): Promise<BalanceGameSelection[]> {
     const selections = await this.balanceGameSelectionRepository.find({});
 
