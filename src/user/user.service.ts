@@ -4,6 +4,7 @@ import { UserProfileService } from 'src/user-profile/user-profile.service';
 import { Repository } from 'typeorm';
 import axios, { AxiosPromise } from 'axios';
 import { CreateUserInput } from './dto/create-user.input';
+import { UserJwt } from './dto/user-jwt';
 import { User } from './user.model';
 import * as jwt from 'jsonwebtoken';
 
@@ -47,41 +48,30 @@ export class UserService {
           Authorization: `Bearer ${token}`
         }
       });
-      // console.log(kakaoRes);
       const data = kakaoRes.data;
       const kakaoId = data.id;
       const kakaoEmail = data.kakao_account?.email;
-      let status = "LOGIN";
-      // 가입 여부 체크
-      const getUser = await this.getUserByOauth(kakaoId, "kakao");
-      if (!getUser) {
-        await this.oauthCreateUser({
-          socialId: kakaoId,
-          platformType: "kakao",
-          profile: {
-            email: kakaoEmail,
-            nickname: "",
-            userImage: ""
-          }
-        });
-        status = "REGISTER";
-      }
-      const jwtToken = jwt.sign(kakaoId, 'secret');
 
       return {
-        jwt: jwtToken,
-        email: kakaoEmail,
-        status: status
+        result: "SUCCESS",
+        data: data,
+        kakaoId: kakaoId,
+        kakaoEmail: kakaoEmail
       };
     } catch (e) {
       console.log(e);
-      return "";
+      return {
+        result: "FAIL"
+      };
     }
     
   }
 
-  createToken(user: User) {
-    return jwt.sign(user, "secret");
+  createToken(user: UserJwt) {
+    return jwt.sign(
+      user, 
+      process.env.JWT_SECRET_KEY,
+      { expiresIn: '365d' });
   }
 
   async getUserByOauth(socialId: string, platformType: string) {
@@ -101,12 +91,13 @@ export class UserService {
   async findOne(userId: String) {
     const user = this.userRepository.findOne({
       where: {
-        socialId: userId
+        id: userId
       }
     })
 
     return user;
   }
+
 
 
   // create(createUserInput: CreateUserInput) {
@@ -115,10 +106,6 @@ export class UserService {
 
   // findOne(id: number) {
   //   return `This action returns a #${id} user`;
-  // }
-
-  // update(id: number, updateUserInput: UpdateUserInput) {
-  //   return `This action updates a #${id} user`;
   // }
 
   // remove(id: number) {

@@ -30,13 +30,18 @@ export class UserProfileService {
     return userProfiles;
   }
 
+
   // findOne(id: number) {
   //   return `This action returns a #${id} userProfile`;
   // }
 
-  // update(id: number, updateUserProfileInput: UpdateUserProfileInput) {
-  //   return `This action updates a #${id} userProfile`;
-  // }
+  async update(id: string, nickname: string) {
+    await this.userProfileRepository.update({
+      id: id
+    }, {
+      nickname: nickname
+    })
+  }
 
   // remove(id: number) {
   //   return `This action removes a #${id} userProfile`;
