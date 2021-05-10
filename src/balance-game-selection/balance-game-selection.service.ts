@@ -42,9 +42,24 @@ export class BalanceGameSelectionService {
     return `This action returns a #${id} balanceGameSelection`;
   }
 
-  // update(id: number, updateBalanceGameSelectionInput: UpdateBalanceGameSelectionInput) {
-  //   return `This action updates a #${id} balanceGameSelection`;
-  // }
+  async update(id: string, updateBalanceGameSelectionInput: UpdateBalanceGameSelectionInput) {
+    const selection = await this.balanceGameSelectionRepository.update(
+        { id: updateBalanceGameSelectionInput.id },
+        { ...updateBalanceGameSelectionInput }
+      ).then(response => response.raw[0]);
+
+    // const selection2 = await this.balanceGameSelectionRepository
+    //   .createQueryBuilder()
+    //   .update(BalanceGameSelection)
+    //   .set({ ...updateBalanceGameSelectionInput})
+    //   .where(`id = :id`, { id: updateBalanceGameSelectionInput.id, })
+    //   .execute();
+
+      console.log("UPDATED DATA")
+      console.log(selection)
+    return selection;
+  }
+  
 
   // remove(id: number) {
   //   return `This action removes a #${id} balanceGameSelection`;

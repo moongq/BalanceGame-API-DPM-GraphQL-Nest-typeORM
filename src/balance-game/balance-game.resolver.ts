@@ -8,6 +8,7 @@ import { UpdateBalanceGameInput } from "./dto/update-balance-game.input";
 export class BalanceGameResolver {
   constructor(private readonly balanceGameService: BalanceGameService) {}
 
+  // :TODO 미들웨어 추가 [로그인 / ]
   @Mutation(() => BalanceGame)
   async createBalanceGame(
     @Args("createBalanceGameInput") createBalanceGameInput: CreateBalanceGameInput
@@ -15,6 +16,8 @@ export class BalanceGameResolver {
     return await this.balanceGameService.create(createBalanceGameInput);
   }
 
+  // 검색 정렬: [ 최신순 / 인기순 ]
+  // 검색 기준: [ 카테고리 / ]
   @Query(() => [BalanceGame], { name: "balanceGames" })
   async findAll(): Promise<BalanceGame[]> {
     const balanceGames = await this.balanceGameService.findAll();
@@ -28,10 +31,12 @@ export class BalanceGameResolver {
     return this.balanceGameService.findOne(id);
   }
 
-  // @Mutation(() => BalanceGame)
-  // updateBalanceGame(@Args("updateBalanceGameInput") updateBalanceGameInput: UpdateBalanceGameInput) {
-  //   return this.balanceGameService.update(updateBalanceGameInput.id, updateBalanceGameInput);
-  // }
+  @Mutation(() => BalanceGame)
+  updateBalanceGame(
+    @Args("id") id: String,
+    @Args("updateBalanceGameInput") updateBalanceGameInput: UpdateBalanceGameInput) {
+      return this.balanceGameService.update(id, updateBalanceGameInput);
+  }
 
   // @Mutation(() => BalanceGame)
   // removeBalanceGame(@Args("id", { type: () => Int }) id: number) {

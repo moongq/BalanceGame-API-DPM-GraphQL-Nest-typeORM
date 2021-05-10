@@ -1,8 +1,10 @@
-import { CreateBalanceGameKeywordInput } from './create-balance-game-keyword.input';
-import { InputType, Field, Int, PartialType } from '@nestjs/graphql';
+import { InputType, Int, Field } from "@nestjs/graphql";
 
 @InputType()
-export class UpdateBalanceGameKeywordInput extends PartialType(CreateBalanceGameKeywordInput) {
-  @Field(() => Int)
-  id: number;
+export class UpdateBalanceGameKeywordInput {
+  @Field()
+  id?: string;
+  
+  @Field()
+  name?: string;
 }
