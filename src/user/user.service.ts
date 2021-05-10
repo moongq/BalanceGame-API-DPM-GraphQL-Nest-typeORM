@@ -1,3 +1,4 @@
+
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { UserProfileService } from 'src/user-profile/user-profile.service';
@@ -8,11 +9,13 @@ import { UserJwt } from './dto/user-jwt';
 import { User } from './user.model';
 import * as jwt from 'jsonwebtoken';
 
+
 @Injectable()
 export class UserService {
   constructor(
     @InjectRepository(User)
     private userRepository: Repository<User>,
+
     private userProfileService: UserProfileService
   ) {}
 
@@ -83,7 +86,7 @@ export class UserService {
   }
 
   async findAll() {
-    const Users = this.userRepository.find({});
+    const Users = await this.userRepository.find({});
 
     return Users;
   }

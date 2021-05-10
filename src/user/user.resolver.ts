@@ -23,13 +23,9 @@ import { AuthGuard } from './auth.guard';
 import { Token } from './lib/user.decorator';
 import * as jwt from 'jsonwebtoken';
 
-
 @Resolver(() => User)
 export class UserResolver {
-  constructor(
-    private readonly userService: UserService,
-    private readonly userProfileService: UserProfileService
-  ) {}
+  constructor(private readonly userService: UserService, private readonly userProfileService: UserProfileService) {}
 
   /** Usage
   mutation {
@@ -41,9 +37,7 @@ export class UserResolver {
  }
   */
   @Mutation((returns) => User)
-  async createUser(
-    @Args('createUserInput') createUserInput: CreateUserInput
-  ): Promise<User> {
+  async createUser(@Args("createUserInput") createUserInput: CreateUserInput): Promise<User> {
     console.log(createUserInput);
     const user = await this.userService.create(createUserInput);
     return user;
@@ -133,9 +127,8 @@ export class UserResolver {
   }
 }
    */
-
-  @Query((returns) => [User], { name: 'user' })
-  findAll() {
+  @Query((returns) => [User], { name: "users" })
+  async findAll() {
     return this.userService.findAll();
   }
 }

@@ -1,5 +1,5 @@
-import { ObjectType, Field, ID } from '@nestjs/graphql';
-import { UserProfileService } from '../user-profile/user-profile.service';
+import { ObjectType, Field, ID } from "@nestjs/graphql";
+import { UserProfileService } from "../user-profile/user-profile.service";
 import {
   Entity,
   Column,
@@ -8,14 +8,21 @@ import {
   JoinColumn,
   UpdateDateColumn,
   CreateDateColumn,
-} from 'typeorm';
-import { UserProfile } from '../user-profile/user-profile.model';
+  OneToMany,
+} from "typeorm";
+import { UserProfile } from "../user-profile/user-profile.model";
+import { BalanceGame } from "../balance-game/balance-game.model";
+import { BalanceGameSelectionVote } from "../balance-game-selection-vote/balance-game-selection-vote.model";
+import { BalanceGameThumb } from "../balance-game-thumb/balance-game-thumb.model";
+import { Comment } from "../comment/comment.model";
+import { Reply } from "src/reply/reply.model";
+import { Notification } from "../notification/notification.model";
 
 @ObjectType()
 @Entity()
 export class User {
   @Field()
-  @PrimaryGeneratedColumn('uuid')
+  @PrimaryGeneratedColumn("uuid")
   id: string;
 
   @Field((type) => String)
@@ -30,16 +37,34 @@ export class User {
   @JoinColumn()
   profile: UserProfile;
 
+  @OneToMany((type) => BalanceGame, (balanceGame) => balanceGame.user)
+  balanceGames: BalanceGame[];
+
+  @OneToMany((type) => BalanceGameSelectionVote, (balanceGameSelectionVote) => balanceGameSelectionVote.user)
+  balanceGameSelectionVotes: BalanceGameSelectionVote[];
+
+  @OneToMany(() => BalanceGameThumb, (balanceGameThumb) => balanceGameThumb.user)
+  balanceGameThumbs: BalanceGameThumb[];
+
+  @OneToMany((type) => Notification, (notification) => notification.user)
+  notifications: Notification[];
+
+  @OneToMany(() => Comment, (comment) => comment.user)
+  comments: Comment[];
+
+  @OneToMany(() => Reply, (reply) => reply.user)
+  replies: Reply[];
+
   // :TODO enum으로 수정?
-  // @Column()
-  // @Field(type => String)
-  // status: string;
+  @Field((type) => String)
+  @Column()
+  status: string;
 
   @Field((type) => Date)
-  @CreateDateColumn({ type: 'timestamp' })
+  @CreateDateColumn({ type: "timestamp" })
   createdAt: string;
 
   @Field((type) => Date)
-  @UpdateDateColumn({ type: 'timestamp' })
+  @UpdateDateColumn({ type: "timestamp" })
   updatedAt: Date;
 }
