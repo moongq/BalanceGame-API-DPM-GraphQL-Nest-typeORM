@@ -32,6 +32,9 @@ import { NotificationModule } from "./notification/notification.module";
     }),
     GraphQLModule.forRoot({
       autoSchemaFile: true,
+      context: ({req}) => {
+        headers: req.headers; 
+      }
     }),
     RecipesModule,
     UserModule,

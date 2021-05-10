@@ -3,6 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CreateUserProfileInput } from './dto/create-user-profile.input';
 import { UserProfile } from './user-profile.model';
+import { getRepository } from 'typeorm';
 
 @Injectable()
 export class UserProfileService {
@@ -11,12 +12,16 @@ export class UserProfileService {
     private userProfileRepository: Repository<UserProfile>
   ) {}
 
-  create(createUserProfileInput: CreateUserProfileInput): Promise<UserProfile> {
-    const newUserProfile = this.userProfileRepository.create(
-      createUserProfileInput
-    );
-    console.log(newUserProfile);
-    return this.userProfileRepository.save(newUserProfile);
+  async create(createUserProfileInput: CreateUserProfileInput): Promise<UserProfile> {
+    const userProfileRepository = getRepository(UserProfile);
+    const userProfile = new UserProfile();
+    
+    userProfile.email = createUserProfileInput.email;
+    // userProfile.nickname = createUserProfileInput.nickname;
+    // userProfile.userImage = createUserProfileInput.userImage;
+    await userProfileRepository.save(userProfile);
+    console.log("???");
+    return userProfile;
   }
 
   findAll(): Promise<UserProfile[]> {
@@ -25,13 +30,18 @@ export class UserProfileService {
     return userProfiles;
   }
 
+
   // findOne(id: number) {
   //   return `This action returns a #${id} userProfile`;
   // }
 
-  // update(id: number, updateUserProfileInput: UpdateUserProfileInput) {
-  //   return `This action updates a #${id} userProfile`;
-  // }
+  async update(id: string, nickname: string) {
+    await this.userProfileRepository.update({
+      id: id
+    }, {
+      nickname: nickname
+    })
+  }
 
   // remove(id: number) {
   //   return `This action removes a #${id} userProfile`;
