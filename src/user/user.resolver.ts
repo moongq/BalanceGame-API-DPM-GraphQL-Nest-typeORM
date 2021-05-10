@@ -22,10 +22,16 @@ import { UserProfileService } from '../user-profile/user-profile.service';
 import { AuthGuard } from './auth.guard';
 import { Token } from './lib/user.decorator';
 import * as jwt from 'jsonwebtoken';
+import { BalanceGame } from "../balance-game/balance-game.model";
+import { BalanceGameService } from "../balance-game/balance-game.service";
 
 @Resolver(() => User)
 export class UserResolver {
-  constructor(private readonly userService: UserService, private readonly userProfileService: UserProfileService) {}
+  constructor(
+    private readonly userService: UserService,
+    private readonly userProfileService: UserProfileService,
+    private readonly balanceGameService: BalanceGameService
+  ) {}
 
   /** Usage
   mutation {
@@ -130,5 +136,12 @@ export class UserResolver {
   @Query((returns) => [User], { name: "users" })
   async findAll() {
     return this.userService.findAll();
+  }
+
+  @ResolveField(() => [BalanceGame])
+  async balanceGames(@Parent() parent): Promise<BalanceGame[]> {
+    const { id } = parent;
+    console.log("id :>> ", id);
+    return this.balanceGameService.findAllByUserID(id);
   }
 }
