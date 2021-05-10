@@ -11,5 +11,6 @@ import { BalanceGameSelectionModule } from "../balance-game-selection/balance-ga
 @Module({
   imports: [TypeOrmModule.forFeature([BalanceGame, User]), BalanceGameKeywordModule, BalanceGameSelectionModule],
   providers: [BalanceGameResolver, BalanceGameService],
+  exports: [BalanceGameService],
 })
 export class BalanceGameModule {}

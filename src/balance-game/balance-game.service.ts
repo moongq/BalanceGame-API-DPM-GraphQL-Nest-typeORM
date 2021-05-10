@@ -77,6 +77,9 @@ export class BalanceGameService {
     return await this.balanceGameRepository.findOne({ id: id }, { relations: ["balanceGameKeywords"] });
   }
 
+  async findAllByUserID(userId: string): Promise<BalanceGame[]> {
+    return await this.balanceGameRepository.find({ userId });
+  }
   // update(id: number, updateBalanceGameInput: UpdateBalanceGameInput) {
   //   return `This action updates a #${id} balanceGame`;
   // }
