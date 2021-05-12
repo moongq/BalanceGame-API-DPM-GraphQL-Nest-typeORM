@@ -84,3 +84,11 @@ mutation {
   }
 }
 ```
+
+# M removeBalanceGame
+
+```graphql
+mutation {
+  removeBalanceGame(id: "16cf0138-c235-4723-bd6e-1c33cfcb41ab")
+}
+```

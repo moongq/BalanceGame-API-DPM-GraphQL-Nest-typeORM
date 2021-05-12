@@ -115,7 +115,18 @@ export class BalanceGameService {
   //   return `This action updates a #${id} balanceGame`;
   // }
 
-  // remove(id: number) {
-  //   return `This action removes a #${id} balanceGame`;
-  // }
+  async remove(balanceGameId: string): Promise<Boolean> {
+    const deleteResult = await this.balanceGameRepository
+      .createQueryBuilder()
+      .delete()
+      .where(`id = :id`, { id: balanceGameId })
+      .execute();
+    console.log(deleteResult);
+
+    if (deleteResult.affected == 1) {
+      return true;
+    } else {
+      return false;
+    }
+  }
 }

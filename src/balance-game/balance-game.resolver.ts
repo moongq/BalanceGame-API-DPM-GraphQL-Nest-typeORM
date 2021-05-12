@@ -31,16 +31,18 @@ export class BalanceGameResolver {
     return this.balanceGameService.findOne(id);
   }
 
+  // :TODO 미들웨어 추가 [로그인, 내 게임인지 여부, 게임 ID가 유효한지.]
   @Mutation(() => BalanceGame)
-  updateBalanceGame(
+  async updateBalanceGame(
     @Args("id") id: string,
     @Args("updateBalanceGameInput") updateBalanceGameInput: UpdateBalanceGameInput
   ) {
-    return this.balanceGameService.update(id, updateBalanceGameInput);
+    return await this.balanceGameService.update(id, updateBalanceGameInput);
   }
 
-  // @Mutation(() => BalanceGame)
-  // removeBalanceGame(@Args("id", { type: () => Int }) id: number) {
-  //   return this.balanceGameService.remove(id);
-  // }
+  // :TODO 미들웨어 추가 [로그인, 내 게임인지 여부, 게임 ID가 유효한지.]
+  @Mutation(() => Boolean)
+  async removeBalanceGame(@Args("id", { type: () => String }) id: string): Promise<Boolean> {
+    return await this.balanceGameService.remove(id);
+  }
 }
