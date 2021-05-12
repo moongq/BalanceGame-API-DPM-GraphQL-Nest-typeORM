@@ -33,9 +33,10 @@ export class BalanceGameResolver {
 
   @Mutation(() => BalanceGame)
   updateBalanceGame(
-    @Args("id") id: String,
-    @Args("updateBalanceGameInput") updateBalanceGameInput: UpdateBalanceGameInput) {
-      return this.balanceGameService.update(id, updateBalanceGameInput);
+    @Args("id") id: string,
+    @Args("updateBalanceGameInput") updateBalanceGameInput: UpdateBalanceGameInput
+  ) {
+    return this.balanceGameService.update(id, updateBalanceGameInput);
   }
 
   // @Mutation(() => BalanceGame)

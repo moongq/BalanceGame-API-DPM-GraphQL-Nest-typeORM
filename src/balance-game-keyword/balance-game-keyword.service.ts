@@ -38,7 +38,15 @@ export class BalanceGameKeywordService {
   //   return `This action updates a #${id} balanceGameKeyword`;
   // }
 
-  // remove(id: number) {
-  //   return `This action removes a #${id} balanceGameKeyword`;
-  // }
+  async removeKeywordsWithGameId(balanceGameId: string): Promise<boolean> {
+    const result = await this.keywordRepository
+      .createQueryBuilder()
+      .delete()
+      .where("balanceGameId = :balanceGameId", { balanceGameId: balanceGameId })
+      .execute();
+
+    console.log("keyword delete all");
+    console.log(result);
+    return true; // :TODO 이거 맞나?
+  }
 }

@@ -10,11 +10,12 @@ import { User } from "../../user/user.model";
 @InputType()
 export class UpdateBalanceGameInput {
   @Field((type) => String)
-  title?: string;
+  description?: string;
 
   @Field((type) => [UpdateBalanceGameSelectionInput])
   balanceGameSelections?: [UpdateBalanceGameSelectionInput];
 
-  @Field((type) => [UpdateBalanceGameKeywordInput])
-  balanceGameKeywords?: [UpdateBalanceGameKeywordInput];
+  // Q: 그냥 다 지워버리고 새로 만드는게 나은가?
+  @Field((type) => [CreateBalanceGameKeywordInput])
+  balanceGameKeywords?: [CreateBalanceGameKeywordInput];
 }

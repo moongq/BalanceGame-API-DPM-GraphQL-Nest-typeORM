@@ -60,7 +60,7 @@ export class BalanceGame {
 
   @Field((type) => String)
   @Column()
-  title: string;
+  description: string;
 
   @Field((type) => Int)
   @Column()
