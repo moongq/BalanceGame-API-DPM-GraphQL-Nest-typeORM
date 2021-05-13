@@ -5,6 +5,8 @@ import { CreateBalanceGameInput } from "./dto/create-balance-game.input";
 import { UpdateBalanceGameInput } from "./dto/update-balance-game.input";
 import { FileUpload, GraphQLUpload } from "graphql-upload";
 import { FileService } from "../file/file.service";
+import { UseGuards } from "@nestjs/common";
+import { AuthGuard } from "../user/auth.guard";
 
 @Resolver(() => BalanceGame)
 export class BalanceGameResolver {
@@ -15,6 +17,7 @@ export class BalanceGameResolver {
 
   // :TODO 미들웨어 추가 [로그인 / ]
   @Mutation(() => BalanceGame)
+  // @UseGuards(new AuthGuard())
   async createBalanceGame(
     @Args("createBalanceGameInput") createBalanceGameInput: CreateBalanceGameInput
   ): Promise<BalanceGame> {
@@ -48,6 +51,7 @@ export class BalanceGameResolver {
 
   // :TODO 미들웨어 추가 [로그인, 내 게임인지 여부, 게임 ID가 유효한지.]
   @Mutation(() => BalanceGame)
+  // @UseGuards(new AuthGuard())
   async updateBalanceGame(
     @Args("id") id: string,
     @Args("updateBalanceGameInput") updateBalanceGameInput: UpdateBalanceGameInput
@@ -57,6 +61,7 @@ export class BalanceGameResolver {
 
   // :TODO 미들웨어 추가 [로그인, 내 게임인지 여부, 게임 ID가 유효한지.]
   @Mutation(() => Boolean)
+  // @UseGuards(new AuthGuard())
   async removeBalanceGame(@Args("id", { type: () => String }) id: string): Promise<Boolean> {
     return await this.balanceGameService.remove(id);
   }
