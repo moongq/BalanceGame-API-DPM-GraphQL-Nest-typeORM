@@ -51,6 +51,7 @@ mutation {
           subText: "www"
           textColor: "ff1323"
           backgroundColor: "der222"
+          backgroundImage: "http~"
           order: 1
         }
         {
@@ -58,6 +59,7 @@ mutation {
           description: "change desc2"
           subText: "Subtext22"
           textColor: "ff1323"
+          backgroundColor: "der222"
           backgroundImage: "http"
           order: 2
         }
@@ -92,3 +94,17 @@ mutation {
   removeBalanceGame(id: "16cf0138-c235-4723-bd6e-1c33cfcb41ab")
 }
 ```
+
+# M fileUpload
+
+key: operations
+
+value: {  "query": "mutation UploadFile($file1:Upload!) { uploadFile(file1:$file1) }", "variables": { "file1": null}}
+
+key: map
+
+value: { "0": ["variables.file1"] , "1": ["variables.file2"]}
+
+key: 0 
+
+value: 파일

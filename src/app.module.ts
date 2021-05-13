@@ -1,4 +1,4 @@
-import { Module } from "@nestjs/common";
+import { MiddlewareConsumer, Module, NestModule } from "@nestjs/common";
 import { AppService } from "./app.service";
 import { GraphQLModule } from "@nestjs/graphql";
 import { RecipesModule } from "./recipe/recipe.module";
@@ -14,6 +14,8 @@ import { BalanceGameKeywordModule } from "./balance-game-keyword/balance-game-ke
 import { CommentModule } from "./comment/comment.module";
 import { ReplyModule } from "./reply/reply.module";
 import { NotificationModule } from "./notification/notification.module";
+import { FileModule } from './file/file.module';
+import { graphqlUploadExpress } from "graphql-upload";
 
 @Module({
   imports: [
@@ -34,7 +36,9 @@ import { NotificationModule } from "./notification/notification.module";
       autoSchemaFile: true,
       context: ({req}) => {
         headers: req.headers; 
-      }
+      },
+      path: '/graphql', // 뭔지모름 그냥 따라하는 중
+      uploads: false, // 뭔지모름 그냥 따라하는 중
     }),
     RecipesModule,
     UserModule,
@@ -47,7 +51,12 @@ import { NotificationModule } from "./notification/notification.module";
     CommentModule,
     ReplyModule,
     NotificationModule,
+    FileModule,
   ],
   providers: [],
 })
-export class AppModule {}
+export class AppModule implements NestModule{
+  configure(consumer: MiddlewareConsumer) {
+    consumer.apply(graphqlUploadExpress()).forRoutes('graphql')
+  }
+}

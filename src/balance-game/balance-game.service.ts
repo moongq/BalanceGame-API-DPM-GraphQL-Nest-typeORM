@@ -8,6 +8,8 @@ import { CreateBalanceGameInput } from "./dto/create-balance-game.input";
 import { UpdateBalanceGameInput } from "./dto/update-balance-game.input";
 import { BalanceGameKeywordService } from "../balance-game-keyword/balance-game-keyword.service";
 import { BalanceGameSelectionService } from "../balance-game-selection/balance-game-selection.service";
+import { FileService } from "../file/file.service";
+import { FileUpload } from "graphql-upload";
 
 @Injectable()
 export class BalanceGameService {
@@ -19,7 +21,8 @@ export class BalanceGameService {
     private userRepository: Repository<User>,
 
     private balanceGameKeywordService: BalanceGameKeywordService,
-    private balanceGameSelectionService: BalanceGameSelectionService
+    private balanceGameSelectionService: BalanceGameSelectionService,
+    private fileService: FileService,
   ) {}
 
   // :TODO transaction 추가.

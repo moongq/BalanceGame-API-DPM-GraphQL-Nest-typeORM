@@ -3,10 +3,15 @@ import { BalanceGameService } from "./balance-game.service";
 import { BalanceGame } from "./balance-game.model";
 import { CreateBalanceGameInput } from "./dto/create-balance-game.input";
 import { UpdateBalanceGameInput } from "./dto/update-balance-game.input";
+import { FileUpload, GraphQLUpload } from "graphql-upload";
+import { FileService } from "../file/file.service";
 
 @Resolver(() => BalanceGame)
 export class BalanceGameResolver {
-  constructor(private readonly balanceGameService: BalanceGameService) {}
+  constructor(
+    private readonly balanceGameService: BalanceGameService,
+    private fileService: FileService
+  ) {}
 
   // :TODO 미들웨어 추가 [로그인 / ]
   @Mutation(() => BalanceGame)
@@ -14,6 +19,14 @@ export class BalanceGameResolver {
     @Args("createBalanceGameInput") createBalanceGameInput: CreateBalanceGameInput
   ): Promise<BalanceGame> {
     return await this.balanceGameService.create(createBalanceGameInput);
+  }
+
+  @Mutation(() => Boolean)
+  async uploadFile(@Args({name: 'file1', type: () => GraphQLUpload})
+    file1: FileUpload,
+  ) {
+      const result = await this.fileService.uploadFile(file1);
+      return result;
   }
 
   // 검색 정렬: [ 최신순 / 인기순 ]
