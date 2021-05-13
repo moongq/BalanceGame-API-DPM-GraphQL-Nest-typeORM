@@ -27,20 +27,20 @@ export class BalanceGameService {
 
   // :TODO transaction 추가.
   async update(balanceGameId: string, updateBalanceGameInput: UpdateBalanceGameInput): Promise<BalanceGame> {
-    // Check Ownership
-    const result = await this.balanceGameRepository.createQueryBuilder("game")
-      .where("id = :id", { id: balanceGameId})
-      .select(["game.userId"])
-      .getOne();
+    // // Check Ownership
+    // const result = await this.balanceGameRepository.createQueryBuilder("game")
+    //   .where("id = :id", { id: balanceGameId})
+    //   .select(["game.userId"])
+    //   .getOne();
 
-    console.log('==========')
-    console.log(result)
+    // console.log('==========')
+    // console.log(result)
 
-    if(result["userid"] !== myId) {
-      throw 
-    }
-    
-    return;
+    // if(result["userid"] !== myId) {
+    //   throw 
+    // }
+
+    // return;
     // 1. update selections is has selection data
     for (let balanGameSelectionInput of updateBalanceGameInput.balanceGameSelections) {
       const updatedSelection = await this.balanceGameSelectionService.update(
