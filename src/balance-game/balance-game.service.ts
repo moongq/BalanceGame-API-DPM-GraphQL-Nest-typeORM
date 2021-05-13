@@ -1,4 +1,4 @@
-import { Injectable } from "@nestjs/common";
+import { HttpException, HttpStatus, Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { User } from "../user/user.model";
 import { Repository } from "typeorm";
@@ -108,7 +108,12 @@ export class BalanceGameService {
   }
 
   async findOne(id: string): Promise<BalanceGame> {
-    return await this.balanceGameRepository.findOne({ id: id }, { relations: ["balanceGameKeywords"] });
+    const result = await this.balanceGameRepository.findOne({ id: id }, { relations: ["balanceGameKeywords", "balanceGameSelections"] });
+    if (!result) {
+      throw new HttpException('there is no user with that id', HttpStatus.BAD_REQUEST);
+    }
+    
+    return result;
   }
 
   async findAllByUserID(userId: string): Promise<BalanceGame[]> {

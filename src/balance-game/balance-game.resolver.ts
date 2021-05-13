@@ -41,7 +41,9 @@ export class BalanceGameResolver {
 
   @Query(() => BalanceGame, { name: "balanceGame" })
   async findOne(@Args("id") id: string): Promise<BalanceGame> {
-    return this.balanceGameService.findOne(id);
+    const result = await this.balanceGameService.findOne(id);
+    console.log(result)
+    return result;
   }
 
   // :TODO 미들웨어 추가 [로그인, 내 게임인지 여부, 게임 ID가 유효한지.]
