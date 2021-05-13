@@ -7,6 +7,7 @@ import { FileUpload, GraphQLUpload } from "graphql-upload";
 import { FileService } from "../file/file.service";
 import { UseGuards } from "@nestjs/common";
 import { AuthGuard } from "../user/auth.guard";
+import { OnwershipGuard } from "./guard/ownership.guard"
 
 @Resolver(() => BalanceGame)
 export class BalanceGameResolver {
