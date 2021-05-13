@@ -3,10 +3,15 @@ import { BalanceGameService } from "./balance-game.service";
 import { BalanceGame } from "./balance-game.model";
 import { CreateBalanceGameInput } from "./dto/create-balance-game.input";
 import { UpdateBalanceGameInput } from "./dto/update-balance-game.input";
+import { FileUpload, GraphQLUpload } from "graphql-upload";
+import { FileService } from "../file/file.service";
 
 @Resolver(() => BalanceGame)
 export class BalanceGameResolver {
-  constructor(private readonly balanceGameService: BalanceGameService) {}
+  constructor(
+    private readonly balanceGameService: BalanceGameService,
+    private fileService: FileService
+  ) {}
 
   // :TODO 미들웨어 추가 [로그인 / ]
   @Mutation(() => BalanceGame)
@@ -14,6 +19,14 @@ export class BalanceGameResolver {
     @Args("createBalanceGameInput") createBalanceGameInput: CreateBalanceGameInput
   ): Promise<BalanceGame> {
     return await this.balanceGameService.create(createBalanceGameInput);
+  }
+
+  @Mutation(() => Boolean)
+  async uploadFile(@Args({name: 'file1', type: () => GraphQLUpload})
+    file1: FileUpload,
+  ) {
+      const result = await this.fileService.uploadFile(file1);
+      return result;
   }
 
   // 검색 정렬: [ 최신순 / 인기순 ]
@@ -31,15 +44,18 @@ export class BalanceGameResolver {
     return this.balanceGameService.findOne(id);
   }
 
+  // :TODO 미들웨어 추가 [로그인, 내 게임인지 여부, 게임 ID가 유효한지.]
   @Mutation(() => BalanceGame)
-  updateBalanceGame(
-    @Args("id") id: String,
-    @Args("updateBalanceGameInput") updateBalanceGameInput: UpdateBalanceGameInput) {
-      return this.balanceGameService.update(id, updateBalanceGameInput);
+  async updateBalanceGame(
+    @Args("id") id: string,
+    @Args("updateBalanceGameInput") updateBalanceGameInput: UpdateBalanceGameInput
+  ) {
+    return await this.balanceGameService.update(id, updateBalanceGameInput);
   }
 
-  // @Mutation(() => BalanceGame)
-  // removeBalanceGame(@Args("id", { type: () => Int }) id: number) {
-  //   return this.balanceGameService.remove(id);
-  // }
+  // :TODO 미들웨어 추가 [로그인, 내 게임인지 여부, 게임 ID가 유효한지.]
+  @Mutation(() => Boolean)
+  async removeBalanceGame(@Args("id", { type: () => String }) id: string): Promise<Boolean> {
+    return await this.balanceGameService.remove(id);
+  }
 }

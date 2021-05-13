@@ -11,7 +11,7 @@ export class CreateBalanceGameInput {
   userId: string;
 
   @Field((type) => String)
-  title: string;
+  description: string;
 
   @Field((type) => [CreateBalanceGameSelectionInput])
   balanceGameSelections: [CreateBalanceGameSelectionInput];

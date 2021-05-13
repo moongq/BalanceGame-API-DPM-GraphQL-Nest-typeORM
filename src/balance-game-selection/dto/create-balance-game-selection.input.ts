@@ -21,5 +21,5 @@ export class CreateBalanceGameSelectionInput {
   backgroundImage?: string;
 
   @Field()
-  order?: number;
+  order: number;
 }
