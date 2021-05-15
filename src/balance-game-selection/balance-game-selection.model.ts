@@ -44,10 +44,6 @@ export class BalanceGameSelection {
 
   @Field()
   @Column()
-  subText: string;
-
-  @Field()
-  @Column()
   backgroundColor: string;
 
   @Field()

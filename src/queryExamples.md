@@ -3,13 +3,18 @@
 # M createBalanceGame
 
 ```graphql
+HTTP HEADER
+{
+  "authorization" : "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzb2NhaWxJZCI6MTcyMDM3MDE3OCwidXNlcklkIjoiMTg0NWI2MWUtM2NhMi00OWM4LWJkMDktNDA0Y2U5NzRkNTQ5IiwiaWF0IjoxNjIxMDU5MzgzLCJleHAiOjE2NTI1OTUzODN9.AiDa9DFGMAHyScvcYdKthWYpGgrtL6A0OrM7Wdu1T10"
+}
+
 mutation {
   createBalanceGame(
     createBalanceGameInput: {
       description: "this is balancegame1"
       balanceGameSelections: [
-        { description: "Desciption1", subText: "Subtext1", textColor: "ff1323", order: 1 }
-        { description: "Desciption2", subText: "Subtext2", textColor: "ff1323", order: 2 }
+        { description: "Desciption1", textColor: "ff1323", order: 1 }
+        { description: "Desciption2",  textColor: "ff1323", order: 2 }
       ]
       balanceGameKeywords: [{ name: "카테고리1ㅣ" }, { name: "카테고리2" }]
     }
@@ -19,7 +24,6 @@ mutation {
     balanceGameSelections {
       id
       description
-      subText
       textColor
       balanceGameId
       backgroundColor
@@ -47,7 +51,6 @@ mutation {
         {
           id: "46cba631-6692-4362-8ea1-3d7691463d68"
           description: "change desc1"
-          subText: "www"
           textColor: "ff1323"
           backgroundColor: "der222"
           backgroundImage: "http~"
@@ -56,7 +59,6 @@ mutation {
         {
           id: "b3c0e407-e510-476a-89c8-dba29653ed8a"
           description: "change desc2"
-          subText: "Subtext22"
           textColor: "ff1323"
           backgroundColor: "der222"
           backgroundImage: "http"
@@ -71,7 +73,6 @@ mutation {
     balanceGameSelections {
       id
       description
-      subText
       textColor
       balanceGameId
       backgroundColor
@@ -98,17 +99,15 @@ mutation {
 
 key: operations
 
-value: {  "query": "mutation UploadFile($file1:Upload!) { uploadFile(file1:$file1) }", "variables": { "file1": null}}
+value: { "query": "mutation UploadFile($file1:Upload!) { uploadFile(file1:$file1) }", "variables": { "file1": null}}
 
 key: map
 
 value: { "0": ["variables.file1"] , "1": ["variables.file2"]}
 
-key: 0 
+key: 0
 
 value: 파일
-
-
 
 # 로그인 관련 작업
 
@@ -118,10 +117,7 @@ value: 파일
 
 ```graphql
 mutation {
-  login(loginUserInput: {
-    socialType: "kakao"
-    socialKey: "CKKEwhnpV4ImqIALe0_A_scKiehXiRxp3kolbQorDR4AAAF5bekcyw"
-  }) {
+  login(loginUserInput: { socialType: "kakao", socialKey: "CKKEwhnpV4ImqIALe0_A_scKiehXiRxp3kolbQorDR4AAAF5bekcyw" }) {
     jwt
     email
     status
@@ -140,29 +136,25 @@ query {
   }
 }
 ```
+
 - HTTP headers
-``` 
+
+```
 {
-  "authorization" : "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzb2NhaWxJZCI6MTcyMDM3MDE3OCwidXNlcklkIjoiMTg0NWI2MWUtM2NhMi00OWM4LWJkMDktNDA0Y2U5NzRkNTQ5IiwiaWF0IjoxNjIwNTYwMjc4LCJleHAiOjE2NTIwOTYyNzh9.ppVgebenN8R7IeHN3Is6D3KX-CXMMgjmhP6crDyqu_Y" 
+  "authorization" : "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzb2NhaWxJZCI6MTcyMDM3MDE3OCwidXNlcklkIjoiMTg0NWI2MWUtM2NhMi00OWM4LWJkMDktNDA0Y2U5NzRkNTQ5IiwiaWF0IjoxNjIwNTYwMjc4LCJleHAiOjE2NTIwOTYyNzh9.ppVgebenN8R7IeHN3Is6D3KX-CXMMgjmhP6crDyqu_Y"
 }
 ```
-
-
 
 ## M setProfile
 
 > 프로필 업데이트 진행 headers authorization 필요
 
-``` graphql
+```graphql
 mutation {
-  setProfile(setProfileInput: {
-    nickname: "test",
-    email: "adoTest@gmail.com"
-  }) {
-    id,
-    email,
+  setProfile(setProfileInput: { nickname: "test", email: "adoTest@gmail.com" }) {
+    id
+    email
     nickname
   }
 }
 ```
-

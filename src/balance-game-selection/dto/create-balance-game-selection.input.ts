@@ -9,9 +9,6 @@ export class CreateBalanceGameSelectionInput {
   description?: string;
 
   @Field()
-  subText?: string;
-
-  @Field()
   textColor?: string;
 
   @Field()
