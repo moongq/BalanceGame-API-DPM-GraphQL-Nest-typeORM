@@ -38,7 +38,7 @@ export class BalanceGameService {
       .select(["game.userId"])
       .getOne();
 
-    if (result["userid"] !== currentUserId) {
+    if (result["userId"] !== currentUserId) {
       throw new HttpException("You are not owner of this game", HttpStatus.UNAUTHORIZED);
     }
 
@@ -150,7 +150,7 @@ export class BalanceGameService {
       .select(["game.userId"])
       .getOne();
 
-    if (result["userid"] !== currentUserId) {
+    if (result["userId"] !== currentUserId) {
       throw new HttpException("You are not owner of this game", HttpStatus.UNAUTHORIZED);
     }
 
