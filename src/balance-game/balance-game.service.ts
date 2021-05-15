@@ -88,9 +88,9 @@ export class BalanceGameService {
     return changedGame;
   }
 
-  async create(createBalanceGameInput: CreateBalanceGameInput): Promise<BalanceGame> {
+  async create(token: string, createBalanceGameInput: CreateBalanceGameInput): Promise<BalanceGame> {
     const newBalanceGame = await this.balanceGameRepository.create({
-      userId: createBalanceGameInput.userId,
+      userId: token,
       description: createBalanceGameInput.description,
     });
 
