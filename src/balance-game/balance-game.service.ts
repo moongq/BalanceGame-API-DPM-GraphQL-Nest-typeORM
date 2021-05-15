@@ -38,6 +38,10 @@ export class BalanceGameService {
       .select(["game.userId"])
       .getOne();
 
+    if (!result) {
+      throw new HttpException("wrong id inputed/gameId", HttpStatus.BAD_REQUEST);
+    }
+
     if (result["userId"] !== currentUserId) {
       throw new HttpException("You are not owner of this game", HttpStatus.UNAUTHORIZED);
     }
@@ -149,6 +153,10 @@ export class BalanceGameService {
       .where("id = :id", { id: balanceGameId })
       .select(["game.userId"])
       .getOne();
+
+    if (!result) {
+      throw new HttpException("wrong id inputed/gameId", HttpStatus.BAD_REQUEST);
+    }
 
     if (result["userId"] !== currentUserId) {
       throw new HttpException("You are not owner of this game", HttpStatus.UNAUTHORIZED);
