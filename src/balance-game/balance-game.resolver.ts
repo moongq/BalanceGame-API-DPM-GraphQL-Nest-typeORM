@@ -3,8 +3,12 @@ import { BalanceGameService } from "./balance-game.service";
 import { BalanceGame } from "./balance-game.model";
 import { CreateBalanceGameInput } from "./dto/create-balance-game.input";
 import { UpdateBalanceGameInput } from "./dto/update-balance-game.input";
+import { UserJwt } from "../user/dto/user-jwt"; 
 import { FileUpload, GraphQLUpload } from "graphql-upload";
 import { FileService } from "../file/file.service";
+import { Token } from "../user/lib/user.decorator";
+import { UseGuards } from "@nestjs/common";
+import { AuthGuard } from "src/user/auth.guard";
 
 @Resolver(() => BalanceGame)
 export class BalanceGameResolver {
@@ -14,11 +18,14 @@ export class BalanceGameResolver {
   ) {}
 
   // :TODO 미들웨어 추가 [로그인 / ]
+  // UseGuards를 미들웨어로 빼는 작업 진행
   @Mutation(() => BalanceGame)
+  @UseGuards(new AuthGuard())
   async createBalanceGame(
-    @Args("createBalanceGameInput") createBalanceGameInput: CreateBalanceGameInput
+    @Args("createBalanceGameInput") createBalanceGameInput: CreateBalanceGameInput,
+    @Token('user') token: UserJwt
   ): Promise<BalanceGame> {
-    return await this.balanceGameService.create(createBalanceGameInput);
+    return await this.balanceGameService.create(token.userId, createBalanceGameInput);
   }
 
   @Mutation(() => Boolean)

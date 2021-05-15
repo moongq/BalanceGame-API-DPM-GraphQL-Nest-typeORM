@@ -31,16 +31,23 @@ export class UserProfileService {
   }
 
 
-  // findOne(id: number) {
-  //   return `This action returns a #${id} userProfile`;
-  // }
+  findOne(id: string): Promise<UserProfile> {
+    const userProfiles = this.userProfileRepository.findOne({
+      id: id
+    });
 
-  async update(id: string, nickname: string) {
+    return userProfiles;
+  }
+
+  async update(id: string, nickname: string, email: string) {
     await this.userProfileRepository.update({
       id: id
     }, {
-      nickname: nickname
+      nickname: nickname,
+      email: email
     })
+
+    return this.findOne(id);
   }
 
   // remove(id: number) {
