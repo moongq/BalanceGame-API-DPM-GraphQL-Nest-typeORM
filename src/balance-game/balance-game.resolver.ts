@@ -48,7 +48,6 @@ export class BalanceGameResolver {
   @Query(() => BalanceGame, { name: "balanceGame" })
   async findOne(@Args("id") id: string): Promise<BalanceGame> {
     const result = await this.balanceGameService.findOne(id);
-    console.log(result);
     return result;
   }
 

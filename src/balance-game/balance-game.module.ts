@@ -8,9 +8,16 @@ import { User } from "../user/user.model";
 import { BalanceGameKeywordModule } from "../balance-game-keyword/balance-game-keyword.module";
 import { BalanceGameSelectionModule } from "../balance-game-selection/balance-game-selection.module";
 import { FileModule } from "src/file/file.module";
+import { BalanceGameSelectionVoteModule } from "../balance-game-selection-vote/balance-game-selection-vote.module";
 
 @Module({
-  imports: [TypeOrmModule.forFeature([BalanceGame, User]), BalanceGameKeywordModule, BalanceGameSelectionModule, FileModule],
+  imports: [
+    TypeOrmModule.forFeature([BalanceGame, User]),
+    BalanceGameKeywordModule,
+    BalanceGameSelectionModule,
+    BalanceGameSelectionVoteModule,
+    FileModule,
+  ],
   providers: [BalanceGameResolver, BalanceGameService],
   exports: [BalanceGameService],
 })

@@ -7,5 +7,6 @@ import { BalanceGameSelectionVote } from "./balance-game-selection-vote.model";
 @Module({
   imports: [TypeOrmModule.forFeature([BalanceGameSelectionVote])],
   providers: [BalanceGameSelectionVoteResolver, BalanceGameSelectionVoteService],
+  exports: [BalanceGameSelectionVoteService],
 })
 export class BalanceGameSelectionVoteModule {}

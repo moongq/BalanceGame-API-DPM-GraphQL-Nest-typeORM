@@ -10,6 +10,7 @@ import { BalanceGameKeywordService } from "../balance-game-keyword/balance-game-
 import { BalanceGameSelectionService } from "../balance-game-selection/balance-game-selection.service";
 import { FileService } from "../file/file.service";
 import { FileUpload } from "graphql-upload";
+import { BalanceGameSelectionVoteService } from "../balance-game-selection-vote/balance-game-selection-vote.service";
 
 @Injectable()
 export class BalanceGameService {
@@ -22,6 +23,8 @@ export class BalanceGameService {
 
     private balanceGameKeywordService: BalanceGameKeywordService,
     private balanceGameSelectionService: BalanceGameSelectionService,
+    private balanceGameSelectionVoteService: BalanceGameSelectionVoteService,
+
     private fileService: FileService
   ) {}
 
@@ -132,10 +135,23 @@ export class BalanceGameService {
       { id: id },
       { relations: ["balanceGameKeywords", "balanceGameSelections"] }
     );
+
     if (!result) {
       throw new HttpException("wrong id inputed/gameId", HttpStatus.BAD_REQUEST);
     }
 
+    // Selection ID 두개 다 쿼리해야할듯.
+    const firstSelectionId = result.balanceGameSelections[0].id;
+    const secondSelectionId = result.balanceGameSelections[1].id;
+
+    // Get Vote Counts
+    const firstSelectionVoteCounts = await this.balanceGameSelectionVoteService.getSelectionCounts(secondSelectionId);
+    const secondSelectionVoteCounts = await this.balanceGameSelectionVoteService.getSelectionCounts(firstSelectionId);
+    const totalVoteCount = firstSelectionVoteCounts + secondSelectionVoteCounts;
+
+    result.firstVoteCount = firstSelectionVoteCounts;
+    result.secondVoteCount = secondSelectionVoteCounts;
+    result.totalVoteCount = totalVoteCount;
     return result;
   }
 

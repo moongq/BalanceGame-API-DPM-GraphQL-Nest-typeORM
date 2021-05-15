@@ -32,16 +32,9 @@ export class BalanceGameSelectionVoteResolver {
     return this.balanceGameSelectionVoteService.findOne(id);
   }
 
-  // @Mutation(() => BalanceGameSelectionVote)
-  // updateBalanceGameSelectionVote(
-  //   @Args("updateBalanceGameSelectionVoteInput")
-  //   updateBalanceGameSelectionVoteInput: UpdateBalanceGameSelectionVoteInput
-  // ) {
-  //   return this.balanceGameSelectionVoteService.update(
-  //     updateBalanceGameSelectionVoteInput.id,
-  //     updateBalanceGameSelectionVoteInput
-  //   );
-  // }
+  // update
+  // 업데이트는 없고 취소하고 다른 거 생성하는 것임.
+  // 다른 것 투표하기.
 
   // @Mutation(() => BalanceGameSelectionVote)
   // removeBalanceGameSelectionVote(@Args("id", { type: () => Int }) id: number) {

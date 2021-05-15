@@ -158,3 +158,37 @@ mutation {
   }
 }
 ```
+
+# M createBalanceGameSelectionVote
+
+```graphql
+HTTP HEADERS
+{
+  "authorization" : "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzb2NhaWxJZCI6MTcyMDM3MDE3OCwidXNlcklkIjoiMTg0NWI2MWUtM2NhMi00OWM4LWJkMDktNDA0Y2U5NzRkNTQ5IiwiaWF0IjoxNjIxMDU5MzgzLCJleHAiOjE2NTI1OTUzODN9.AiDa9DFGMAHyScvcYdKthWYpGgrtL6A0OrM7Wdu1T10"
+}
+
+mutation {
+  createBalanceGameSelectionVote(
+    createBalanceGameSelectionVoteInput: {
+      balanceGameId: "a5bc45ff-9ba2-41ab-b8cb-3b8062ff0453"
+      balanceGameSelectionId: "38196436-3029-48fd-8716-b40bb1c2a24c"
+    }
+  ) {
+    id
+    balanceGameId
+  }
+}
+```
+
+# Q balanceGame
+
+```graphql
+{
+  balanceGame(id: "a5bc45ff-9ba2-41ab-b8cb-3b8062ff0453") {
+    id
+    balanceGameSelectionVotes {
+      id
+    }
+  }
+}
+```

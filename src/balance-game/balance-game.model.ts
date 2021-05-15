@@ -37,11 +37,12 @@ export class BalanceGame {
   @OneToMany((type) => BalanceGameSelection, (balanceGameSelection) => balanceGameSelection.balanceGame)
   balanceGameSelections: BalanceGameSelection[];
 
-  @OneToMany(
-    (type) => BalanceGameSelectionVote,
-    (balanceGameSelectionVote) => balanceGameSelectionVote.balanceGameSelection
-  )
-  balanceGameSelectionVotes: BalanceGameSelectionVote;
+  @OneToMany((type) => BalanceGameSelectionVote, (balanceGameSelectionVote) => balanceGameSelectionVote.balanceGame)
+  balanceGameSelectionVotes: BalanceGameSelectionVote[];
+
+  @Field((type) => Number)
+  @Column()
+  balanceGameSelectionVotesCount: number;
 
   @OneToMany((type) => BalanceGameThumb, (balanceGameThumb) => balanceGameThumb.balanceGame)
   balanceGameThumbs: BalanceGameThumb[];
@@ -61,7 +62,15 @@ export class BalanceGame {
 
   @Field((type) => Int)
   @Column()
-  voteCount: number;
+  firstVoteCount: number;
+
+  @Field((type) => Int)
+  @Column()
+  secondVoteCount: number;
+
+  @Field((type) => Int)
+  @Column()
+  totalVoteCount: number;
 
   @Field((type) => Int)
   @Column()

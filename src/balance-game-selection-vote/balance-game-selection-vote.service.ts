@@ -34,6 +34,13 @@ export class BalanceGameSelectionVoteService {
     return `This action returns a #${id} balanceGameSelectionVote`;
   }
 
+  async getSelectionCounts(selectionId: string) {
+    return await this.balanceGameSelectionVoteRepository
+      .createQueryBuilder("vote")
+      .where("balanceGameSelectionId = :selectionId", { selectionId: selectionId })
+      .getCount();
+  }
+
   // update(id: number, updateBalanceGameSelectionVoteInput: UpdateBalanceGameSelectionVoteInput) {
   //   return `This action updates a #${id} balanceGameSelectionVote`;
   // }
