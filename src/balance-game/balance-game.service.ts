@@ -133,7 +133,7 @@ export class BalanceGameService {
       { relations: ["balanceGameKeywords", "balanceGameSelections"] }
     );
     if (!result) {
-      throw new HttpException("there is no user with that id", HttpStatus.BAD_REQUEST);
+      throw new HttpException("wrong id inputed/gameId", HttpStatus.BAD_REQUEST);
     }
 
     return result;
