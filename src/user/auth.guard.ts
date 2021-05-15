@@ -1,9 +1,9 @@
-import { Injectable, CanActivate, ExecutionContext, HttpException, HttpStatus } from "@nestjs/common";
+import { Injectable, CanActivate, ExecutionContext, HttpException, HttpStatus, NestMiddleware } from "@nestjs/common";
 import { GqlExecutionContext } from "@nestjs/graphql";
 import * as jwt from 'jsonwebtoken';
 
 @Injectable()
-export class AuthGuard implements CanActivate {
+export class AuthGuard implements CanActivate{
   async canActivate(context: ExecutionContext) {
     const ctx = GqlExecutionContext.create(context).getContext().req;
     // console.log(ctx.headers);

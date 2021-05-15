@@ -56,6 +56,7 @@ export class UserResolver {
     if (loginUserInput.socialType === "kakao") {
       // kakao 토큰인증 
       const kakaoUserData = await this.userService.kakaoToken(loginUserInput.socialKey);
+      
       let status = "LOGIN";
       let userId;
       if (kakaoUserData.result !== "FAIL") {
@@ -69,15 +70,12 @@ export class UserResolver {
             platformType: loginUserInput.socialType,
             profile: {
               email: kakaoUserData.kakaoEmail,
-              nickname: "",
+              nickname: kakaoUserData.data?.id,
               userImage: ""
             }
           })
           status = "REGISTER";
           userId = user.id;
-        } else if (getUser.profile.nickname === "") {
-          status = "NOTYET";
-          userId = getUser.id
         } else {
           userId = getUser.id;
         }
@@ -97,15 +95,15 @@ export class UserResolver {
     }
   }
 
-  // 닉네임 업데이트 
-  @Mutation((returns) => String)
+  // 프로필 업데이트 
+  @Mutation((returns) => UserProfile)
   @UseGuards(new AuthGuard())
   async setProfile(
     @Args('setProfileInput') setProfileInput: SetProfileInput,
     @Token('user') token: UserJwt) {
       const userData = await this.userService.findOne(token.userId);
-      await this.userProfileService.update(userData.profile.id, setProfileInput.nickname);
-      return "SUCCESS";
+      const userProfile = await this.userProfileService.update(userData.profile.id, setProfileInput.nickname, setProfileInput.email);
+      return userProfile;
     }
 
   @Query((returns) => User, { name: 'mypage' })

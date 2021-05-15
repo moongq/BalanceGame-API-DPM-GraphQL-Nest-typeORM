@@ -6,7 +6,6 @@
 mutation {
   createBalanceGame(
     createBalanceGameInput: {
-      userId: "05c508f7-f59d-45ea-b4a8-6452a2c6ba93"
       description: "this is balancegame1"
       balanceGameSelections: [
         { description: "Desciption1", subText: "Subtext1", textColor: "ff1323", order: 1 }
@@ -108,3 +107,62 @@ value: { "0": ["variables.file1"] , "1": ["variables.file2"]}
 key: 0 
 
 value: 파일
+
+
+
+# 로그인 관련 작업
+
+## M login
+
+> 로그인 기능 (프론트에 토큰 받아서 진행)
+
+```graphql
+mutation {
+  login(loginUserInput: {
+    socialType: "kakao"
+    socialKey: "CKKEwhnpV4ImqIALe0_A_scKiehXiRxp3kolbQorDR4AAAF5bekcyw"
+  }) {
+    jwt
+    email
+    status
+  }
+}
+```
+
+## Q mypage
+
+> 마이페이지 확인
+
+```graphql
+query {
+  mypage {
+    id
+  }
+}
+```
+- HTTP headers
+``` 
+{
+  "authorization" : "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzb2NhaWxJZCI6MTcyMDM3MDE3OCwidXNlcklkIjoiMTg0NWI2MWUtM2NhMi00OWM4LWJkMDktNDA0Y2U5NzRkNTQ5IiwiaWF0IjoxNjIwNTYwMjc4LCJleHAiOjE2NTIwOTYyNzh9.ppVgebenN8R7IeHN3Is6D3KX-CXMMgjmhP6crDyqu_Y" 
+}
+```
+
+
+
+## M setProfile
+
+> 프로필 업데이트 진행 headers authorization 필요
+
+``` graphql
+mutation {
+  setProfile(setProfileInput: {
+    nickname: "test",
+    email: "adoTest@gmail.com"
+  }) {
+    id,
+    email,
+    nickname
+  }
+}
+```
+
