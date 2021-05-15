@@ -22,23 +22,25 @@ export class BalanceGameService {
 
     private balanceGameKeywordService: BalanceGameKeywordService,
     private balanceGameSelectionService: BalanceGameSelectionService,
-    private fileService: FileService,
+    private fileService: FileService
   ) {}
 
   // :TODO transaction 추가.
-  async update(balanceGameId: string, updateBalanceGameInput: UpdateBalanceGameInput): Promise<BalanceGame> {
-    // // Check Ownership
-    // const result = await this.balanceGameRepository.createQueryBuilder("game")
-    //   .where("id = :id", { id: balanceGameId})
-    //   .select(["game.userId"])
-    //   .getOne();
+  async update(
+    balanceGameId: string,
+    updateBalanceGameInput: UpdateBalanceGameInput,
+    currentUserId: string
+  ): Promise<BalanceGame> {
+    // Check Ownership :TODO - guard로 빼는게 좋을듯?
+    const result = await this.balanceGameRepository
+      .createQueryBuilder("game")
+      .where("id = :id", { id: balanceGameId })
+      .select(["game.userId"])
+      .getOne();
 
-    // console.log('==========')
-    // console.log(result)
-
-    // if(result["userid"] !== myId) {
-    //   throw 
-    // }
+    if (result["userid"] !== currentUserId) {
+      throw new HttpException("You are not owner of this game", HttpStatus.UNAUTHORIZED);
+    }
 
     // return;
     // 1. update selections is has selection data
@@ -122,11 +124,14 @@ export class BalanceGameService {
   }
 
   async findOne(id: string): Promise<BalanceGame> {
-    const result = await this.balanceGameRepository.findOne({ id: id }, { relations: ["balanceGameKeywords", "balanceGameSelections"] });
+    const result = await this.balanceGameRepository.findOne(
+      { id: id },
+      { relations: ["balanceGameKeywords", "balanceGameSelections"] }
+    );
     if (!result) {
-      throw new HttpException('there is no user with that id', HttpStatus.BAD_REQUEST);
+      throw new HttpException("there is no user with that id", HttpStatus.BAD_REQUEST);
     }
-    
+
     return result;
   }
 
@@ -137,7 +142,18 @@ export class BalanceGameService {
   //   return `This action updates a #${id} balanceGame`;
   // }
 
-  async remove(balanceGameId: string): Promise<Boolean> {
+  async remove(balanceGameId: string, currentUserId: string): Promise<Boolean> {
+    // Check Ownership :TODO - guard로 빼는게 좋을듯?
+    const result = await this.balanceGameRepository
+      .createQueryBuilder("game")
+      .where("id = :id", { id: balanceGameId })
+      .select(["game.userId"])
+      .getOne();
+
+    if (result["userid"] !== currentUserId) {
+      throw new HttpException("You are not owner of this game", HttpStatus.UNAUTHORIZED);
+    }
+
     const deleteResult = await this.balanceGameRepository
       .createQueryBuilder()
       .delete()

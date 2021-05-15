@@ -8,6 +8,8 @@ import { FileUpload, GraphQLUpload } from "graphql-upload";
 import { FileService } from "../file/file.service";
 import { UseGuards } from "@nestjs/common";
 import { OnwershipGuard } from "./guard/ownership.guard";
+import { AuthGuard } from "../user/auth.guard";
+import { Token } from "../user/lib/user.decorator";
 
 @Resolver(() => BalanceGame)
 export class BalanceGameResolver {
@@ -53,19 +55,22 @@ export class BalanceGameResolver {
   // :TODO 미들웨어 추가 [로그인, 내 게임인지 여부, 게임 ID가 유효한지.]
   @Mutation(() => BalanceGame)
   // @UseGuards(new AuthGuard())
-  @UseGuards(OnwershipGuard)
+  @UseGuards(new AuthGuard())
   async updateBalanceGame(
-    @Args("id") id: string,
-    @Args("updateBalanceGameInput") updateBalanceGameInput: UpdateBalanceGameInput
+    @Args("id") gameId: string,
+    @Args("updateBalanceGameInput") updateBalanceGameInput: UpdateBalanceGameInput,
+    @Token("user") token: UserJwt
   ) {
-    return;
-    return await this.balanceGameService.update(id, updateBalanceGameInput);
+    return await this.balanceGameService.update(gameId, updateBalanceGameInput, token.userId);
   }
 
-  // :TODO 미들웨어 추가 [로그인, 내 게임인지 여부, 게임 ID가 유효한지.]
+  // :TODO 미들웨어 추가 [로그인, 내 게임인지 여부(service에 넣어둠.), 게임 ID가 유효한지.]
   @Mutation(() => Boolean)
-  // @UseGuards(new AuthGuard())
-  async removeBalanceGame(@Args("id", { type: () => String }) id: string): Promise<Boolean> {
-    return await this.balanceGameService.remove(id);
+  @UseGuards(new AuthGuard())
+  async removeBalanceGame(
+    @Args("id", { type: () => String }) id: string,
+    @Token("user") token: UserJwt
+  ): Promise<Boolean> {
+    return await this.balanceGameService.remove(id, token.userId);
   }
 }
