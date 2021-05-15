@@ -1,6 +1,6 @@
 # balanceGame 생성하기 seleciton과 category 입력 가능.
 
-# M createBalanceGame
+# M createBalanceGame [api_1]
 
 ```graphql
 HTTP HEADER

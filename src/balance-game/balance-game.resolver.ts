@@ -20,8 +20,8 @@ export class BalanceGameResolver {
   @Mutation(() => BalanceGame)
   @UseGuards(new AuthGuard())
   async createBalanceGame(
-    @Args("createBalanceGameInput") createBalanceGameInput: CreateBalanceGameInput,
-    @Token("user") token: UserJwt
+    @Token("user") token: UserJwt,
+    @Args("createBalanceGameInput") createBalanceGameInput: CreateBalanceGameInput
   ): Promise<BalanceGame> {
     return await this.balanceGameService.create(token.userId, createBalanceGameInput);
   }

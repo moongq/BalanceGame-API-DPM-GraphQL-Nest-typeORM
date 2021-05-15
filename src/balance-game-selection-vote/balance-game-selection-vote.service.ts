@@ -14,14 +14,15 @@ export class BalanceGameSelectionVoteService {
   ) {}
 
   async create(
+    userId: string,
     createBalanceGameSelectionVoteInput: CreateBalanceGameSelectionVoteInput
   ): Promise<BalanceGameSelectionVote> {
-    console.log("Input Data");
-    console.log(createBalanceGameSelectionVoteInput);
-
-    const newVote = await this.balanceGameSelectionVoteRepository.create(createBalanceGameSelectionVoteInput);
+    const newVote = this.balanceGameSelectionVoteRepository.create({
+      userId,
+      ...createBalanceGameSelectionVoteInput,
+    });
     const createdVote = await this.balanceGameSelectionVoteRepository.save(newVote);
-    console.log(createdVote);
+
     return createdVote;
   }
 
