@@ -27,6 +27,15 @@ export class BalanceGameSelectionVoteResolver {
     return result;
   }
 
+  @Mutation(() => BalanceGame)
+  async createBalanceGameSelectionVoteNotLogined(
+    @Args("createBalanceGameSelectionVoteInput")
+    createBalanceGameSelectionVoteInput: CreateBalanceGameSelectionVoteInput
+  ): Promise<BalanceGame> {
+    const result = await this.balanceGameSelectionVoteService.createNotLogined(createBalanceGameSelectionVoteInput);
+    return result;
+  }
+
   @Query(() => [BalanceGameSelectionVote], { name: "balanceGameSelectionVotes" })
   async findAll() {
     return await this.balanceGameSelectionVoteService.findAll();

@@ -23,7 +23,6 @@ export class BalanceGameService {
 
     private balanceGameKeywordService: BalanceGameKeywordService,
     private balanceGameSelectionService: BalanceGameSelectionService,
-    private balanceGameSelectionVoteService: BalanceGameSelectionVoteService,
 
     private fileService: FileService
   ) {}
@@ -79,7 +78,7 @@ export class BalanceGameService {
       }
     }
 
-    // 3. update game data if has game data
+    // 3. update game data if has new description
     if (updateBalanceGameInput.description) {
       const updatedBalanceGame = await this.balanceGameRepository
         .createQueryBuilder()
@@ -92,7 +91,12 @@ export class BalanceGameService {
       console.log(updatedBalanceGame);
     }
 
-    const changedGame = await this.balanceGameRepository.findOne({ id: balanceGameId });
+    const changedGame = await this.balanceGameRepository.findOne(
+      { id: balanceGameId },
+      {
+        relations: ["balanceGameSelections", "balanceGameKeywords"],
+      }
+    );
     console.log(changedGame);
     return changedGame;
   }
@@ -129,26 +133,12 @@ export class BalanceGameService {
   async findAll(): Promise<BalanceGame[]> {
     const games = await this.balanceGameRepository.find({
       relations: ["balanceGameKeywords", "balanceGameSelections"],
-      take: 3,
+      take: 3, // :TODO  갯수 수정
       order: {
+        // :TODO 조건 추가
         createdAt: "DESC",
       },
     });
-
-    // :TODO 쿼리 갯수 NxN 입니다.. 일단 다 만들고 수정 필 !
-    for (let game of games) {
-      let firstSelection = game.balanceGameSelections[0];
-      let secondSelection = game.balanceGameSelections[1];
-
-      const firstSelectionVoteCount = await this.balanceGameSelectionVoteService.getSelectionCounts(firstSelection.id);
-      const secondSelectionVoteCount = await this.balanceGameSelectionVoteService.getSelectionCounts(
-        secondSelection.id
-      );
-
-      firstSelection.voteCount = firstSelectionVoteCount;
-      secondSelection.voteCount = secondSelectionVoteCount;
-      game.totalVoteCount = firstSelectionVoteCount + secondSelectionVoteCount;
-    }
 
     return games;
   }
@@ -163,19 +153,6 @@ export class BalanceGameService {
       throw new HttpException("wrong id inputed/gameId", HttpStatus.BAD_REQUEST);
     }
 
-    // :TODO N+1 문제 해결하기
-    // Selection ID 두개 다 쿼리해야할듯.
-    const firstSelectionId = result.balanceGameSelections[0].id;
-    const secondSelectionId = result.balanceGameSelections[1].id;
-
-    // Get Vote Counts
-    const firstSelectionVoteCounts = await this.balanceGameSelectionVoteService.getSelectionCounts(secondSelectionId);
-    const secondSelectionVoteCounts = await this.balanceGameSelectionVoteService.getSelectionCounts(firstSelectionId);
-    const totalVoteCount = firstSelectionVoteCounts + secondSelectionVoteCounts;
-
-    result.balanceGameSelections[0].voteCount = firstSelectionVoteCounts;
-    result.balanceGameSelections[1].voteCount = secondSelectionVoteCounts;
-    result.totalVoteCount = totalVoteCount;
     return result;
   }
 

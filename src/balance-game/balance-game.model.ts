@@ -62,14 +62,6 @@ export class BalanceGame {
   description: string;
 
   @Field((type) => Int)
-  @Column()
-  firstVoteCount: number;
-
-  @Field((type) => Int)
-  @Column()
-  secondVoteCount: number;
-
-  @Field((type) => Int)
   @Column({ default: 0 })
   totalVoteCount: number;
 

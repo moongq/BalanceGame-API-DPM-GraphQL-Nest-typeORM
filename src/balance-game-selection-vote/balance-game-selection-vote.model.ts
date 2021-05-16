@@ -22,11 +22,11 @@ export class BalanceGameSelectionVote {
 
   @ManyToOne((type) => User, (user) => user.balanceGameSelectionVotes)
   @JoinColumn({ name: "userId" })
-  user: User;
+  user?: User;
 
   @Field()
-  @Column()
-  userId: string;
+  @Column({ nullable: true })
+  userId?: string;
 
   @ManyToOne((type) => BalanceGame, (balanceGame) => balanceGame.balanceGameSelectionVotes, { onDelete: "CASCADE" })
   @JoinColumn({ name: "balanceGameId" })

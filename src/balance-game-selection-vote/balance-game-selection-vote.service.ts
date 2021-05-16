@@ -96,6 +96,38 @@ export class BalanceGameSelectionVoteService {
     return result;
   }
 
+  async createNotLogined(
+    createBalanceGameSelectionVoteInput: CreateBalanceGameSelectionVoteInput
+  ): Promise<BalanceGame> {
+    const newVote = this.balanceGameSelectionVoteRepository.create({
+      ...createBalanceGameSelectionVoteInput,
+    });
+    const createdVote = await this.balanceGameSelectionVoteRepository.save(newVote);
+
+    // plus totalVoteCount in GAME
+    await this.balanceGameRepository
+      .createQueryBuilder()
+      .update()
+      .where("id = :gameId", { gameId: createBalanceGameSelectionVoteInput.balanceGameId })
+      .set({ totalVoteCount: () => "totalVoteCount + 1" })
+      .execute();
+
+    // plus voteCout in SELECTION
+    await this.balanceGameSelectionRepository
+      .createQueryBuilder()
+      .update()
+      .where("id = :selectionId", { selectionId: createBalanceGameSelectionVoteInput.balanceGameSelectionId })
+      .set({ voteCount: () => "voteCount + 1" })
+      .execute();
+
+    const result = await this.balanceGameRepository.findOne(
+      { id: createdVote.balanceGameId },
+      { relations: ["balanceGameKeywords", "balanceGameSelections"] }
+    );
+
+    return result;
+  }
+
   async findAll(): Promise<BalanceGameSelectionVote[]> {
     return await this.balanceGameSelectionVoteRepository.find({});
   }
