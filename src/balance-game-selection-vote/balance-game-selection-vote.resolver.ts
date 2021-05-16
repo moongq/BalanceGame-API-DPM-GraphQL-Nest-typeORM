@@ -45,12 +45,12 @@ export class BalanceGameSelectionVoteResolver {
   @UseGuards(new AuthGuard())
   async updateBalanceGameSelectionVoteLogined(
     @Args("balanceGameId", { type: () => String }) balanceGameId: string,
-    @Args("balanceGameSelectionId", { type: () => String }) balanceGameSelectionId: string,
+    @Args("newBalanceGameSelectionId", { type: () => String }) newBalanceGameSelectionId: string,
     @Token("user") token: UserJwt
   ): Promise<BalanceGame> {
     const result = await this.balanceGameSelectionVoteService.updateLogined(
       balanceGameId,
-      balanceGameSelectionId,
+      newBalanceGameSelectionId,
       token.userId
     );
     return result;
