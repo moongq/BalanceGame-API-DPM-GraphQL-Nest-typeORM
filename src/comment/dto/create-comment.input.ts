@@ -13,4 +13,7 @@ export class CreateCommentInput {
 
   @Field()
   parentId?: string;
+
+  @Field()
+  color: string;
 }
