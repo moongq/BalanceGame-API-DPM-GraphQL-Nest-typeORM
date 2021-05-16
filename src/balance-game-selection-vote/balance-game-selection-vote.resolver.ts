@@ -50,12 +50,14 @@ export class BalanceGameSelectionVoteResolver {
   //   return await this.balanceGameService.remove(id, token.userId);
   // }
 
-  @Mutation(() => Boolean)
+  @Mutation(() => BalanceGame)
   @UseGuards(new AuthGuard())
   async removeBalanceGameSelectionVoteLogined(
     @Args("balanceGameId", { type: () => String }) balanceGameId: string,
     @Token("user") token: UserJwt
-  ): Promise<boolean> {
-    return await this.balanceGameSelectionVoteService.removeLogined(balanceGameId, token.userId);
+  ): Promise<BalanceGame> {
+    const result = await this.balanceGameSelectionVoteService.removeLogined(balanceGameId, token.userId);
+    console.log(result);
+    return result;
   }
 }

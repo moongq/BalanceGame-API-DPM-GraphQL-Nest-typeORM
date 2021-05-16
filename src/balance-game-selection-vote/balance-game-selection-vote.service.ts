@@ -62,18 +62,18 @@ export class BalanceGameSelectionVoteService {
   //   return `This action updates a #${id} balanceGameSelectionVote`;
   // }
 
-  async removeLogined(gameId: string, currentUserId: string): Promise<boolean> {
+  async removeLogined(gameId: string, currentUserId: string): Promise<BalanceGame> {
     // Check Ownership :TODO - guard로 빼는게 좋을듯?
     const result = await this.balanceGameSelectionVoteRepository
       .createQueryBuilder("vote")
       .where("balanceGameId = :gameId", { gameId: gameId })
-      .andWhere("usereId = :userId", { userId: currentUserId })
+      .andWhere("userId = :userId", { userId: currentUserId })
       .select(["vote.userId", "vote.id"])
       .getOne();
 
     console.log(result);
     console.log(currentUserId);
-    return;
+
     if (!result) {
       throw new HttpException("wrong id inputed/gameId", HttpStatus.BAD_REQUEST);
     }
@@ -88,10 +88,15 @@ export class BalanceGameSelectionVoteService {
       .where("id = :voteId", { voteId: result.id })
       .execute();
 
-    if (deleteResult.affected == 1) {
-      return true;
-    } else {
-      return false;
+    if (deleteResult.affected !== 1) {
+      throw new HttpException("not deleted/something wrong", HttpStatus.INTERNAL_SERVER_ERROR);
     }
+
+    const game = await this.balanceGameRepository
+      .createQueryBuilder("")
+      .where("id = :gameId", { gameId: gameId })
+      .getOne();
+
+    return game;
   }
 }

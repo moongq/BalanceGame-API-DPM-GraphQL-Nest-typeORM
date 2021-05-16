@@ -1,5 +1,6 @@
 import { ObjectType, Field, Int } from "@nestjs/graphql";
 import {
+  AfterInsert,
   Column,
   CreateDateColumn,
   Entity,
@@ -61,3 +62,5 @@ export class BalanceGameSelectionVote {
   @UpdateDateColumn({ type: "timestamp" })
   updatedAt: Date;
 }
+
+// Count after insert/delete 구현하기.
