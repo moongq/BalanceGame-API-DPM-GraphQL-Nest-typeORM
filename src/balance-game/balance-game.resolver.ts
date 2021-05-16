@@ -20,8 +20,8 @@ export class BalanceGameResolver {
   @Mutation(() => BalanceGame)
   @UseGuards(new AuthGuard())
   async createBalanceGame(
-    @Args("createBalanceGameInput") createBalanceGameInput: CreateBalanceGameInput,
-    @Token("user") token: UserJwt
+    @Token("user") token: UserJwt,
+    @Args("createBalanceGameInput") createBalanceGameInput: CreateBalanceGameInput
   ): Promise<BalanceGame> {
     return await this.balanceGameService.create(token.userId, createBalanceGameInput);
   }
@@ -41,20 +41,18 @@ export class BalanceGameResolver {
   async findAll(): Promise<BalanceGame[]> {
     const balanceGames = await this.balanceGameService.findAll();
 
-    console.log(balanceGames);
+    // console.log(balanceGames);
     return balanceGames;
   }
 
   @Query(() => BalanceGame, { name: "balanceGame" })
   async findOne(@Args("id") id: string): Promise<BalanceGame> {
     const result = await this.balanceGameService.findOne(id);
-    console.log(result);
     return result;
   }
 
   // :TODO 미들웨어 추가 [로그인, 내 게임인지 여부, 게임 ID가 유효한지.]
   @Mutation(() => BalanceGame)
-  // @UseGuards(new AuthGuard())
   @UseGuards(new AuthGuard())
   async updateBalanceGame(
     @Args("id") gameId: string,

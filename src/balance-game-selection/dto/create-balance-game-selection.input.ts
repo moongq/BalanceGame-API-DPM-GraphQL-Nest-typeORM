@@ -1,5 +1,10 @@
 import { InputType, Int, Field } from "@nestjs/graphql";
 
+enum order {
+  test1 = 0,
+  test2 = 1,
+}
+
 @InputType()
 export class CreateBalanceGameSelectionInput {
   @Field()
@@ -7,9 +12,6 @@ export class CreateBalanceGameSelectionInput {
 
   @Field()
   description?: string;
-
-  @Field()
-  subText?: string;
 
   @Field()
   textColor?: string;

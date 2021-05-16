@@ -11,6 +11,7 @@ import {
   ManyToOne,
   RelationId,
   OneToMany,
+  AfterLoad,
 } from "typeorm";
 import { BalanceGameSelection } from "../balance-game-selection/balance-game-selection.model";
 import { BalanceGameSelectionVote } from "../balance-game-selection-vote/balance-game-selection-vote.model";
@@ -37,11 +38,12 @@ export class BalanceGame {
   @OneToMany((type) => BalanceGameSelection, (balanceGameSelection) => balanceGameSelection.balanceGame)
   balanceGameSelections: BalanceGameSelection[];
 
-  @OneToMany(
-    (type) => BalanceGameSelectionVote,
-    (balanceGameSelectionVote) => balanceGameSelectionVote.balanceGameSelection
-  )
-  balanceGameSelectionVotes: BalanceGameSelectionVote;
+  @OneToMany((type) => BalanceGameSelectionVote, (balanceGameSelectionVote) => balanceGameSelectionVote.balanceGame)
+  balanceGameSelectionVotes: BalanceGameSelectionVote[];
+
+  @Field((type) => Number)
+  @Column()
+  balanceGameSelectionVotesCount: number;
 
   @OneToMany((type) => BalanceGameThumb, (balanceGameThumb) => balanceGameThumb.balanceGame)
   balanceGameThumbs: BalanceGameThumb[];
@@ -60,11 +62,15 @@ export class BalanceGame {
   description: string;
 
   @Field((type) => Int)
-  @Column()
-  voteCount: number;
+  @Column({ default: 0 })
+  totalVoteCount: number;
 
   @Field((type) => Int)
-  @Column()
+  @Column({ default: 0 })
+  commentCount: number;
+
+  @Field((type) => Int)
+  @Column({ default: 0 })
   thumbs: number;
 
   @Field((type) => String)

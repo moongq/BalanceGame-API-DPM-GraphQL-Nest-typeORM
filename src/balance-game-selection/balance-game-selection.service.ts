@@ -43,10 +43,9 @@ export class BalanceGameSelectionService {
   }
 
   async update(id: string, updateBalanceGameSelectionInput: UpdateBalanceGameSelectionInput) {
-    const selection = await this.balanceGameSelectionRepository.update(
-        { id: updateBalanceGameSelectionInput.id },
-        { ...updateBalanceGameSelectionInput }
-      ).then(response => response.raw[0]);
+    const selection = await this.balanceGameSelectionRepository
+      .update({ id: updateBalanceGameSelectionInput.id }, { ...updateBalanceGameSelectionInput })
+      .then((response) => response.raw[0]);
 
     // const selection2 = await this.balanceGameSelectionRepository
     //   .createQueryBuilder()
@@ -55,11 +54,10 @@ export class BalanceGameSelectionService {
     //   .where(`id = :id`, { id: updateBalanceGameSelectionInput.id, })
     //   .execute();
 
-      console.log("UPDATED DATA")
-      console.log(selection)
+    console.log("UPDATED DATA");
+    console.log(selection);
     return selection;
   }
-  
 
   // remove(id: number) {
   //   return `This action removes a #${id} balanceGameSelection`;

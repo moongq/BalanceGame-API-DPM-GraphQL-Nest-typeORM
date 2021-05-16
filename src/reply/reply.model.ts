@@ -35,6 +35,10 @@ export class Reply {
   @Column()
   commentId: string;
 
+  @Field()
+  @Column()
+  color: string;
+
   @Field(() => String)
   @Column()
   content: string;

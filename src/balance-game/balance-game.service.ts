@@ -10,6 +10,7 @@ import { BalanceGameKeywordService } from "../balance-game-keyword/balance-game-
 import { BalanceGameSelectionService } from "../balance-game-selection/balance-game-selection.service";
 import { FileService } from "../file/file.service";
 import { FileUpload } from "graphql-upload";
+import { BalanceGameSelectionVoteService } from "../balance-game-selection-vote/balance-game-selection-vote.service";
 
 @Injectable()
 export class BalanceGameService {
@@ -22,6 +23,7 @@ export class BalanceGameService {
 
     private balanceGameKeywordService: BalanceGameKeywordService,
     private balanceGameSelectionService: BalanceGameSelectionService,
+
     private fileService: FileService
   ) {}
 
@@ -76,7 +78,7 @@ export class BalanceGameService {
       }
     }
 
-    // 3. update game data if has game data
+    // 3. update game data if has new description
     if (updateBalanceGameInput.description) {
       const updatedBalanceGame = await this.balanceGameRepository
         .createQueryBuilder()
@@ -89,7 +91,12 @@ export class BalanceGameService {
       console.log(updatedBalanceGame);
     }
 
-    const changedGame = await this.balanceGameRepository.findOne({ id: balanceGameId });
+    const changedGame = await this.balanceGameRepository.findOne(
+      { id: balanceGameId },
+      {
+        relations: ["balanceGameSelections", "balanceGameKeywords"],
+      }
+    );
     console.log(changedGame);
     return changedGame;
   }
@@ -124,7 +131,16 @@ export class BalanceGameService {
   }
 
   async findAll(): Promise<BalanceGame[]> {
-    return await this.balanceGameRepository.find({ relations: ["balanceGameKeywords", "balanceGameSelections"] });
+    const games = await this.balanceGameRepository.find({
+      relations: ["balanceGameKeywords", "balanceGameSelections"],
+      take: 3, // :TODO  갯수 수정
+      order: {
+        // :TODO 조건 추가
+        createdAt: "DESC",
+      },
+    });
+
+    return games;
   }
 
   async findOne(id: string): Promise<BalanceGame> {
@@ -132,6 +148,7 @@ export class BalanceGameService {
       { id: id },
       { relations: ["balanceGameKeywords", "balanceGameSelections"] }
     );
+
     if (!result) {
       throw new HttpException("wrong id inputed/gameId", HttpStatus.BAD_REQUEST);
     }
