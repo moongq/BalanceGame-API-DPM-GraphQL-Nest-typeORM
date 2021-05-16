@@ -26,9 +26,9 @@ export class CommentResolver {
     return this.commentService.findAll();
   }
 
-  @Query(() => Comment, { name: "comment" })
-  findOne(@Args("id", { type: () => String }) id: string) {
-    return this.commentService.findOne(id);
+  @Query(() => [Comment], { name: "commentsByGameId" })
+  async findCommentsByGameId(@Args("gameId", { type: () => String }) gameId: string): Promise<Comment[]> {
+    return await this.commentService.findCommentsByGameId(gameId);
   }
 
   @Mutation(() => Comment)

@@ -57,8 +57,10 @@ export class CommentService {
   }
 
   // reply까지 하고서 !
-  async findOne(id: string): Promise<Comment> {
-    return await this.commentRepository.findOne({ id: id });
+  async findCommentsByGameId(gameId: string): Promise<Comment[]> {
+    const result = await this.commentRepository.find({ where: { balanceGameId: gameId }, relations: ["replies"] });
+    console.log(result);
+    return result;
   }
 
   async remove(userId: string, commentId: string): Promise<boolean> {

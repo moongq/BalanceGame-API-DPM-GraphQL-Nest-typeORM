@@ -268,3 +268,22 @@ mutation {
   }
 }
 ```
+
+# Q commentsByGameId
+
+```graphql
+{
+  commentsByGameId(gameId: "7309cd49-ca58-4f97-902a-074bb6e2d4b9") {
+    id
+    content
+    color
+    createdAt
+    replies {
+      id
+      content
+      color
+      createdAt
+    }
+  }
+}
+```
