@@ -74,6 +74,10 @@ export class BalanceGame {
 
   @Field((type) => Int)
   @Column()
+  commentCount: number;
+
+  @Field((type) => Int)
+  @Column()
   thumbs: number;
 
   @Field((type) => String)

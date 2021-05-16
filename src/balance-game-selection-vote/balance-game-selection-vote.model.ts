@@ -45,6 +45,10 @@ export class BalanceGameSelectionVote {
   @Column()
   balanceGameSelectionId: string;
 
+  @Field()
+  @Column()
+  voteCount: number;
+
   @Field((type) => String)
   @Column()
   status: string;

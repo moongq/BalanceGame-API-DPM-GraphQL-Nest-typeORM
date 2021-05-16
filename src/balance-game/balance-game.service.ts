@@ -127,7 +127,30 @@ export class BalanceGameService {
   }
 
   async findAll(): Promise<BalanceGame[]> {
-    return await this.balanceGameRepository.find({ relations: ["balanceGameKeywords", "balanceGameSelections"] });
+    const games = await this.balanceGameRepository.find({
+      relations: ["balanceGameKeywords", "balanceGameSelections"],
+      take: 3,
+      order: {
+        createdAt: "DESC",
+      },
+    });
+
+    // :TODO 쿼리 갯수 NxN 입니다.. 일단 다 만들고 수정 필 !
+    for (let game of games) {
+      let firstSelection = game.balanceGameSelections[0];
+      let secondSelection = game.balanceGameSelections[1];
+
+      const firstSelectionVoteCount = await this.balanceGameSelectionVoteService.getSelectionCounts(firstSelection.id);
+      const secondSelectionVoteCount = await this.balanceGameSelectionVoteService.getSelectionCounts(
+        secondSelection.id
+      );
+
+      firstSelection.voteCount = firstSelectionVoteCount;
+      secondSelection.voteCount = secondSelectionVoteCount;
+      game.totalVoteCount = firstSelectionVoteCount + secondSelectionVoteCount;
+    }
+
+    return games;
   }
 
   async findOne(id: string): Promise<BalanceGame> {
@@ -140,6 +163,7 @@ export class BalanceGameService {
       throw new HttpException("wrong id inputed/gameId", HttpStatus.BAD_REQUEST);
     }
 
+    // :TODO N+1 문제 해결하기
     // Selection ID 두개 다 쿼리해야할듯.
     const firstSelectionId = result.balanceGameSelections[0].id;
     const secondSelectionId = result.balanceGameSelections[1].id;
@@ -149,8 +173,8 @@ export class BalanceGameService {
     const secondSelectionVoteCounts = await this.balanceGameSelectionVoteService.getSelectionCounts(firstSelectionId);
     const totalVoteCount = firstSelectionVoteCounts + secondSelectionVoteCounts;
 
-    result.firstVoteCount = firstSelectionVoteCounts;
-    result.secondVoteCount = secondSelectionVoteCounts;
+    result.balanceGameSelections[0].voteCount = firstSelectionVoteCounts;
+    result.balanceGameSelections[1].voteCount = secondSelectionVoteCounts;
     result.totalVoteCount = totalVoteCount;
     return result;
   }

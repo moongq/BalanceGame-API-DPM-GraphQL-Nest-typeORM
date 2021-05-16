@@ -13,6 +13,11 @@ import { BalanceGameSelectionVote } from "../balance-game-selection-vote/balance
 import { BalanceGame } from "../balance-game/balance-game.model";
 import { User } from "../user/user.model";
 
+enum order {
+  test1 = 0,
+  test2 = 1,
+}
+
 @ObjectType()
 @Entity()
 export class BalanceGameSelection {
@@ -52,7 +57,7 @@ export class BalanceGameSelection {
 
   @Field()
   @Column()
-  order: number;
+  order: order;
 
   @Field()
   @Column()

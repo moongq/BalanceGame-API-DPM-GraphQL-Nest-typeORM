@@ -41,7 +41,7 @@ export class BalanceGameResolver {
   async findAll(): Promise<BalanceGame[]> {
     const balanceGames = await this.balanceGameService.findAll();
 
-    console.log(balanceGames);
+    // console.log(balanceGames);
     return balanceGames;
   }
 
