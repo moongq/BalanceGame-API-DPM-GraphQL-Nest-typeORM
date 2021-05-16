@@ -49,13 +49,13 @@ export class ReplyService {
     return await this.replyRepository.findOne({ id: updateReplyInput.replyId });
   }
 
-  async findAll(): Promise<Reply[]> {
-    return await this.replyRepository.find({});
-  }
+  // async findAll(): Promise<Reply[]> {
+  //   return await this.replyRepository.find({});
+  // }
 
-  async findOne(id: string): Promise<Reply> {
-    return await this.replyRepository.findOne({ id: id });
-  }
+  // async findOne(id: string): Promise<Reply> {
+  //   return await this.replyRepository.findOne({ id: id });
+  // }
 
   async remove(userId: string, replyId: string): Promise<boolean> {
     const reply = await this.replyRepository.findOne({ id: replyId });

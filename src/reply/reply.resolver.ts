@@ -21,15 +21,15 @@ export class ReplyResolver {
     return await this.replyService.create(token.userId, createReplyInput);
   }
 
-  @Query(() => [Reply], { name: "replies" })
-  async findAll() {
-    return await this.replyService.findAll();
-  }
+  // @Query(() => [Reply], { name: "replies" })
+  // async findAll() {
+  //   return await this.replyService.findAll();
+  // }
 
-  @Query(() => Reply, { name: "reply" })
-  async findOne(@Args("id", { type: () => String }) id: string) {
-    return await this.replyService.findOne(id);
-  }
+  // @Query(() => Reply, { name: "reply" })
+  // async findOne(@Args("id", { type: () => String }) id: string) {
+  //   return await this.replyService.findOne(id);
+  // }
 
   @Mutation(() => Reply)
   @UseGuards(new AuthGuard())
