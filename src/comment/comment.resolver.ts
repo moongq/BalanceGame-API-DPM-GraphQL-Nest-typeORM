@@ -3,14 +3,22 @@ import { CommentService } from "./comment.service";
 import { Comment } from "./comment.model";
 import { CreateCommentInput } from "./dto/create-comment.input";
 import { UpdateCommentInput } from "./dto/update-comment.input";
+import { UseGuards } from "@nestjs/common";
+import { AuthGuard } from "../user/auth.guard";
+import { Token } from "../user/lib/user.decorator";
+import { UserJwt } from "../user/dto/user-jwt";
 
 @Resolver(() => Comment)
 export class CommentResolver {
   constructor(private readonly commentService: CommentService) {}
 
   @Mutation(() => Comment)
-  createComment(@Args("createCommentInput") createCommentInput: CreateCommentInput) {
-    return this.commentService.create(createCommentInput);
+  @UseGuards(new AuthGuard())
+  async createComment(
+    @Args("createCommentInput") createCommentInput: CreateCommentInput,
+    @Token("user") token: UserJwt
+  ) {
+    return await this.commentService.create(token.userId, createCommentInput);
   }
 
   @Query(() => [Comment], { name: "comments" })
@@ -24,11 +32,13 @@ export class CommentResolver {
   }
 
   // @Mutation(() => Comment)
+  // @UseGuards(new AuthGuard())
   // updateComment(@Args('updateCommentInput') updateCommentInput: UpdateCommentInput) {
   //   return this.commentService.update(updateCommentInput.id, updateCommentInput);
   // }
 
   // @Mutation(() => Comment)
+  // @UseGuards(new AuthGuard())
   // removeComment(@Args('id', { type: () => Int }) id: number) {
   //   return this.commentService.remove(id);
   // }

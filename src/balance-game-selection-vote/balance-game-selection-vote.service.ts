@@ -287,4 +287,17 @@ export class BalanceGameSelectionVoteService {
     );
     return game;
   }
+
+  async checkVoted(userId: string, balanceGameId: string): Promise<boolean> {
+    const result = await this.balanceGameSelectionVoteRepository
+      .createQueryBuilder()
+      .where("userId = :userId", { userId: userId })
+      .andWhere("balanceGameId = :balanceGameId", { balanceGameId: balanceGameId })
+      .getMany();
+    console.log(result);
+    if (result.length > 0) {
+      return true;
+    }
+    return false;
+  }
 }
