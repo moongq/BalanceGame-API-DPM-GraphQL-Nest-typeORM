@@ -33,6 +33,10 @@ export class CommentService {
   async update(userId: string, commentId: string, content: string): Promise<Comment> {
     const comment = await this.commentRepository.findOne({ id: commentId });
 
+    if (!comment) {
+      throw new HttpException("wrong id inputed/commentId", HttpStatus.BAD_REQUEST);
+    }
+
     if (comment.userId !== userId) {
       throw new HttpException("힘들당...", HttpStatus.BAD_REQUEST);
     }

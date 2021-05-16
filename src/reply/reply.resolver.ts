@@ -3,14 +3,22 @@ import { ReplyService } from "./reply.service";
 import { Reply } from "./reply.model";
 import { CreateReplyInput } from "./dto/create-reply.input";
 import { UpdateReplyInput } from "./dto/update-reply.input";
+import { UseGuards } from "@nestjs/common";
+import { AuthGuard } from "../user/auth.guard";
+import { Token } from "../user/lib/user.decorator";
+import { UserJwt } from "../user/dto/user-jwt";
 
 @Resolver(() => Reply)
 export class ReplyResolver {
   constructor(private readonly replyService: ReplyService) {}
 
   @Mutation(() => Reply)
-  async createReply(@Args("createReplyInput") createReplyInput: CreateReplyInput) {
-    return await this.replyService.create(createReplyInput);
+  @UseGuards(new AuthGuard())
+  async createReply(
+    @Args("createReplyInput") createReplyInput: CreateReplyInput,
+    @Token("user") token: UserJwt
+  ): Promise<Reply> {
+    return await this.replyService.create(token.userId, createReplyInput);
   }
 
   @Query(() => [Reply], { name: "replies" })

@@ -249,3 +249,22 @@ mutation {
   }
 }
 ```
+
+# # createReply
+
+```grahpql
+mutation {
+  createReply(createReplyInput: {
+    commentId:"a36c0243-155a-454f-840d-3cddcfe65c7d",
+    balanceGameId: "7309cd49-ca58-4f97-902a-074bb6e2d4b9"
+    content: "둘째"
+    color: "레드",
+  }) {
+    id
+    userId
+    balanceGameId
+    content
+    createdAt
+  }
+}
+```
