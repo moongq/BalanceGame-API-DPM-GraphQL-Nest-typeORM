@@ -14,12 +14,12 @@ export class BalanceGameSelectionVoteResolver {
 
   @Mutation(() => BalanceGameSelectionVote)
   @UseGuards(new AuthGuard())
-  async createBalanceGameSelectionVote(
+  async createBalanceGameSelectionVoteLogined(
     @Token("user") token: UserJwt,
     @Args("createBalanceGameSelectionVoteInput")
     createBalanceGameSelectionVoteInput: CreateBalanceGameSelectionVoteInput
   ): Promise<BalanceGameSelectionVote> {
-    return await this.balanceGameSelectionVoteService.create(token.userId, createBalanceGameSelectionVoteInput);
+    return await this.balanceGameSelectionVoteService.createLogined(token.userId, createBalanceGameSelectionVoteInput);
   }
 
   @Query(() => [BalanceGameSelectionVote], { name: "balanceGameSelectionVotes" })
@@ -36,8 +36,21 @@ export class BalanceGameSelectionVoteResolver {
   // 업데이트는 없고 취소하고 다른 거 생성하는 것임.
   // 다른 것 투표하기.
 
-  // @Mutation(() => BalanceGameSelectionVote)
-  // removeBalanceGameSelectionVote(@Args("id", { type: () => Int }) id: number) {
-  //   return this.balanceGameSelectionVoteService.remove(id);
+  // @Mutation(() => Boolean)
+  // @UseGuards(new AuthGuard())
+  // async removeBalanceGame(
+  //   @Args("id", { type: () => String }) id: string,
+  //   @Token("user") token: UserJwt
+  // ): Promise<Boolean> {
+  //   return await this.balanceGameService.remove(id, token.userId);
   // }
+
+  @Mutation(() => Boolean)
+  @UseGuards(new AuthGuard())
+  async removeBalanceGameSelectionVoteLogined(
+    @Args("balanceGameId", { type: () => String }) balanceGameId: string,
+    @Token("user") token: UserJwt
+  ): Promise<boolean> {
+    return await this.balanceGameSelectionVoteService.removeLogined(balanceGameId, token.userId);
+  }
 }
