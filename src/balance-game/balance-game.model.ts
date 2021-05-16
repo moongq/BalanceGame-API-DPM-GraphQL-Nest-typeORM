@@ -11,6 +11,7 @@ import {
   ManyToOne,
   RelationId,
   OneToMany,
+  AfterLoad,
 } from "typeorm";
 import { BalanceGameSelection } from "../balance-game-selection/balance-game-selection.model";
 import { BalanceGameSelectionVote } from "../balance-game-selection-vote/balance-game-selection-vote.model";

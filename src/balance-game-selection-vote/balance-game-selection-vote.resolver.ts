@@ -41,14 +41,20 @@ export class BalanceGameSelectionVoteResolver {
   // 업데이트는 없고 취소하고 다른 거 생성하는 것임.
   // 다른 것 투표하기.
 
-  // @Mutation(() => Boolean)
-  // @UseGuards(new AuthGuard())
-  // async removeBalanceGame(
-  //   @Args("id", { type: () => String }) id: string,
-  //   @Token("user") token: UserJwt
-  // ): Promise<Boolean> {
-  //   return await this.balanceGameService.remove(id, token.userId);
-  // }
+  @Mutation(() => BalanceGame)
+  @UseGuards(new AuthGuard())
+  async updateBalanceGameSelectionVoteLogined(
+    @Args("balanceGameId", { type: () => String }) balanceGameId: string,
+    @Args("balanceGameSelectionId", { type: () => String }) balanceGameSelectionId: string,
+    @Token("user") token: UserJwt
+  ): Promise<BalanceGame> {
+    const result = await this.balanceGameSelectionVoteService.updateLogined(
+      balanceGameId,
+      balanceGameSelectionId,
+      token.userId
+    );
+    return result;
+  }
 
   @Mutation(() => BalanceGame)
   @UseGuards(new AuthGuard())
