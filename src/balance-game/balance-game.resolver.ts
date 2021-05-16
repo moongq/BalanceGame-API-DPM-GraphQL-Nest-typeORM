@@ -53,7 +53,6 @@ export class BalanceGameResolver {
 
   // :TODO 미들웨어 추가 [로그인, 내 게임인지 여부, 게임 ID가 유효한지.]
   @Mutation(() => BalanceGame)
-  // @UseGuards(new AuthGuard())
   @UseGuards(new AuthGuard())
   async updateBalanceGame(
     @Args("id") gameId: string,
