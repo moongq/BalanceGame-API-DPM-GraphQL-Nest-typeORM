@@ -7,12 +7,16 @@ import { Repository } from "typeorm";
 import { BalanceGameSelectionVoteService } from "../balance-game-selection-vote/balance-game-selection-vote.service";
 import { BalanceGameSelectionVote } from "../balance-game-selection-vote/balance-game-selection-vote.model";
 import { HttpErrorByCode } from "@nestjs/common/utils/http-error-by-code.util";
+import { BalanceGame } from "../balance-game/balance-game.model";
 
 @Injectable()
 export class CommentService {
   constructor(
     @InjectRepository(Comment)
     private commentRepository: Repository<Comment>,
+
+    @InjectRepository(BalanceGame)
+    private balanceGameRepository: Repository<BalanceGame>,
 
     private balanceGameSelectionVoteService: BalanceGameSelectionVoteService
   ) {}
@@ -26,6 +30,8 @@ export class CommentService {
 
     const newComment = this.commentRepository.create({ userId, ...createCommentInput });
     const savedComment = await this.commentRepository.save(newComment);
+
+    await this.plusCommentCount(createCommentInput.balanceGameId);
 
     return savedComment;
   }
@@ -84,6 +90,34 @@ export class CommentService {
       throw new HttpException("something wrong in server", HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
+    await this.minusCommentCount(comment.balanceGameId);
+
     return true;
+  }
+
+  async plusCommentCount(gameId: string) {
+    const result = await this.balanceGameRepository
+      .createQueryBuilder()
+      .update()
+      .where("id = :gameId", { gameId: gameId })
+      .set({ commentCount: () => "commentCount + 1" })
+      .execute();
+
+    if (result.affected !== 1) {
+      throw new HttpException("someThing wrong", HttpStatus.BAD_REQUEST);
+    }
+  }
+
+  async minusCommentCount(gameId: string) {
+    const result = await this.balanceGameRepository
+      .createQueryBuilder()
+      .update()
+      .where("id = :gameId", { gameId: gameId })
+      .set({ commentCount: () => "commentCount - 1" })
+      .execute();
+
+    if (result.affected !== 1) {
+      throw new HttpException("someThing wrong", HttpStatus.BAD_REQUEST);
+    }
   }
 }

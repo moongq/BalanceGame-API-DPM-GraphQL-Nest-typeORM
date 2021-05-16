@@ -112,7 +112,7 @@ export class BalanceGameSelectionVoteService {
       .set({ totalVoteCount: () => "totalVoteCount + 1" })
       .execute();
 
-    // plus voteCout in SELECTION
+    // plus voteCount in SELECTION
     await this.balanceGameSelectionRepository
       .createQueryBuilder()
       .update()
