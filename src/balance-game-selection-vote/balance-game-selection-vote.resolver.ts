@@ -7,19 +7,24 @@ import { Token } from "../user/lib/user.decorator";
 import { UserJwt } from "../user/dto/user-jwt";
 import { UseGuards } from "@nestjs/common";
 import { AuthGuard } from "../user/auth.guard";
+import { BalanceGame } from "../balance-game/balance-game.model";
 
 @Resolver(() => BalanceGameSelectionVote)
 export class BalanceGameSelectionVoteResolver {
   constructor(private readonly balanceGameSelectionVoteService: BalanceGameSelectionVoteService) {}
 
-  @Mutation(() => BalanceGameSelectionVote)
+  @Mutation(() => BalanceGame)
   @UseGuards(new AuthGuard())
   async createBalanceGameSelectionVoteLogined(
     @Token("user") token: UserJwt,
     @Args("createBalanceGameSelectionVoteInput")
     createBalanceGameSelectionVoteInput: CreateBalanceGameSelectionVoteInput
-  ): Promise<BalanceGameSelectionVote> {
-    return await this.balanceGameSelectionVoteService.createLogined(token.userId, createBalanceGameSelectionVoteInput);
+  ): Promise<BalanceGame> {
+    const result = await this.balanceGameSelectionVoteService.createLogined(
+      token.userId,
+      createBalanceGameSelectionVoteInput
+    );
+    return result;
   }
 
   @Query(() => [BalanceGameSelectionVote], { name: "balanceGameSelectionVotes" })

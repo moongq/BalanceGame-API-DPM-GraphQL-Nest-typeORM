@@ -192,3 +192,24 @@ mutation {
   }
 }
 ```
+
+# createBalanceGameSelectionVoteLogined
+
+```graphql
+mutation {
+  createBalanceGameSelectionVoteLogined(
+    createBalanceGameSelectionVoteInput: {
+      balanceGameId: "7309cd49-ca58-4f97-902a-074bb6e2d4b9"
+      balanceGameSelectionId: "07ca3b1c-15f7-4c36-8322-aa85e17c188d"
+    }
+  ) {
+    id
+    userId
+    totalVoteCount
+    balanceGameSelections {
+      voteCount
+      order
+    }
+  }
+}
+```

@@ -3,9 +3,11 @@ import { BalanceGameSelectionVoteService } from "./balance-game-selection-vote.s
 import { BalanceGameSelectionVoteResolver } from "./balance-game-selection-vote.resolver";
 import { TypeOrmModule } from "@nestjs/typeorm";
 import { BalanceGameSelectionVote } from "./balance-game-selection-vote.model";
+import { BalanceGameModule } from "../balance-game/balance-game.module";
+import { BalanceGame } from "../balance-game/balance-game.model";
 
 @Module({
-  imports: [TypeOrmModule.forFeature([BalanceGameSelectionVote])],
+  imports: [TypeOrmModule.forFeature([BalanceGameSelectionVote, BalanceGame])],
   providers: [BalanceGameSelectionVoteResolver, BalanceGameSelectionVoteService],
   exports: [BalanceGameSelectionVoteService],
 })

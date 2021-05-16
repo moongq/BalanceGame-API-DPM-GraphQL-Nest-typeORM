@@ -8,6 +8,7 @@ import { User } from "../user/user.model";
 import { BalanceGameKeywordModule } from "../balance-game-keyword/balance-game-keyword.module";
 import { BalanceGameSelectionModule } from "../balance-game-selection/balance-game-selection.module";
 import { FileModule } from "src/file/file.module";
+import { BalanceGameSelectionVoteService } from "../balance-game-selection-vote/balance-game-selection-vote.service";
 import { BalanceGameSelectionVoteModule } from "../balance-game-selection-vote/balance-game-selection-vote.module";
 
 @Module({
