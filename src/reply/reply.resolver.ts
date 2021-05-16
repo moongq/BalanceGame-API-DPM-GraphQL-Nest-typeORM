@@ -40,8 +40,12 @@ export class ReplyResolver {
     return await this.replyService.update(token.userId, updateReplyInput);
   }
 
-  // @Mutation(() => Reply)
-  // removeReply(@Args('id', { type: () => Int }) id: number) {
-  //   return this.replyService.remove(id);
-  // }
+  @Mutation(() => Boolean)
+  @UseGuards(new AuthGuard())
+  async removeReply(
+    @Args("replyId", { type: () => String }) replyId: string,
+    @Token("user") token: UserJwt
+  ): Promise<boolean> {
+    return await this.replyService.remove(token.userId, replyId);
+  }
 }

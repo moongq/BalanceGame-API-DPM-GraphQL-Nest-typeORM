@@ -44,6 +44,8 @@ export class ReplyService {
       .where("id = :replyId", { replyId: updateReplyInput.replyId })
       .execute();
 
+    // 업데이트 쿼리 결과 확인 추가 :TODO
+
     return await this.replyRepository.findOne({ id: updateReplyInput.replyId });
   }
 
@@ -55,7 +57,27 @@ export class ReplyService {
     return await this.replyRepository.findOne({ id: id });
   }
 
-  // remove(id: number) {
-  //   return `This action removes a #${id} reply`;
-  // }
+  async remove(userId: string, replyId: string): Promise<boolean> {
+    const reply = await this.replyRepository.findOne({ id: replyId });
+
+    if (!reply) {
+      throw new HttpException("wrong id inputed/replyId", HttpStatus.BAD_REQUEST);
+    }
+
+    if (reply.userId !== userId) {
+      throw new HttpException("It is not your reply", HttpStatus.BAD_REQUEST);
+    }
+
+    const result = await this.replyRepository
+      .createQueryBuilder()
+      .delete()
+      .where("id = :replyId", { replyId: replyId })
+      .execute();
+
+    if (result.affected !== 1) {
+      throw new HttpException("something wrong in server", HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    return true;
+  }
 }

@@ -66,6 +66,10 @@ export class CommentService {
   async remove(userId: string, commentId: string): Promise<boolean> {
     const comment = await this.commentRepository.findOne({ id: commentId });
 
+    if (!comment) {
+      throw new HttpException("wrong id inputed//commentId", HttpStatus.BAD_REQUEST);
+    }
+
     if (comment.userId !== userId) {
       throw new HttpException("It is not your comment", HttpStatus.BAD_REQUEST);
     }
