@@ -213,3 +213,21 @@ mutation {
   }
 }
 ```
+
+# M removeBalanceGameSelectionVoteLogined
+
+```grpahql
+mutation {
+  removeBalanceGameSelectionVoteLogined(balanceGameId: "7309cd49-ca58-4f97-902a-074bb6e2d4b9",
+  ) {
+    id
+    userId
+    totalVoteCount
+    balanceGameSelections {
+      id
+      voteCount
+    }
+
+  }
+}
+```

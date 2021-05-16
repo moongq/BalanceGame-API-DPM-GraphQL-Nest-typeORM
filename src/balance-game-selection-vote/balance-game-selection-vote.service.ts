@@ -138,39 +138,51 @@ export class BalanceGameSelectionVoteService {
 
   async removeLogined(gameId: string, currentUserId: string): Promise<BalanceGame> {
     // Check Ownership :TODO - guard로 빼는게 좋을듯?
-    const result = await this.balanceGameSelectionVoteRepository
+    const voteBeforeUpdate = await this.balanceGameSelectionVoteRepository
       .createQueryBuilder("vote")
       .where("balanceGameId = :gameId", { gameId: gameId })
       .andWhere("userId = :userId", { userId: currentUserId })
-      .select(["vote.userId", "vote.id"])
+      .select(["vote.userId", "vote.id", "vote.balanceGameSelectionId"])
       .getOne();
 
-    console.log(result);
-    console.log(currentUserId);
-
-    if (!result) {
+    if (!voteBeforeUpdate) {
       throw new HttpException("wrong id inputed/gameId", HttpStatus.BAD_REQUEST);
     }
 
-    if (result["userId"] !== currentUserId) {
+    if (voteBeforeUpdate["userId"] !== currentUserId) {
       throw new HttpException("You are not owner of this vote", HttpStatus.UNAUTHORIZED);
     }
 
     const deleteResult = await this.balanceGameSelectionVoteRepository
       .createQueryBuilder()
       .delete()
-      .where("id = :voteId", { voteId: result.id })
+      .where("id = :voteId", { voteId: voteBeforeUpdate.id })
       .execute();
 
     if (deleteResult.affected !== 1) {
       throw new HttpException("not deleted/something wrong", HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
-    const game = await this.balanceGameRepository
-      .createQueryBuilder("")
+    // plus totalVoteCount in GAME
+    await this.balanceGameRepository
+      .createQueryBuilder()
+      .update()
       .where("id = :gameId", { gameId: gameId })
-      .getOne();
+      .set({ totalVoteCount: () => "totalVoteCount - 1" })
+      .execute();
 
+    // plus voteCout in SELECTION
+    await this.balanceGameSelectionRepository
+      .createQueryBuilder()
+      .update()
+      .where("id = :selectionId", { selectionId: voteBeforeUpdate.balanceGameSelectionId })
+      .set({ voteCount: () => "voteCount - 1" })
+      .execute();
+
+    const game = await this.balanceGameRepository.findOne(
+      { id: gameId },
+      { relations: ["balanceGameKeywords", "balanceGameSelections"] }
+    );
     return game;
   }
 }
