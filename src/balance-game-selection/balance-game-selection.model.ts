@@ -60,7 +60,7 @@ export class BalanceGameSelection {
   order: order;
 
   @Field()
-  @Column()
+  @Column({ default: 0 })
   voteCount: number;
 
   @Field()

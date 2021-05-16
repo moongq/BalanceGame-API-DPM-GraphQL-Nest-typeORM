@@ -70,15 +70,15 @@ export class BalanceGame {
   secondVoteCount: number;
 
   @Field((type) => Int)
-  @Column()
+  @Column({ default: 0 })
   totalVoteCount: number;
 
   @Field((type) => Int)
-  @Column()
+  @Column({ default: 0 })
   commentCount: number;
 
   @Field((type) => Int)
-  @Column()
+  @Column({ default: 0 })
   thumbs: number;
 
   @Field((type) => String)
