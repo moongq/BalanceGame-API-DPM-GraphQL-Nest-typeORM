@@ -40,9 +40,9 @@ export class CommentResolver {
     return await this.commentService.update(token.userId, updateCommentInput.id, updateCommentInput.content);
   }
 
-  // @Mutation(() => Comment)
-  // @UseGuards(new AuthGuard())
-  // removeComment(@Args('id', { type: () => Int }) id: number) {
-  //   return this.commentService.remove(id);
-  // }
+  @Mutation(() => Boolean)
+  @UseGuards(new AuthGuard())
+  async removeComment(@Args("id", { type: () => String }) id: string, @Token("user") token: UserJwt): Promise<boolean> {
+    return await this.commentService.remove(token.userId, id);
+  }
 }

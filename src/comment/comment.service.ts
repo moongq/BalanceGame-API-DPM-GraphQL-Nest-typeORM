@@ -57,7 +57,23 @@ export class CommentService {
     return await this.commentRepository.findOne({ id: id });
   }
 
-  // remove(id: number) {
-  //   return `This action removes a #${id} comment`;
-  // }
+  async remove(userId: string, commentId: string): Promise<boolean> {
+    const comment = await this.commentRepository.findOne({ id: commentId });
+
+    if (comment.userId !== userId) {
+      throw new HttpException("It is not your comment", HttpStatus.BAD_REQUEST);
+    }
+
+    const result = await this.commentRepository
+      .createQueryBuilder()
+      .delete()
+      .where("id = :commentId", { commentId: commentId })
+      .execute();
+
+    if (result.affected !== 1) {
+      throw new HttpException("something wrong in server", HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    return true;
+  }
 }
