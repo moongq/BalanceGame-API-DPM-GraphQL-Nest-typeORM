@@ -44,7 +44,7 @@ export class CommentService {
     const updatedComment = await this.commentRepository
       .createQueryBuilder()
       .update()
-      .set({ content: content, color: "blue" })
+      .set({ content: content, color: comment.color })
       .where("id = :commentId", { commentId: commentId })
       .execute();
 

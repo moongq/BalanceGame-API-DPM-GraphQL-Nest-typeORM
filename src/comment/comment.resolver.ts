@@ -21,10 +21,10 @@ export class CommentResolver {
     return await this.commentService.create(token.userId, createCommentInput);
   }
 
-  @Query(() => [Comment], { name: "comments" })
-  findAll() {
-    return this.commentService.findAll();
-  }
+  // @Query(() => [Comment], { name: "comments" })
+  // findAll() {
+  //   return this.commentService.findAll();
+  // }
 
   @Query(() => [Comment], { name: "commentsByGameId" })
   async findCommentsByGameId(@Args("gameId", { type: () => String }) gameId: string): Promise<Comment[]> {

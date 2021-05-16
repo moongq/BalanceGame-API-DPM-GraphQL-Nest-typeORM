@@ -31,10 +31,14 @@ export class ReplyResolver {
     return await this.replyService.findOne(id);
   }
 
-  // @Mutation(() => Reply)
-  // updateReply(@Args('updateReplyInput') updateReplyInput: UpdateReplyInput) {
-  //   return this.replyService.update(updateReplyInput.id, updateReplyInput);
-  // }
+  @Mutation(() => Reply)
+  @UseGuards(new AuthGuard())
+  async updateReply(
+    @Args("updateReplyInput") updateReplyInput: UpdateReplyInput,
+    @Token("user") token: UserJwt
+  ): Promise<Reply> {
+    return await this.replyService.update(token.userId, updateReplyInput);
+  }
 
   // @Mutation(() => Reply)
   // removeReply(@Args('id', { type: () => Int }) id: number) {

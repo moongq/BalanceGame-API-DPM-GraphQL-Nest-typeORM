@@ -287,3 +287,22 @@ mutation {
   }
 }
 ```
+
+# M updateReply
+
+```graphql
+mutation {
+  updateReply(
+    updateReplyInput: {
+      balanceGameId: "7309cd49-ca58-4f97-902a-074bb6e2d4b9"
+      content: "변경된 답글"
+      replyId: "bb5d6434-a386-46dd-9b15-6c18aa0aa5cb"
+    }
+  ) {
+    id
+    content
+    updatedAt
+    color
+  }
+}
+```
