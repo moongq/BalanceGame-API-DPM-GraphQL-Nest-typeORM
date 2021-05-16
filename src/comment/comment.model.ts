@@ -38,7 +38,7 @@ export class Comment {
   balanceGameId: string;
 
   @Field()
-  @Column({ nullable: true })
+  @Column()
   color?: string;
 
   @OneToMany(() => Reply, (reply) => reply.comment)

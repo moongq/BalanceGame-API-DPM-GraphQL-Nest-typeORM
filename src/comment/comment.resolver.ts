@@ -31,11 +31,14 @@ export class CommentResolver {
     return this.commentService.findOne(id);
   }
 
-  // @Mutation(() => Comment)
-  // @UseGuards(new AuthGuard())
-  // updateComment(@Args('updateCommentInput') updateCommentInput: UpdateCommentInput) {
-  //   return this.commentService.update(updateCommentInput.id, updateCommentInput);
-  // }
+  @Mutation(() => Comment)
+  @UseGuards(new AuthGuard())
+  async updateComment(
+    @Args("updateCommentInput") updateCommentInput: UpdateCommentInput,
+    @Token("user") token: UserJwt
+  ): Promise<Comment> {
+    return await this.commentService.update(token.userId, updateCommentInput.id, updateCommentInput.content);
+  }
 
   // @Mutation(() => Comment)
   // @UseGuards(new AuthGuard())

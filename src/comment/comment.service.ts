@@ -30,6 +30,23 @@ export class CommentService {
     return savedComment;
   }
 
+  async update(userId: string, commentId: string, content: string): Promise<Comment> {
+    const comment = await this.commentRepository.findOne({ id: commentId });
+
+    if (comment.userId !== userId) {
+      throw new HttpException("힘들당...", HttpStatus.BAD_REQUEST);
+    }
+
+    const updatedComment = await this.commentRepository
+      .createQueryBuilder()
+      .update()
+      .set({ content: content, color: "blue" })
+      .where("id = :commentId", { commentId: commentId })
+      .execute();
+
+    return await this.commentRepository.findOne({ id: commentId });
+  }
+
   // reply 까지 하고 !
   async findAll(): Promise<Comment[]> {
     return await this.commentRepository.find({});
@@ -39,10 +56,6 @@ export class CommentService {
   async findOne(id: string): Promise<Comment> {
     return await this.commentRepository.findOne({ id: id });
   }
-
-  // update(id: number, updateCommentInput: UpdateCommentInput) {
-  //   return `This action updates a #${id} comment`;
-  // }
 
   // remove(id: number) {
   //   return `This action removes a #${id} comment`;
