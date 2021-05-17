@@ -55,11 +55,10 @@ export class BalanceGameResolver {
   @Mutation(() => BalanceGame)
   @UseGuards(new AuthGuard())
   async updateBalanceGame(
-    @Args("id") gameId: string,
     @Args("updateBalanceGameInput") updateBalanceGameInput: UpdateBalanceGameInput,
     @Token("user") token: UserJwt
   ) {
-    return await this.balanceGameService.update(gameId, updateBalanceGameInput, token.userId);
+    return await this.balanceGameService.update(updateBalanceGameInput, token.userId);
   }
 
   // :TODO 미들웨어 추가 [로그인, 내 게임인지 여부(service에 넣어둠.), 게임 ID가 유효한지.]
