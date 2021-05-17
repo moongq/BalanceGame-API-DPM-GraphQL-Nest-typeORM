@@ -2,7 +2,10 @@ import { CreateBalanceGameSelectionVoteInput } from './create-balance-game-selec
 import { InputType, Field, Int, PartialType } from '@nestjs/graphql';
 
 @InputType()
-export class UpdateBalanceGameSelectionVoteInput extends PartialType(CreateBalanceGameSelectionVoteInput) {
-  @Field(() => Int)
-  id: number;
+export class UpdateBalanceGameSelectionVoteInput {
+  @Field(() => String)
+  balanceGameId: string
+
+  @Field(() => String)
+  newBalanceGameSelectionId: string
 }

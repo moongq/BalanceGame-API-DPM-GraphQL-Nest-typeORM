@@ -13,7 +13,7 @@ import { BalanceGame } from "../balance-game/balance-game.model";
 export class BalanceGameSelectionVoteResolver {
   constructor(private readonly balanceGameSelectionVoteService: BalanceGameSelectionVoteService) {}
 
-  @Mutation(() => BalanceGame)
+  @Mutation(() => BalanceGame, { name: "createVoteLogined"})
   @UseGuards(new AuthGuard())
   async createBalanceGameSelectionVoteLogined(
     @Token("user") token: UserJwt,
@@ -27,7 +27,7 @@ export class BalanceGameSelectionVoteResolver {
     return result;
   }
 
-  @Mutation(() => BalanceGame)
+  @Mutation(() => BalanceGame, { name: "createVoteNotLogined"})
   async createBalanceGameSelectionVoteNotLogined(
     @Args("createBalanceGameSelectionVoteInput")
     createBalanceGameSelectionVoteInput: CreateBalanceGameSelectionVoteInput
@@ -50,16 +50,14 @@ export class BalanceGameSelectionVoteResolver {
   // 업데이트는 없고 취소하고 다른 거 생성하는 것임.
   // 다른 것 투표하기.
 
-  @Mutation(() => BalanceGame)
+  @Mutation(() => BalanceGame, { name: "updateVoteLogined"})
   @UseGuards(new AuthGuard())
   async updateBalanceGameSelectionVoteLogined(
-    @Args("balanceGameId", { type: () => String }) balanceGameId: string,
-    @Args("newBalanceGameSelectionId", { type: () => String }) newBalanceGameSelectionId: string,
+    @Args("updateBalanceGameSelectionVoteInput") updateBalanceGameSelectionVoteInput: UpdateBalanceGameSelectionVoteInput,
     @Token("user") token: UserJwt
   ): Promise<BalanceGame> {
     const result = await this.balanceGameSelectionVoteService.updateLogined(
-      balanceGameId,
-      newBalanceGameSelectionId,
+      updateBalanceGameSelectionVoteInput,
       token.userId
     );
     return result;

@@ -101,6 +101,31 @@ mutation {
 ```
 
 - findAll: balanceGames
+
+```graphql
+{ 
+	balanceGames {
+    id
+    totalVoteCount
+    commentCount
+    balanceGameSelections {
+      id
+      order
+      description
+      textColor
+      backgroundColor
+      backgroundImage
+      voteCount
+    }
+    balanceGameKeywords {
+      id
+      name
+    }
+    createdAt
+  }
+}
+```
+
 - findOne: balanceGame
 - update: updateBalanceGame
 
@@ -167,7 +192,31 @@ mutation {
 
 ## 투표 balanceGameSelectionVote
 
-- create(logined): createBalanceGameSelectionVoteLogined
+- create(logined): createVoteLogined [ RETURN => BalanceGame ]
+```graphql
+HTTP HEADER
+{
+  "authorization" : "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzb2NhaWxJZCI6MTcyMDM3MDE3OCwidXNlcklkIjoiMTg0NWI2MWUtM2NhMi00OWM4LWJkMDktNDA0Y2U5NzRkNTQ5IiwiaWF0IjoxNjIxMDU5MzgzLCJleHAiOjE2NTI1OTUzODN9.AiDa9DFGMAHyScvcYdKthWYpGgrtL6A0OrM7Wdu1T10"
+}
+
+mutation {
+	createVoteLogined(
+    createBalanceGameSelectionVoteInput: {
+      balanceGameId: "1048713c-8586-4fd7-8cbf-d2e324715751"
+      balanceGameSelectionId: "64315c5b-856c-4f46-ba57-502797f184d1"
+    }
+  ) {
+    id
+		totalVoteCount
+    balanceGameSelections {
+      id
+      order
+      voteCount
+    }
+  }
+}
+```
+
 - create(notLogined): createBalanceGameSelectionVoteNotLogined
 - findAll: balanceGameSelectionVotes
 - findOne: balanceGameSelectionVote

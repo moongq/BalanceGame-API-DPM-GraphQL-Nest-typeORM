@@ -183,11 +183,11 @@ export class BalanceGameSelectionVoteService {
   //   return game;
   // }
 
-  async updateLogined(gameId: string, newBalanceGameSelectionId: string, currentUserId: string): Promise<BalanceGame> {
+  async updateLogined(updateInput: UpdateBalanceGameSelectionVoteInput, currentUserId: string): Promise<BalanceGame> {
     // Check Ownership :TODO - guard로 빼는게 좋을듯?
     const voteBeforeUpdate = await this.balanceGameSelectionVoteRepository
       .createQueryBuilder("vote")
-      .where("balanceGameId = :gameId", { gameId: gameId })
+      .where("balanceGameId = :gameId", { gameId: updateInput.balanceGameId })
       .andWhere("userId = :userId", { userId: currentUserId })
       .select(["vote.userId", "vote.id", "vote.balanceGameSelectionId"])
       .getOne();
@@ -196,7 +196,7 @@ export class BalanceGameSelectionVoteService {
       throw new HttpException("wrong id inputed/gameId", HttpStatus.BAD_REQUEST);
     }
 
-    if (voteBeforeUpdate.balanceGameSelectionId == newBalanceGameSelectionId) {
+    if (voteBeforeUpdate.balanceGameSelectionId == updateInput.newBalanceGameSelectionId) {
       throw new HttpException("already updated", HttpStatus.BAD_REQUEST);
     }
 
@@ -208,7 +208,7 @@ export class BalanceGameSelectionVoteService {
       .createQueryBuilder()
       .update()
       .where("id = :voteId", { voteId: voteBeforeUpdate.id })
-      .set({ balanceGameSelectionId: newBalanceGameSelectionId })
+      .set({ balanceGameSelectionId: updateInput.newBalanceGameSelectionId })
       .execute();
 
     if (updateResult.affected !== 1) {
@@ -227,12 +227,12 @@ export class BalanceGameSelectionVoteService {
     await this.balanceGameSelectionRepository
       .createQueryBuilder()
       .update()
-      .where("id = :selectionId", { selectionId: newBalanceGameSelectionId })
+      .where("id = :selectionId", { selectionId: updateInput.newBalanceGameSelectionId })
       .set({ voteCount: () => "voteCount + 1" })
       .execute();
 
     const game = await this.balanceGameRepository.findOne(
-      { id: gameId },
+      { id: updateInput.balanceGameId },
       { relations: ["balanceGameKeywords", "balanceGameSelections"] }
     );
     return game;

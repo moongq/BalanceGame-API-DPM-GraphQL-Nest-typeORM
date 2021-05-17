@@ -29,14 +29,13 @@ export class BalanceGameService {
 
   // :TODO transaction 추가.
   async update(
-    balanceGameId: string,
     updateBalanceGameInput: UpdateBalanceGameInput,
     currentUserId: string
   ): Promise<BalanceGame> {
     // Check Ownership :TODO - guard로 빼는게 좋을듯?
     const result = await this.balanceGameRepository
       .createQueryBuilder("game")
-      .where("id = :id", { id: balanceGameId })
+      .where("id = :id", { id: updateBalanceGameInput.balanceGameId })
       .select(["game.userId"])
       .getOne();
 
@@ -64,13 +63,13 @@ export class BalanceGameService {
     // Q: 키워드 다 지워버리고 새로 생성하는 방법으로 일단 진행.
     if (updateBalanceGameInput.balanceGameKeywords.length > 0) {
       // 1. 다 지우고
-      const deletedResult = await this.balanceGameKeywordService.removeKeywordsWithGameId(balanceGameId);
+      const deletedResult = await this.balanceGameKeywordService.removeKeywordsWithGameId(updateBalanceGameInput.balanceGameId);
       console.log("deletedResult");
       console.log(deletedResult);
       // 2. 다시 모두 생성
       for (let balanceGameKeyword of updateBalanceGameInput.balanceGameKeywords) {
         const newKeyword = await this.balanceGameKeywordService.create({
-          balanceGameId: balanceGameId,
+          balanceGameId: updateBalanceGameInput.balanceGameId,
           name: balanceGameKeyword.name,
         });
         console.log("new keyword");
@@ -84,7 +83,7 @@ export class BalanceGameService {
         .createQueryBuilder()
         .update()
         .set({ description: updateBalanceGameInput.description })
-        .where(`id = :id`, { id: balanceGameId })
+        .where(`id = :id`, { id: updateBalanceGameInput.balanceGameId })
         .execute();
 
       console.log("updatedBalanceGame");
@@ -92,7 +91,7 @@ export class BalanceGameService {
     }
 
     const changedGame = await this.balanceGameRepository.findOne(
-      { id: balanceGameId },
+      { id: updateBalanceGameInput.balanceGameId },
       {
         relations: ["balanceGameSelections", "balanceGameKeywords"],
       }
