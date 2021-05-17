@@ -40,7 +40,7 @@
 
 ## 밸런스게임 balanceGame
 
-- create: createBalanceGame
+- create: createBalanceGame # [ RETURN => BalanceGame ]
 
 ```graphql
 HTTP HTEADER
@@ -100,7 +100,7 @@ mutation {
 
 ```
 
-- findAll: balanceGames
+- findAll: balanceGames # [ RETURN => BalanceGame[] ]
 
 ```graphql
 { 
@@ -127,7 +127,35 @@ mutation {
 ```
 
 - findOne: balanceGame
-- update: updateBalanceGame
+
+```graqhql
+ {
+  balanceGame (id:"a0717af5-e8d9-4128-acfc-f9e8b3a1f3c3")
+	 {
+    id
+    userId
+  	totalVoteCount
+    commentCount
+    balanceGameSelections{
+      id
+      order
+      voteCount
+      description
+      textColor
+      backgroundColor
+      backgroundImage
+      balanceGameId
+    }
+    balanceGameKeywords {
+      id
+      name
+      balanceGameId
+    }
+  }
+}
+```
+
+- update: updateBalanceGame [ RETURN => BalanceGame ]
 
 ```graphql
 HTTP HTEADER
@@ -188,7 +216,18 @@ mutation {
 }
 ```
 
-- remove: removeBalanceGame
+- remove: removeBalanceGame [ RETURN => Boolean]
+
+```graphql
+HTTP HEADER
+{
+  "authorization" : "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzb2NhaWxJZCI6MTcyMDM3MDE3OCwidXNlcklkIjoiMTg0NWI2MWUtM2NhMi00OWM4LWJkMDktNDA0Y2U5NzRkNTQ5IiwiaWF0IjoxNjIxMDU5MzgzLCJleHAiOjE2NTI1OTUzODN9.AiDa9DFGMAHyScvcYdKthWYpGgrtL6A0OrM7Wdu1T10"
+}
+
+mutation {
+  removeBalanceGame(id:"a0717af5-e8d9-4128-acfc-f9e8b3a1f3c3")
+}
+```
 
 ## 투표 balanceGameSelectionVote
 
@@ -221,7 +260,32 @@ mutation {
 - findAll: balanceGameSelectionVotes
 - findOne: balanceGameSelectionVote
 - update(notLogined): removeBalanceGameSelectionVoteLogined
-- update(logined): updateBalanceGameSelectionVoteLogined
+
+- update(logined): updateVoteLogined [ RETURN => BalanceGame ]
+
+```graphql
+HTTP HEADER
+{
+  "authorization" : "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzb2NhaWxJZCI6MTcyMDM3MDE3OCwidXNlcklkIjoiMTg0NWI2MWUtM2NhMi00OWM4LWJkMDktNDA0Y2U5NzRkNTQ5IiwiaWF0IjoxNjIxMDU5MzgzLCJleHAiOjE2NTI1OTUzODN9.AiDa9DFGMAHyScvcYdKthWYpGgrtL6A0OrM7Wdu1T10"
+}
+
+mutation {
+	updateVoteLogined(
+    updateBalanceGameSelectionVoteInput: {
+      balanceGameId: "a0717af5-e8d9-4128-acfc-f9e8b3a1f3c3"
+      newBalanceGameSelectionId: "a3c3b77b-f302-44f5-9360-c33b4becc7d9"
+    }
+  ) {
+    id
+		totalVoteCount
+    balanceGameSelections {
+      id
+      order
+      voteCount
+    }
+  }
+}
+```
 
 ## 댓글
 
