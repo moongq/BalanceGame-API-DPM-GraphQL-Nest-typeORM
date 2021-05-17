@@ -12,12 +12,12 @@
 
 ## 투표 balanceGameSelectionVote
 
-- create(logined): createBalanceGameSelectionVoteLogined
-- create(notLogined): createBalanceGameSelectionVoteNotLogined
+- create(logined): createVoteLogined
+- create(notLogined): createVoteNotLogined
 - findAll: balanceGameSelectionVotes
 - findOne: balanceGameSelectionVote
 - update(notLogined): removeBalanceGameSelectionVoteLogined
-- update(logined): updateBalanceGameSelectionVoteLogined
+- update(logined): updateVoteLogined
 
 ## 댓글
 
