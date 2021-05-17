@@ -17,10 +17,9 @@ export class UserProfileService {
     const userProfile = new UserProfile();
     
     userProfile.email = createUserProfileInput.email;
-    // userProfile.nickname = createUserProfileInput.nickname;
-    // userProfile.userImage = createUserProfileInput.userImage;
+    userProfile.nickname = createUserProfileInput.nickname;
+    userProfile.userImage = createUserProfileInput.userImage;
     await userProfileRepository.save(userProfile);
-    console.log("???");
     return userProfile;
   }
 
