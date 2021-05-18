@@ -58,8 +58,8 @@ export class UserService {
       return {
         result: "SUCCESS",
         data: data,
-        kakaoId: kakaoId,
-        kakaoEmail: kakaoEmail
+        socialId: kakaoId,
+        socialEmail: kakaoEmail
       };
     } catch (e) {
       console.log(e);
@@ -67,7 +67,34 @@ export class UserService {
         result: "FAIL"
       };
     }
-    
+  }
+
+  async naverToken(token: String) {
+    try {
+      const naverRes = await axios({
+        method: "GET",
+        url: 'https://openapi.naver.com/v1/nid/me',
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      });
+      const data = naverRes.data;
+      console.log("naver token data ", data);
+      const naverId = data.response.id;
+      const naverEmail = data.response.email;
+
+      return {
+        result: "SUCCESS",
+        data: data,
+        socialId: naverId,
+        socialEmail: naverEmail
+      };
+    } catch(e) {
+      console.log(e);
+      return {
+        result: "FAIL"
+      };
+    }
   }
 
   createToken(user: UserJwt) {

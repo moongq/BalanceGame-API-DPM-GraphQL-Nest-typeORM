@@ -9,7 +9,7 @@ import {
   ResolveField,
   Context
 } from '@nestjs/graphql';
-import { Header, UseGuards } from '@nestjs/common';
+import { Header, UseGuards, HttpStatus, HttpException } from '@nestjs/common';
 import { UserService } from './user.service';
 import { User } from './user.model';
 import { CreateUserInput } from './dto/create-user.input';
@@ -53,46 +53,52 @@ export class UserResolver {
   async login(
     @Args('loginUserInput') loginUserInput: LoginUserInput) {
     let userOauthResponse;
+    let socailUserData;
+    let status = "LOGIN";
+    let userId;
     if (loginUserInput.socialType === "kakao") {
       // kakao 토큰인증 
-      const kakaoUserData = await this.userService.kakaoToken(loginUserInput.socialKey);
+      socailUserData = await this.userService.kakaoToken(loginUserInput.socialKey);
       
-      let status = "LOGIN";
-      let userId;
-      if (kakaoUserData.result !== "FAIL") {
-        // 가입된 유저인지 체크 
-        const getUser = await this.userService.getUserByOauth(kakaoUserData.kakaoId, loginUserInput.socialType);
-        
-        if (!getUser) {
-          // 가입한 적이 없으면 저장 
-          const user = await this.userService.oauthCreateUser({
-            socialId: kakaoUserData.kakaoId,
-            platformType: loginUserInput.socialType,
-            profile: {
-              email: kakaoUserData.kakaoEmail,
-              nickname: kakaoUserData.data?.id,
-              userImage: ""
-            }
-          })
-          status = "REGISTER";
-          userId = user.id;
-        } else {
-          userId = getUser.id;
-        }
-      }
-      const jwtToken = this.userService.createToken({
-        socailId: kakaoUserData.kakaoId,
-        userId: userId
-      });
-
-      userOauthResponse = {
-        jwt: jwtToken,
-        email: kakaoUserData.kakaoEmail,
-        status: status
-      }
-
-      return userOauthResponse;
+    } else if (loginUserInput.socialType === "naver") {
+      // naver 토큰 인증
+      socailUserData = await this.userService.naverToken(loginUserInput.socialKey);
+    } else {
+      throw new HttpException("socialType Error ", HttpStatus.UNPROCESSABLE_ENTITY);
     }
+    if (socailUserData.result !== "FAIL") {
+      // 가입된 유저인지 체크 
+      const getUser = await this.userService.getUserByOauth(socailUserData.socialId, loginUserInput.socialType);
+      
+      if (!getUser) {
+        // 가입한 적이 없으면 저장 
+        const user = await this.userService.oauthCreateUser({
+          socialId: socailUserData.socialId,
+          platformType: loginUserInput.socialType,
+          profile: {
+            email: socailUserData.socialEmail,
+            nickname: "닉네임 난수 예정",
+            userImage: ""
+          }
+        })
+        status = "REGISTER";
+        userId = user.id;
+      } else {
+        userId = getUser.id;
+      }
+    }
+    const jwtToken = this.userService.createToken({
+      socailId: socailUserData.socialId,
+      userId: userId
+    });
+
+    userOauthResponse = {
+      jwt: jwtToken,
+      email: socailUserData.socialEmail,
+      status: status
+    }
+
+    return userOauthResponse;
   }
 
   // 프로필 업데이트 
