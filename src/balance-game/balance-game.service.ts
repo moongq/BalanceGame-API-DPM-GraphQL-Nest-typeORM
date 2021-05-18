@@ -6,6 +6,7 @@ import { BalanceGame } from "./balance-game.model";
 import { BalanceGameModule } from "./balance-game.module";
 import { CreateBalanceGameInput } from "./dto/create-balance-game.input";
 import { UpdateBalanceGameInput } from "./dto/update-balance-game.input";
+import { BalanceGameList } from "./dto/balance-game-list.output";
 import { BalanceGameKeywordService } from "../balance-game-keyword/balance-game-keyword.service";
 import { BalanceGameSelectionService } from "../balance-game-selection/balance-game-selection.service";
 import { FileService } from "../file/file.service";
@@ -129,17 +130,22 @@ export class BalanceGameService {
     return savedBalanceGame;
   }
 
-  async findAll(): Promise<BalanceGame[]> {
-    const games = await this.balanceGameRepository.find({
+  async findAll(limit?: number, offset?: number): Promise<BalanceGameList> {
+    
+    const [balanceGames, count] = await this.balanceGameRepository.findAndCount({
       relations: ["balanceGameKeywords", "balanceGameSelections"],
-      take: 3, // :TODO  갯수 수정
+      take: limit,
+      skip: offset,
       order: {
         // :TODO 조건 추가
         createdAt: "DESC",
       },
     });
 
-    return games;
+    return {
+      num: count,
+      balanceGame: balanceGames
+    };
   }
 
   async findOne(id: string): Promise<BalanceGame> {
