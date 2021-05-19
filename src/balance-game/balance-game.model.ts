@@ -19,6 +19,7 @@ import { BalanceGameThumb } from "../balance-game-thumb/balance-game-thumb.model
 import { BalanceGameKeyword } from "../balance-game-keyword/balance-game-keyword.model";
 import { Comment } from "../comment/comment.model";
 import { Notification } from "src/notification/notification.model";
+import { IsOptional } from "class-validator";
 
 @ObjectType()
 @Entity()
@@ -42,7 +43,7 @@ export class BalanceGame {
   balanceGameSelectionVotes: BalanceGameSelectionVote[];
 
   @Field((type) => Number)
-  @Column()
+  @Column({ default: 0 })
   balanceGameSelectionVotesCount: number;
 
   @OneToMany((type) => BalanceGameThumb, (balanceGameThumb) => balanceGameThumb.balanceGame)
