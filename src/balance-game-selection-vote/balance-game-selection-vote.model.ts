@@ -1,5 +1,6 @@
 import { ObjectType, Field, Int } from "@nestjs/graphql";
 import {
+  AfterInsert,
   Column,
   CreateDateColumn,
   Entity,
@@ -21,11 +22,11 @@ export class BalanceGameSelectionVote {
 
   @ManyToOne((type) => User, (user) => user.balanceGameSelectionVotes)
   @JoinColumn({ name: "userId" })
-  user: User;
+  user?: User;
 
   @Field()
-  @Column()
-  userId: string;
+  @Column({ nullable: true })
+  userId?: string;
 
   @ManyToOne((type) => BalanceGame, (balanceGame) => balanceGame.balanceGameSelectionVotes, { onDelete: "CASCADE" })
   @JoinColumn({ name: "balanceGameId" })
@@ -45,6 +46,10 @@ export class BalanceGameSelectionVote {
   @Column()
   balanceGameSelectionId: string;
 
+  @Field()
+  @Column()
+  voteCount: number;
+
   @Field((type) => String)
   @Column()
   status: string;
@@ -57,3 +62,5 @@ export class BalanceGameSelectionVote {
   @UpdateDateColumn({ type: "timestamp" })
   updatedAt: Date;
 }
+
+// Count after insert/delete 구현하기.

@@ -33,7 +33,7 @@ export class User {
   @Column()
   platformType: string;
 
-  @OneToOne((type) => UserProfile, (profile) => profile.user, { eager: true })
+  @OneToOne((type) => UserProfile, (profile) => profile.user)
   @JoinColumn()
   profile: UserProfile;
 

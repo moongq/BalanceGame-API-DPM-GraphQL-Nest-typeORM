@@ -7,8 +7,9 @@ import { User } from "../../user/user.model";
 
 @InputType()
 export class CreateBalanceGameInput {
-  @Field((type) => String)
-  userId: string;
+  // user token으로 인한 삭제
+  // @Field((type) => String)
+  // userId: string;
 
   @Field((type) => String)
   description: string;

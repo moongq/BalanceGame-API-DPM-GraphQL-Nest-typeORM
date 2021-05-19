@@ -37,6 +37,10 @@ export class Comment {
   @Column()
   balanceGameId: string;
 
+  @Field()
+  @Column()
+  color?: string;
+
   @OneToMany(() => Reply, (reply) => reply.comment)
   replies: Reply[];
 

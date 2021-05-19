@@ -1,4 +1,4 @@
-import { Injectable } from "@nestjs/common";
+import { HttpException, HttpStatus, Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { User } from "../user/user.model";
 import { Repository } from "typeorm";
@@ -6,10 +6,12 @@ import { BalanceGame } from "./balance-game.model";
 import { BalanceGameModule } from "./balance-game.module";
 import { CreateBalanceGameInput } from "./dto/create-balance-game.input";
 import { UpdateBalanceGameInput } from "./dto/update-balance-game.input";
+import { BalanceGameList } from "./dto/balance-game-list.output";
 import { BalanceGameKeywordService } from "../balance-game-keyword/balance-game-keyword.service";
 import { BalanceGameSelectionService } from "../balance-game-selection/balance-game-selection.service";
 import { FileService } from "../file/file.service";
 import { FileUpload } from "graphql-upload";
+import { BalanceGameSelectionVoteService } from "../balance-game-selection-vote/balance-game-selection-vote.service";
 
 @Injectable()
 export class BalanceGameService {
@@ -22,11 +24,31 @@ export class BalanceGameService {
 
     private balanceGameKeywordService: BalanceGameKeywordService,
     private balanceGameSelectionService: BalanceGameSelectionService,
-    private fileService: FileService,
+
+    private fileService: FileService
   ) {}
 
   // :TODO transaction 추가.
-  async update(balanceGameId: string, updateBalanceGameInput: UpdateBalanceGameInput): Promise<BalanceGame> {
+  async update(
+    updateBalanceGameInput: UpdateBalanceGameInput,
+    currentUserId: string
+  ): Promise<BalanceGame> {
+    // Check Ownership :TODO - guard로 빼는게 좋을듯?
+    const result = await this.balanceGameRepository
+      .createQueryBuilder("game")
+      .where("id = :id", { id: updateBalanceGameInput.balanceGameId })
+      .select(["game.userId"])
+      .getOne();
+
+    if (!result) {
+      throw new HttpException("wrong id inputed/gameId", HttpStatus.BAD_REQUEST);
+    }
+
+    if (result["userId"] !== currentUserId) {
+      throw new HttpException("You are not owner of this game", HttpStatus.UNAUTHORIZED);
+    }
+
+    // return;
     // 1. update selections is has selection data
     for (let balanGameSelectionInput of updateBalanceGameInput.balanceGameSelections) {
       const updatedSelection = await this.balanceGameSelectionService.update(
@@ -42,13 +64,13 @@ export class BalanceGameService {
     // Q: 키워드 다 지워버리고 새로 생성하는 방법으로 일단 진행.
     if (updateBalanceGameInput.balanceGameKeywords.length > 0) {
       // 1. 다 지우고
-      const deletedResult = await this.balanceGameKeywordService.removeKeywordsWithGameId(balanceGameId);
+      const deletedResult = await this.balanceGameKeywordService.removeKeywordsWithGameId(updateBalanceGameInput.balanceGameId);
       console.log("deletedResult");
       console.log(deletedResult);
       // 2. 다시 모두 생성
       for (let balanceGameKeyword of updateBalanceGameInput.balanceGameKeywords) {
         const newKeyword = await this.balanceGameKeywordService.create({
-          balanceGameId: balanceGameId,
+          balanceGameId: updateBalanceGameInput.balanceGameId,
           name: balanceGameKeyword.name,
         });
         console.log("new keyword");
@@ -56,27 +78,32 @@ export class BalanceGameService {
       }
     }
 
-    // 3. update game data if has game data
+    // 3. update game data if has new description
     if (updateBalanceGameInput.description) {
       const updatedBalanceGame = await this.balanceGameRepository
         .createQueryBuilder()
         .update()
         .set({ description: updateBalanceGameInput.description })
-        .where(`id = :id`, { id: balanceGameId })
+        .where(`id = :id`, { id: updateBalanceGameInput.balanceGameId })
         .execute();
 
       console.log("updatedBalanceGame");
       console.log(updatedBalanceGame);
     }
 
-    const changedGame = await this.balanceGameRepository.findOne({ id: balanceGameId });
+    const changedGame = await this.balanceGameRepository.findOne(
+      { id: updateBalanceGameInput.balanceGameId },
+      {
+        relations: ["balanceGameSelections", "balanceGameKeywords"],
+      }
+    );
     console.log(changedGame);
     return changedGame;
   }
 
-  async create(createBalanceGameInput: CreateBalanceGameInput): Promise<BalanceGame> {
+  async create(token: string, createBalanceGameInput: CreateBalanceGameInput): Promise<BalanceGame> {
     const newBalanceGame = await this.balanceGameRepository.create({
-      userId: createBalanceGameInput.userId,
+      userId: token,
       description: createBalanceGameInput.description,
     });
 
@@ -103,12 +130,35 @@ export class BalanceGameService {
     return savedBalanceGame;
   }
 
-  async findAll(): Promise<BalanceGame[]> {
-    return await this.balanceGameRepository.find({ relations: ["balanceGameKeywords", "balanceGameSelections"] });
+  async findAll(limit?: number, offset?: number): Promise<BalanceGameList> {
+    
+    const [balanceGames, count] = await this.balanceGameRepository.findAndCount({
+      relations: ["balanceGameKeywords", "balanceGameSelections"],
+      take: limit,
+      skip: offset,
+      order: {
+        // :TODO 조건 추가
+        createdAt: "DESC",
+      },
+    });
+
+    return {
+      num: count,
+      balanceGame: balanceGames
+    };
   }
 
   async findOne(id: string): Promise<BalanceGame> {
-    return await this.balanceGameRepository.findOne({ id: id }, { relations: ["balanceGameKeywords"] });
+    const result = await this.balanceGameRepository.findOne(
+      { id: id },
+      { relations: ["balanceGameKeywords", "balanceGameSelections"] }
+    );
+
+    if (!result) {
+      throw new HttpException("wrong id inputed/gameId", HttpStatus.BAD_REQUEST);
+    }
+
+    return result;
   }
 
   async findAllByUserID(userId: string): Promise<BalanceGame[]> {
@@ -118,7 +168,22 @@ export class BalanceGameService {
   //   return `This action updates a #${id} balanceGame`;
   // }
 
-  async remove(balanceGameId: string): Promise<Boolean> {
+  async remove(balanceGameId: string, currentUserId: string): Promise<Boolean> {
+    // Check Ownership :TODO - guard로 빼는게 좋을듯?
+    const result = await this.balanceGameRepository
+      .createQueryBuilder("game")
+      .where("id = :id", { id: balanceGameId })
+      .select(["game.userId"])
+      .getOne();
+
+    if (!result) {
+      throw new HttpException("wrong id inputed/gameId", HttpStatus.BAD_REQUEST);
+    }
+
+    if (result["userId"] !== currentUserId) {
+      throw new HttpException("You are not owner of this game", HttpStatus.UNAUTHORIZED);
+    }
+
     const deleteResult = await this.balanceGameRepository
       .createQueryBuilder()
       .delete()

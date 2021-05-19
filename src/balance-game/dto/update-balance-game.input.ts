@@ -9,6 +9,9 @@ import { User } from "../../user/user.model";
 
 @InputType()
 export class UpdateBalanceGameInput {
+  @Field(() => String)
+  balanceGameId: string;
+
   @Field((type) => String)
   description?: string;
 

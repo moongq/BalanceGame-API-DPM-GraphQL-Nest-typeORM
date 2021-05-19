@@ -11,6 +11,7 @@ import {
   ManyToOne,
   RelationId,
   OneToMany,
+  AfterLoad,
 } from "typeorm";
 import { BalanceGameSelection } from "../balance-game-selection/balance-game-selection.model";
 import { BalanceGameSelectionVote } from "../balance-game-selection-vote/balance-game-selection-vote.model";
@@ -34,22 +35,20 @@ export class BalanceGame {
   @Column()
   userId: string;
 
-  @OneToMany((type) => BalanceGameSelection, (balanceGameSelection) => balanceGameSelection.balanceGame, {
-    eager: true,
-  })
+  @OneToMany((type) => BalanceGameSelection, (balanceGameSelection) => balanceGameSelection.balanceGame)
   balanceGameSelections: BalanceGameSelection[];
 
-  @OneToMany(
-    (type) => BalanceGameSelectionVote,
-    (balanceGameSelectionVote) => balanceGameSelectionVote.balanceGameSelection,
-    { eager: true }
-  )
-  balanceGameSelectionVotes: BalanceGameSelectionVote;
+  @OneToMany((type) => BalanceGameSelectionVote, (balanceGameSelectionVote) => balanceGameSelectionVote.balanceGame)
+  balanceGameSelectionVotes: BalanceGameSelectionVote[];
 
-  @OneToMany((type) => BalanceGameThumb, (balanceGameThumb) => balanceGameThumb.balanceGame, { eager: true })
+  @Field((type) => Number)
+  @Column()
+  balanceGameSelectionVotesCount: number;
+
+  @OneToMany((type) => BalanceGameThumb, (balanceGameThumb) => balanceGameThumb.balanceGame)
   balanceGameThumbs: BalanceGameThumb[];
 
-  @OneToMany(() => BalanceGameKeyword, (balanceGaneKeyword) => balanceGaneKeyword.balanceGame, { eager: true })
+  @OneToMany(() => BalanceGameKeyword, (balanceGaneKeyword) => balanceGaneKeyword.balanceGame)
   balanceGameKeywords: BalanceGameKeyword[];
 
   @OneToMany((type) => Notification, (notification) => notification.balanceGame)
@@ -63,11 +62,15 @@ export class BalanceGame {
   description: string;
 
   @Field((type) => Int)
-  @Column()
-  voteCount: number;
+  @Column({ default: 0 })
+  totalVoteCount: number;
 
   @Field((type) => Int)
-  @Column()
+  @Column({ default: 0 })
+  commentCount: number;
+
+  @Field((type) => Int)
+  @Column({ default: 0 })
   thumbs: number;
 
   @Field((type) => String)
