@@ -37,8 +37,8 @@ export class Reply {
   commentId: string;
 
   @Field()
-  @Column()
-  color: string;
+  @Column({ nullable: true })
+  color?: string;
 
   @Field(() => String)
   @Column()

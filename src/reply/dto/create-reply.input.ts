@@ -12,5 +12,5 @@ export class CreateReplyInput {
   content: string;
 
   @Field()
-  color: string;
+  color?: string;
 }

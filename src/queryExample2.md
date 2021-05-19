@@ -223,7 +223,7 @@ mutation {
 }
 ```
 
-- remove: removeBalanceGame [ RETURN => Boolean]
+- remove: removeBalanceGame [ RETURN => Boolean ]
 
 ```graphql
 HTTP HEADER
@@ -334,10 +334,6 @@ mutation {
 }
 ```
 
-```graphql
-
-```
-
 ## 댓글
 
 - create: createComment [ RETURN => Comment ]
@@ -411,8 +407,58 @@ mutation {
 
 ## 답글(대댓글)
 
-- create: createReply
-- update: updateReply
-- remove: removeReply
+- create: createReply [ RETURN => Comment ]
+
+```graphql
+{
+  "authorization" : "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzb2NhaWxJZCI6MTcyMDM3MDE3OCwidXNlcklkIjoiMTg0NWI2MWUtM2NhMi00OWM4LWJkMDktNDA0Y2U5NzRkNTQ5IiwiaWF0IjoxNjIxMDU5MzgzLCJleHAiOjE2NTI1OTUzODN9.AiDa9DFGMAHyScvcYdKthWYpGgrtL6A0OrM7Wdu1T10"
+}
+
+mutation {
+  createReply(createReplyInput:{
+    commentId: "aefef3b8-904b-428c-8409-8c15d64b5ef2"
+    balanceGameId: "45291777-cb15-4e28-b91d-db9b23b9cc24",
+    content: "새 eoeot글"
+  }) {
+    id
+    content
+    color
+    createdAt
+  }
+}
+```
+
+- update: updateReply [ RETURN => Reply ]
+
+```graphql
+HTTP HEADER
+{
+  "authorization" : "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzb2NhaWxJZCI6MTcyMDM3MDE3OCwidXNlcklkIjoiMTg0NWI2MWUtM2NhMi00OWM4LWJkMDktNDA0Y2U5NzRkNTQ5IiwiaWF0IjoxNjIxMDU5MzgzLCJleHAiOjE2NTI1OTUzODN9.AiDa9DFGMAHyScvcYdKthWYpGgrtL6A0OrM7Wdu1T10"
+}
+
+mutation {
+  updateReply(updateReplyInput:{
+    replyId: "fe081e14-34c8-4f43-997d-4e5d0a7d2192"
+    content: "asdfasdf"
+  }) {
+    id
+    content
+    createdAt
+  }
+}
+```
+
+- remove: removeReply [ RETURN => Boolean ]
+
+```graphql
+HTTP HEADER
+{
+  "authorization" : "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzb2NhaWxJZCI6MTcyMDM3MDE3OCwidXNlcklkIjoiMTg0NWI2MWUtM2NhMi00OWM4LWJkMDktNDA0Y2U5NzRkNTQ5IiwiaWF0IjoxNjIxMDU5MzgzLCJleHAiOjE2NTI1OTUzODN9.AiDa9DFGMAHyScvcYdKthWYpGgrtL6A0OrM7Wdu1T10"
+}
+
+mutation {
+  removeReply(replyId:"f9038325-7839-4143-b8e9-dd3d5a7fc61d",)
+}
+```
 
 ## [ notYet ] 알림
