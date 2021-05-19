@@ -1,7 +1,7 @@
 import { Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import axios from "axios";
-import jwt from "jsonwebtoken";
+import * as jwt from 'jsonwebtoken';
 import { Repository } from "typeorm";
 
 import { User } from "./user.model";
