@@ -43,11 +43,19 @@ export class BalanceGameResolver {
   // ?? 추론 -> dto에 모델 받아와서 사용했는데 하나하나 다 등록해야되나...
   @Query(() => [BalanceGame], { name: "balanceGames" })
   async findAll(
-    @Args("balanceGamesState", {nullable: true}) balanceGamesState: BalanceGamesState 
+    @Args("balanceGamesState", { nullable: true }) balanceGamesState: BalanceGamesState
   ): Promise<BalanceGame[]> {
     const limit = balanceGamesState?.limit;
     const offset = balanceGamesState?.offset;
     const balanceGames = await this.balanceGameService.findAll(limit, offset);
+
+    console.log(balanceGames);
+    return balanceGames.balanceGame;
+  }
+
+  @Query(() => [BalanceGame], { name: "balanceGamesTEST" })
+  async findAllTEST(): Promise<BalanceGame[]> {
+    const balanceGames = await this.balanceGameService.findAll();
 
     console.log(balanceGames);
     return balanceGames.balanceGame;

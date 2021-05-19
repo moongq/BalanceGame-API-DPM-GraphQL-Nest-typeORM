@@ -29,10 +29,7 @@ export class BalanceGameService {
   ) {}
 
   // :TODO transaction 추가.
-  async update(
-    updateBalanceGameInput: UpdateBalanceGameInput,
-    currentUserId: string
-  ): Promise<BalanceGame> {
+  async update(updateBalanceGameInput: UpdateBalanceGameInput, currentUserId: string): Promise<BalanceGame> {
     // Check Ownership :TODO - guard로 빼는게 좋을듯?
     const result = await this.balanceGameRepository
       .createQueryBuilder("game")
@@ -64,7 +61,9 @@ export class BalanceGameService {
     // Q: 키워드 다 지워버리고 새로 생성하는 방법으로 일단 진행.
     if (updateBalanceGameInput.balanceGameKeywords.length > 0) {
       // 1. 다 지우고
-      const deletedResult = await this.balanceGameKeywordService.removeKeywordsWithGameId(updateBalanceGameInput.balanceGameId);
+      const deletedResult = await this.balanceGameKeywordService.removeKeywordsWithGameId(
+        updateBalanceGameInput.balanceGameId
+      );
       console.log("deletedResult");
       console.log(deletedResult);
       // 2. 다시 모두 생성
@@ -131,7 +130,6 @@ export class BalanceGameService {
   }
 
   async findAll(limit?: number, offset?: number): Promise<BalanceGameList> {
-    
     const [balanceGames, count] = await this.balanceGameRepository.findAndCount({
       relations: ["balanceGameKeywords", "balanceGameSelections"],
       take: limit,
@@ -144,8 +142,21 @@ export class BalanceGameService {
 
     return {
       num: count,
-      balanceGame: balanceGames
+      balanceGame: balanceGames,
     };
+  }
+
+  async findAllTEST(): Promise<BalanceGame[]> {
+    const balanceGames = await this.balanceGameRepository.find({
+      relations: ["balanceGameKeywords", "balanceGameSelections"],
+      take: 5,
+      order: {
+        // :TODO 조건 추가
+        createdAt: "DESC",
+      },
+    });
+
+    return balanceGames;
   }
 
   async findOne(id: string): Promise<BalanceGame> {

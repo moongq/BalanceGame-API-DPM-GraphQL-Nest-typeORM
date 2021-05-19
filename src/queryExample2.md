@@ -4,11 +4,11 @@
 
 ## 밸런스게임 balanceGame
 
-- create: createBalanceGame
+- create: createBalanceGame .
 - findAll: balanceGames
-- findOne: balanceGame
-- update: updateBalanceGame
-- remove: removeBalanceGame
+- findOne: balanceGame .
+- update: updateBalanceGame .
+- remove: removeBalanceGame .
 
 ## 투표 balanceGameSelectionVote
 
@@ -53,7 +53,7 @@ mutation {
     description: "토맛토마토, 토마토맛토"
     balanceGameSelections: [
       {
-        order: 0
+        order: 0   # avaiable value:  O | 1
         description: "토맛 토마토",
         textColor: "주황"
         backgroundColor: "노랑"
@@ -103,8 +103,8 @@ mutation {
 - findAll: balanceGames # [ RETURN => BalanceGame[] ]
 
 ```graphql
-{ 
-	balanceGames {
+{
+  balanceGames {
     id
     totalVoteCount
     commentCount
@@ -232,6 +232,7 @@ mutation {
 ## 투표 balanceGameSelectionVote
 
 - create(logined): createVoteLogined [ RETURN => BalanceGame ]
+
 ```graphql
 HTTP HEADER
 {
