@@ -3,7 +3,7 @@ import { InputType, Int, Field } from "@nestjs/graphql";
 @InputType()
 export class UpdateBalanceGameSelectionInput {
   @Field()
-  id: string;
+  id!: string;
 
   @Field()
   description?: string;
