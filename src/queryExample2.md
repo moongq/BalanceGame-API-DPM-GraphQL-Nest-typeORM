@@ -126,7 +126,7 @@ mutation {
 }
 ```
 
-- findOne: balanceGame
+- findOne: balanceGame [ RETURN => BalanceGame ]
 
 ```graqhql
  {
@@ -257,7 +257,7 @@ mutation {
 }
 ```
 
-- create(notLogined): createVoteNotLogined
+- create(notLogined): createVoteNotLogined [ RETURN => BalanceGame ]
 
 ```graphql
 mutation {
@@ -333,7 +333,7 @@ mutation {
 
 ## 댓글
 
-- create: createComment
+- create: createComment [ RETURN => Comment ]
 
 ```graphql
 HTTP HEADER
@@ -354,7 +354,7 @@ mutation {
 
 ```
 
-- findComments: commentsByGameId
+- findComments: commentsByGameId [ RETURN => Comment[] ]
 
 ```graphql
 {
@@ -371,7 +371,7 @@ mutation {
 }
 ```
 
-- update: updateComment
+- update: updateComment [ RETURN => Comment ]
 
 ```graphql
 HTTP HEADER
@@ -388,7 +388,7 @@ mutation {
 }
 ```
 
-- remove: removeComment
+- remove: removeComment [ RETURN => Boolean]
 
 ```graphql
 HTTP HEADER
