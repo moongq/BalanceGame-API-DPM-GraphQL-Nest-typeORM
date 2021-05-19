@@ -103,25 +103,32 @@ mutation {
 - findAll: balanceGames # [ RETURN => BalanceGame[] ]
 
 ```graphql
-{
-  balanceGames {
-    id
-    totalVoteCount
-    commentCount
-    balanceGameSelections {
-      id
-      order
-      description
-      textColor
-      backgroundColor
-      backgroundImage
-      voteCount
+query {
+  balanceGames(balanceGamesState: {
+    limit: 2,
+    offset: 1
+  }) {
+    num
+    balanceGame {
+    	id
+      totalVoteCount
+      commentCount
+      balanceGameSelections {
+        id
+        order
+        description
+        textColor
+        backgroundColor
+        backgroundImage
+        voteCount
+      }
+      balanceGameKeywords {
+        id
+        name
+      }
+      createdAt  
     }
-    balanceGameKeywords {
-      id
-      name
-    }
-    createdAt
+    
   }
 }
 ```

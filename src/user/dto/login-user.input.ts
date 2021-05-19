@@ -5,6 +5,6 @@ export class LoginUserInput {
   @Field()
   socialKey: string;
 
-  @Field()
+  @Field({description: "kakao or naver"})
   socialType: string;
 }

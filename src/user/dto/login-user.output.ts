@@ -8,6 +8,6 @@ export class LoginUserOutput {
   @Field()
   email: string | null;
 
-  @Field()
+  @Field({description: "가입한 적이 없으면 REGISTER, 가입한 user는 LOGIN"})
   status: string;
 }

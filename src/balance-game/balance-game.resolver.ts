@@ -4,8 +4,9 @@ import { Resolver, Query, Mutation, Args } from "@nestjs/graphql";
 
 import { BalanceGameService } from "./balance-game.service";
 import { BalanceGame } from "./balance-game.model";
+import { BalanceGameList } from "./dto/balance-game-list.output";
+import { BalanceGamesStateInput } from "./dto/balance-game-state.input";
 
-import { BalanceGamesState } from "./dto/balance-game-state.input";
 import { CreateBalanceGameInput } from "./dto/create-balance-game.input";
 import { UpdateBalanceGameInput } from "./dto/update-balance-game.input";
 
@@ -40,18 +41,15 @@ export class BalanceGameResolver {
 
   // 검색 정렬: [ 최신순 / 인기순 ]
   // 검색 기준: [ 카테고리 / ]
-  // TODO BalanceGameList 쿼리로 세팅하면 에러
-  // ?? 추론 -> dto에 모델 받아와서 사용했는데 하나하나 다 등록해야되나...
-  @Query(() => [BalanceGame], { name: "balanceGames" })
+  @Query(() => BalanceGameList, { name: "balanceGames", description: "밸런스 게임 list 형태로 return" })
   async findAll(
-    @Args("balanceGamesState", { nullable: true }) balanceGamesState: BalanceGamesState
-  ): Promise<BalanceGame[]> {
+    @Args("balanceGamesState", { nullable: true }) balanceGamesState: BalanceGamesStateInput
+  ): Promise<BalanceGameList> {
     const limit = balanceGamesState?.limit;
     const offset = balanceGamesState?.offset;
     const balanceGames = await this.balanceGameService.findAll(limit, offset);
 
-    console.log(balanceGames);
-    return balanceGames.balanceGame;
+    return balanceGames;
   }
 
   @Query(() => [BalanceGame], { name: "balanceGamesTEST" })

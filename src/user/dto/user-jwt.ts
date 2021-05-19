@@ -3,7 +3,7 @@ import { ObjectType, Field } from "@nestjs/graphql";
 @ObjectType()
 export class UserJwt {
   @Field()
-  socailId: string;
+  socialId: string;
 
   @Field()
   userId: string;

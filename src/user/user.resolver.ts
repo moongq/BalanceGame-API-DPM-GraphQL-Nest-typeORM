@@ -44,29 +44,29 @@ export class UserResolver {
 
   @Mutation((returns) => LoginUserOutput)
   async login(@Args("loginUserInput") loginUserInput: LoginUserInput) {
-    let socailUserData;
+    let socialUserData;
     let status = "LOGIN";
     let userId;
     if (loginUserInput.socialType === "kakao") {
       // kakao 토큰인증
-      socailUserData = await this.userService.kakaoToken(loginUserInput.socialKey);
+      socialUserData = await this.userService.kakaoToken(loginUserInput.socialKey);
     } else if (loginUserInput.socialType === "naver") {
       // naver 토큰 인증
-      socailUserData = await this.userService.naverToken(loginUserInput.socialKey);
+      socialUserData = await this.userService.naverToken(loginUserInput.socialKey);
     } else {
       throw new HttpException("socialType Error ", HttpStatus.UNPROCESSABLE_ENTITY);
     }
-    if (socailUserData.result !== "FAIL") {
+    if (socialUserData.result !== "FAIL") {
       // 가입된 유저인지 체크
-      const getUser = await this.userService.getUserByOauth(socailUserData.socialId, loginUserInput.socialType);
+      const getUser = await this.userService.getUserByOauth(socialUserData.socialId, loginUserInput.socialType);
 
       if (!getUser) {
         // 가입한 적이 없으면 저장
         const user = await this.userService.oauthCreateUser({
-          socialId: socailUserData.socialId,
+          socialId: socialUserData.socialId,
           platformType: loginUserInput.socialType,
           profile: {
-            email: socailUserData.socialEmail,
+            email: socialUserData.socialEmail,
             nickname: "닉네임 난수 예정",
             userImage: "",
           },
@@ -78,13 +78,13 @@ export class UserResolver {
       }
     }
     const jwtToken = this.userService.createToken({
-      socailId: socailUserData.socialId,
+      socialId: socialUserData.socialId,
       userId: userId,
     });
 
     const userOauthResponse = {
       jwt: jwtToken,
-      email: socailUserData.socialEmail,
+      email: socialUserData.socialEmail,
       status: status,
     };
 

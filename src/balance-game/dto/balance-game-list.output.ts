@@ -4,9 +4,9 @@ import { BalanceGame } from "../balance-game.model";
 
 @ObjectType()
 export class BalanceGameList {
-  @Field()
+  @Field({description: "전체 밸런스게임 수"})
   num: number;
 
-  @Field()
+  @Field(()=> [BalanceGame])
   balanceGame: BalanceGame[];
 }
