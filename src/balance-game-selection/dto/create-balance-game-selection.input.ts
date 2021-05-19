@@ -11,7 +11,7 @@ export class CreateBalanceGameSelectionInput {
   balanceGameId?: string;
 
   @Field()
-  description?: string;
+  description!: string;
 
   @Field()
   textColor?: string;
@@ -23,5 +23,5 @@ export class CreateBalanceGameSelectionInput {
   backgroundImage?: string;
 
   @Field()
-  order: number;
+  order!: number;
 }

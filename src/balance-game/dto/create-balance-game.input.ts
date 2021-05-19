@@ -12,11 +12,11 @@ export class CreateBalanceGameInput {
   // userId: string;
 
   @Field((type) => String)
-  description: string;
+  description!: string;
 
   @Field((type) => [CreateBalanceGameSelectionInput])
-  balanceGameSelections: [CreateBalanceGameSelectionInput];
+  balanceGameSelections!: [CreateBalanceGameSelectionInput];
 
   @Field((type) => [CreateBalanceGameKeywordInput])
-  balanceGameKeywords: [CreateBalanceGameKeywordInput];
+  balanceGameKeywords!: [CreateBalanceGameKeywordInput];
 }
