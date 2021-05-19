@@ -1,10 +1,10 @@
-import { Injectable, Inject } from '@nestjs/common';
-import { NewRecipeInput } from './dtos/new-recipe.input';
-import { RecipesArgs } from './dtos/recipes.args';
-import { Recipe } from './recipe.model';
-import { UpdateRecipeInput } from './dtos/update-recipe.input';
-import { Repository } from 'typeorm';
-import { InjectRepository } from '@nestjs/typeorm';
+import { Injectable } from "@nestjs/common";
+import { InjectRepository } from "@nestjs/typeorm";
+import { Repository } from "typeorm";
+
+import { Recipe } from "./recipe.model";
+
+import { NewRecipeInput } from "./dtos/new-recipe.input";
 
 @Injectable()
 export class RecipesService {

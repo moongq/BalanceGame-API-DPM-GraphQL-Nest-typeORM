@@ -1,4 +1,4 @@
-import { ObjectType, Field, Int } from "@nestjs/graphql";
+import { ObjectType, Field } from "@nestjs/graphql";
 import {
   Column,
   CreateDateColumn,
@@ -8,6 +8,7 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from "typeorm";
+
 import { BalanceGame } from "../balance-game/balance-game.model";
 
 @ObjectType()
@@ -29,15 +30,15 @@ export class BalanceGameKeyword {
   @Column()
   balanceGameId: string;
 
-  @Field((type) => String)
+  @Field(() => String)
   @Column()
   status: string;
 
-  @Field((type) => Date)
+  @Field(() => Date)
   @CreateDateColumn({ type: "timestamp" })
   createdAt: string;
 
-  @Field((type) => Date)
+  @Field(() => Date)
   @UpdateDateColumn({ type: "timestamp" })
   updatedAt: Date;
 }

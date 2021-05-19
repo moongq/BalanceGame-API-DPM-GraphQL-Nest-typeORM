@@ -1,14 +1,7 @@
-import { ObjectType, Field, Int, ID } from "@nestjs/graphql";
+import { ObjectType, Field, Int } from "@nestjs/graphql";
+import { Entity, Column, PrimaryGeneratedColumn, OneToOne, UpdateDateColumn, CreateDateColumn } from "typeorm";
+
 import { User } from "../user/user.model";
-import {
-  Entity,
-  Column,
-  PrimaryGeneratedColumn,
-  OneToOne,
-  UpdateDateColumn,
-  CreateDateColumn,
-  JoinColumn,
-} from "typeorm";
 
 @ObjectType()
 @Entity()
@@ -18,27 +11,27 @@ export class UserProfile {
   id: string;
 
   @Column()
-  @Field((type) => String)
+  @Field(() => String)
   email: string;
 
   @Column()
-  @Field((type) => String)
+  @Field(() => String)
   nickname: string;
 
   @Column()
-  @Field((type) => String)
+  @Field(() => String)
   userImage: string;
 
   @Column()
-  @Field((type) => Int)
+  @Field(() => Int)
   level: string;
 
   @CreateDateColumn({ type: "timestamp" })
-  @Field((type) => Date)
+  @Field(() => Date)
   createdAt: string;
 
   @UpdateDateColumn({ type: "timestamp" })
-  @Field((type) => Date)
+  @Field(() => Date)
   updatedAt: Date;
 
   @OneToOne(() => User, (user) => user.profile)

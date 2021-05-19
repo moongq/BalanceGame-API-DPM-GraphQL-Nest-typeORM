@@ -1,4 +1,4 @@
-import { ObjectType, Field, Int } from "@nestjs/graphql";
+import { ObjectType, Field } from "@nestjs/graphql";
 import {
   Column,
   CreateDateColumn,
@@ -9,9 +9,9 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from "typeorm";
-import { BalanceGameSelectionVote } from "../balance-game-selection-vote/balance-game-selection-vote.model";
+
 import { BalanceGame } from "../balance-game/balance-game.model";
-import { User } from "../user/user.model";
+import { BalanceGameSelectionVote } from "../balance-game-selection-vote/balance-game-selection-vote.model";
 
 enum order {
   test1 = 0,
@@ -25,7 +25,7 @@ export class BalanceGameSelection {
   @PrimaryGeneratedColumn("uuid")
   id: string;
 
-  @ManyToOne((type) => BalanceGame, (balanceGame) => balanceGame.balanceGameSelections, { onDelete: "CASCADE" })
+  @ManyToOne(() => BalanceGame, (balanceGame) => balanceGame.balanceGameSelections, { onDelete: "CASCADE" })
   @JoinColumn({ name: "balanceGameId" })
   balanceGame: BalanceGame;
 
@@ -34,7 +34,7 @@ export class BalanceGameSelection {
   balanceGameId: string;
 
   @OneToMany(
-    (type) => BalanceGameSelectionVote,
+    () => BalanceGameSelectionVote,
     (balanceGameSelectionVote) => balanceGameSelectionVote.balanceGameSelection
   )
   balanceGameSelectionVotes: BalanceGameSelectionVote[];
@@ -67,11 +67,11 @@ export class BalanceGameSelection {
   @Column()
   status: string;
 
-  @Field((type) => Date)
+  @Field(() => Date)
   @CreateDateColumn({ type: "timestamp" })
   createdAt: string;
 
-  @Field((type) => Date)
+  @Field(() => Date)
   @UpdateDateColumn({ type: "timestamp" })
   updatedAt: Date;
 }

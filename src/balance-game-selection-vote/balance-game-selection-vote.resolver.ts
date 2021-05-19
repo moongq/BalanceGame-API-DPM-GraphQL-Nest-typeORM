@@ -1,13 +1,16 @@
 import { Resolver, Query, Mutation, Args, Int } from "@nestjs/graphql";
+import { UseGuards } from "@nestjs/common";
+
 import { BalanceGameSelectionVoteService } from "./balance-game-selection-vote.service";
 import { BalanceGameSelectionVote } from "./balance-game-selection-vote.model";
+
 import { CreateBalanceGameSelectionVoteInput } from "./dto/create-balance-game-selection-vote.input";
 import { UpdateBalanceGameSelectionVoteInput } from "./dto/update-balance-game-selection-vote.input";
-import { Token } from "../user/lib/user.decorator";
-import { UserJwt } from "../user/dto/user-jwt";
-import { UseGuards } from "@nestjs/common";
-import { AuthGuard } from "../user/auth.guard";
+
 import { BalanceGame } from "../balance-game/balance-game.model";
+import { AuthGuard } from "../user/auth.guard";
+import { UserJwt } from "../user/dto/user-jwt";
+import { Token } from "../user/lib/user.decorator";
 
 @Resolver(() => BalanceGameSelectionVote)
 export class BalanceGameSelectionVoteResolver {

@@ -1,10 +1,13 @@
 import { HttpException, HttpStatus, Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { Repository } from "typeorm";
-import { BalanceGameSelectionVoteService } from "../balance-game-selection-vote/balance-game-selection-vote.service";
+
+import { Reply } from "./reply.model";
+
 import { CreateReplyInput } from "./dto/create-reply.input";
 import { UpdateReplyInput } from "./dto/update-reply.input";
-import { Reply } from "./reply.model";
+
+import { BalanceGameSelectionVoteService } from "../balance-game-selection-vote/balance-game-selection-vote.service";
 
 @Injectable()
 export class ReplyService {

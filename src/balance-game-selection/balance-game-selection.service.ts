@@ -1,8 +1,9 @@
 import { Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { Repository } from "typeorm";
-import { BalanceGame } from "../balance-game/balance-game.model";
+
 import { BalanceGameSelection } from "./balance-game-selection.model";
+
 import { CreateBalanceGameSelectionInput } from "./dto/create-balance-game-selection.input";
 import { UpdateBalanceGameSelectionInput } from "./dto/update-balance-game-selection.input";
 

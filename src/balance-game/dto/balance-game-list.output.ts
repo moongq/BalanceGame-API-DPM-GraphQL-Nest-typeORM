@@ -1,4 +1,5 @@
-import { ObjectType, Int, Field } from "@nestjs/graphql";
+import { ObjectType, Field } from "@nestjs/graphql";
+
 import { BalanceGame } from "../balance-game.model";
 
 @ObjectType()

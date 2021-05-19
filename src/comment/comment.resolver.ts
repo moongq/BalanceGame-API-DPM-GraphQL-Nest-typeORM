@@ -1,9 +1,12 @@
-import { Resolver, Query, Mutation, Args, Int } from "@nestjs/graphql";
-import { CommentService } from "./comment.service";
+import { UseGuards } from "@nestjs/common";
+import { Resolver, Query, Mutation, Args } from "@nestjs/graphql";
+
 import { Comment } from "./comment.model";
+import { CommentService } from "./comment.service";
+
 import { CreateCommentInput } from "./dto/create-comment.input";
 import { UpdateCommentInput } from "./dto/update-comment.input";
-import { UseGuards } from "@nestjs/common";
+
 import { AuthGuard } from "../user/auth.guard";
 import { Token } from "../user/lib/user.decorator";
 import { UserJwt } from "../user/dto/user-jwt";

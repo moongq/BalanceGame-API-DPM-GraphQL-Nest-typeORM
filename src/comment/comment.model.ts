@@ -1,5 +1,5 @@
-import { ObjectType, Field, Int } from "@nestjs/graphql";
-import { BalanceGame } from "../balance-game/balance-game.model";
+import { ObjectType, Field } from "@nestjs/graphql";
+
 import {
   Column,
   CreateDateColumn,
@@ -10,9 +10,11 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from "typeorm";
-import { User } from "../user/user.model";
-import { Reply } from "src/reply/reply.model";
+
+import { BalanceGame } from "../balance-game/balance-game.model";
 import { Notification } from "../notification/notification.model";
+import { Reply } from "../reply/reply.model";
+import { User } from "../user/user.model";
 
 @ObjectType()
 @Entity()
@@ -21,7 +23,7 @@ export class Comment {
   @PrimaryGeneratedColumn("uuid")
   id: string;
 
-  @ManyToOne((type) => User, (user) => user.comments)
+  @ManyToOne(() => User, (user) => user.comments)
   @JoinColumn({ name: "userId" })
   user: User; // userId
 
@@ -29,7 +31,7 @@ export class Comment {
   @Column()
   userId!: string;
 
-  @ManyToOne((type) => BalanceGame, (balanceGame) => balanceGame.comments, { onDelete: "CASCADE" })
+  @ManyToOne(() => BalanceGame, (balanceGame) => balanceGame.comments, { onDelete: "CASCADE" })
   @JoinColumn({ name: "balanceGameId" })
   balanceGame: BalanceGame;
 
@@ -51,15 +53,15 @@ export class Comment {
   @Column()
   content!: string;
 
-  @Field((type) => String)
+  @Field(() => String)
   @Column()
   status: string;
 
-  @Field((type) => Date)
+  @Field(() => Date)
   @CreateDateColumn({ type: "timestamp" })
   createdAt: string;
 
-  @Field((type) => Date)
+  @Field(() => Date)
   @UpdateDateColumn({ type: "timestamp" })
   updatedAt: Date;
 }
