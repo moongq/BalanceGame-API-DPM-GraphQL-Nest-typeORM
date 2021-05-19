@@ -3,10 +3,10 @@ import { InputType, Int, Field } from "@nestjs/graphql";
 @InputType()
 export class CreateCommentInput {
   @Field()
-  balanceGameId: string;
+  balanceGameId?: string;
 
   @Field()
-  content: string;
+  content!: string;
 
   @Field()
   color?: string;

@@ -4,10 +4,10 @@ import { InputType, Field, Int, PartialType } from "@nestjs/graphql";
 @InputType()
 export class UpdateCommentInput {
   @Field()
-  id: string;
+  id!: string;
 
   @Field(() => String)
-  content: string;
+  content!: string;
 
   // @Field(() => String)
   // color?: string;

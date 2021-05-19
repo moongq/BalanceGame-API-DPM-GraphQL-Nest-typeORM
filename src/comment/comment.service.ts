@@ -24,6 +24,8 @@ export class CommentService {
   async create(userId: string, createCommentInput: CreateCommentInput): Promise<Comment> {
     // CHECK 투표했는지.
     const isVoted = await this.balanceGameSelectionVoteService.checkVoted(userId, createCommentInput.balanceGameId);
+    console.log("isVoted");
+    console.log(isVoted);
     if (isVoted == false) {
       throw new HttpException("please vote before make comment", HttpStatus.BAD_REQUEST);
     }

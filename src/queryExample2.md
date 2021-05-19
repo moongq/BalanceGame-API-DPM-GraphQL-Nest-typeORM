@@ -12,12 +12,12 @@
 
 ## 투표 balanceGameSelectionVote
 
-- create(logined): createVoteLogined
-- create(notLogined): createVoteNotLogined
-- findAll: balanceGameSelectionVotes
-- findOne: balanceGameSelectionVote
-- update(notLogined): removeBalanceGameSelectionVoteLogined
-- update(logined): updateVoteLogined
+- create(logined): createVoteLogined .
+- create(notLogined): createVoteNotLogined .
+- [dont need?] findAll: balanceGameSelectionVotes
+- [dont need?] findOne: balanceGameSelectionVote
+- update(logined): updateVoteLogined .
+- remove(logined): removeVoteLogined .
 
 ## 댓글
 
@@ -257,10 +257,29 @@ mutation {
 }
 ```
 
-- create(notLogined): createBalanceGameSelectionVoteNotLogined
-- findAll: balanceGameSelectionVotes
-- findOne: balanceGameSelectionVote
-- update(notLogined): removeBalanceGameSelectionVoteLogined
+- create(notLogined): createVoteNotLogined
+
+```graphql
+mutation {
+  createVoteNotLogined(
+    createBalanceGameSelectionVoteInput: {
+      balanceGameId: "45291777-cb15-4e28-b91d-db9b23b9cc24"
+      balanceGameSelectionId: "9809c7da-6989-4aa1-93d9-cc06a79a5309"
+    }
+  ) {
+    id
+    totalVoteCount
+    balanceGameSelections {
+      id
+      order
+      voteCount
+    }
+  }
+}
+```
+
+- [dont need?] findAll: balanceGameSelectionVotes
+- [dont need?] findOne: balanceGameSelectionVote
 
 - update(logined): updateVoteLogined [ RETURN => BalanceGame ]
 
@@ -288,12 +307,100 @@ mutation {
 }
 ```
 
+- remove: removeVoteLogined [ RETURN => Boolean ]
+
+```graphql
+HTTP HEADER
+{
+  "authorization" : "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzb2NhaWxJZCI6MTcyMDM3MDE3OCwidXNlcklkIjoiMTg0NWI2MWUtM2NhMi00OWM4LWJkMDktNDA0Y2U5NzRkNTQ5IiwiaWF0IjoxNjIxMDU5MzgzLCJleHAiOjE2NTI1OTUzODN9.AiDa9DFGMAHyScvcYdKthWYpGgrtL6A0OrM7Wdu1T10"
+}
+
+mutation {
+  removeVoteLogined(balanceGameId: "45291777-cb15-4e28-b91d-db9b23b9cc24") {
+		id
+    totalVoteCount
+    balanceGameSelections {
+      id
+      voteCount
+    }
+  }
+}
+```
+
+```graphql
+
+```
+
 ## 댓글
 
 - create: createComment
+
+```graphql
+HTTP HEADER
+{
+  "authorization" : "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzb2NhaWxJZCI6MTcyMDM3MDE3OCwidXNlcklkIjoiMTg0NWI2MWUtM2NhMi00OWM4LWJkMDktNDA0Y2U5NzRkNTQ5IiwiaWF0IjoxNjIxMDU5MzgzLCJleHAiOjE2NTI1OTUzODN9.AiDa9DFGMAHyScvcYdKthWYpGgrtL6A0OrM7Wdu1T10"
+}
+
+mutation {
+  createComment(createCommentInput:{
+    balanceGameId: "45291777-cb15-4e28-b91d-db9b23b9cc24"
+    content:"댓글이당2"
+  }) {
+    id
+    content
+    createdAt
+  }
+}
+
+```
+
 - findComments: commentsByGameId
+
+```graphql
+{
+  commentsByGameId(gameId: "45291777-cb15-4e28-b91d-db9b23b9cc24") {
+    id
+    content
+    color
+    replies {
+      id
+      content
+      color
+    }
+  }
+}
+```
+
 - update: updateComment
+
+```graphql
+HTTP HEADER
+{
+  "authorization" : "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzb2NhaWxJZCI6MTcyMDM3MDE3OCwidXNlcklkIjoiMTg0NWI2MWUtM2NhMi00OWM4LWJkMDktNDA0Y2U5NzRkNTQ5IiwiaWF0IjoxNjIxMDU5MzgzLCJleHAiOjE2NTI1OTUzODN9.AiDa9DFGMAHyScvcYdKthWYpGgrtL6A0OrM7Wdu1T10"
+}
+
+mutation {
+  updateComment(updateCommentInput: { id: "b6c29396-aa96-46a6-9c97-c0da6ae45709", content: "수정 댓글" }) {
+    id
+    content
+    userId
+  }
+}
+```
+
 - remove: removeComment
+
+```graphql
+HTTP HEADER
+{
+  "authorization" : "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzb2NhaWxJZCI6MTcyMDM3MDE3OCwidXNlcklkIjoiMTg0NWI2MWUtM2NhMi00OWM4LWJkMDktNDA0Y2U5NzRkNTQ5IiwiaWF0IjoxNjIxMDU5MzgzLCJleHAiOjE2NTI1OTUzODN9.AiDa9DFGMAHyScvcYdKthWYpGgrtL6A0OrM7Wdu1T10"
+}
+
+mutation {
+  removeComment(id: "8a1621db-0f2c-4482-9a04-5af3f5b1659f")
+}
+
+```
 
 ## 답글(대댓글)
 

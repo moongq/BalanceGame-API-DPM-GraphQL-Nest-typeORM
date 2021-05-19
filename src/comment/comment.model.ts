@@ -27,7 +27,7 @@ export class Comment {
 
   @Field(() => String)
   @Column()
-  userId: string;
+  userId!: string;
 
   @ManyToOne((type) => BalanceGame, (balanceGame) => balanceGame.comments, { onDelete: "CASCADE" })
   @JoinColumn({ name: "balanceGameId" })
@@ -35,7 +35,7 @@ export class Comment {
 
   @Field()
   @Column()
-  balanceGameId: string;
+  balanceGameId!: string;
 
   @Field()
   @Column()
@@ -49,7 +49,7 @@ export class Comment {
 
   @Field(() => String)
   @Column()
-  content: string;
+  content!: string;
 
   @Field((type) => String)
   @Column()
