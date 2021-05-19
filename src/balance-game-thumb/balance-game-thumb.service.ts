@@ -1,9 +1,10 @@
 import { Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { Repository } from "typeorm";
+
 import { BalanceGameThumb } from "./balance-game-thumb.model";
+
 import { CreateBalanceGameThumbInput } from "./dto/create-balance-game-thumb.input";
-import { UpdateBalanceGameThumbInput } from "./dto/update-balance-game-thumb.input";
 
 @Injectable()
 export class BalanceGameThumbService {

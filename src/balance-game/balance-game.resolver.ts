@@ -1,16 +1,17 @@
-import { Resolver, Query, Mutation, Args, Int } from "@nestjs/graphql";
+import { FileUpload, GraphQLUpload } from "graphql-upload";
+import { UseGuards } from "@nestjs/common";
+import { Resolver, Query, Mutation, Args } from "@nestjs/graphql";
+
 import { BalanceGameService } from "./balance-game.service";
 import { BalanceGame } from "./balance-game.model";
+
+import { BalanceGamesState } from "./dto/balance-game-state.input";
 import { CreateBalanceGameInput } from "./dto/create-balance-game.input";
 import { UpdateBalanceGameInput } from "./dto/update-balance-game.input";
-import { BalanceGamesState } from "./dto/balance-game-state.input";
-import { BalanceGameList } from "./dto/balance-game-list.output";
-import { UserJwt } from "../user/dto/user-jwt";
-import { FileUpload, GraphQLUpload } from "graphql-upload";
+
 import { FileService } from "../file/file.service";
-import { UseGuards } from "@nestjs/common";
-import { OnwershipGuard } from "./guard/ownership.guard";
 import { AuthGuard } from "../user/auth.guard";
+import { UserJwt } from "../user/dto/user-jwt";
 import { Token } from "../user/lib/user.decorator";
 
 @Resolver(() => BalanceGame)
@@ -43,7 +44,7 @@ export class BalanceGameResolver {
   // ?? 추론 -> dto에 모델 받아와서 사용했는데 하나하나 다 등록해야되나...
   @Query(() => [BalanceGame], { name: "balanceGames" })
   async findAll(
-    @Args("balanceGamesState", {nullable: true}) balanceGamesState: BalanceGamesState 
+    @Args("balanceGamesState", { nullable: true }) balanceGamesState: BalanceGamesState
   ): Promise<BalanceGame[]> {
     const limit = balanceGamesState?.limit;
     const offset = balanceGamesState?.offset;
@@ -75,7 +76,7 @@ export class BalanceGameResolver {
   async removeBalanceGame(
     @Args("id", { type: () => String }) id: string,
     @Token("user") token: UserJwt
-  ): Promise<Boolean> {
+  ): Promise<boolean> {
     return await this.balanceGameService.remove(id, token.userId);
   }
 }

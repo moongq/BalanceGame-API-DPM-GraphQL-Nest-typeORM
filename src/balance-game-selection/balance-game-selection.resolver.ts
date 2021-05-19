@@ -1,8 +1,9 @@
 import { Resolver, Query, Mutation, Args, Int } from "@nestjs/graphql";
-import { BalanceGameSelectionService } from "./balance-game-selection.service";
+
 import { BalanceGameSelection } from "./balance-game-selection.model";
+import { BalanceGameSelectionService } from "./balance-game-selection.service";
+
 import { CreateBalanceGameSelectionInput } from "./dto/create-balance-game-selection.input";
-import { UpdateBalanceGameSelectionInput } from "./dto/update-balance-game-selection.input";
 
 @Resolver(() => BalanceGameSelection)
 export class BalanceGameSelectionResolver {

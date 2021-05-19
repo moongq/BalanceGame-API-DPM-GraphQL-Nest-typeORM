@@ -1,4 +1,4 @@
-import { ObjectType, Field, Int } from "@nestjs/graphql";
+import { ObjectType, Field } from "@nestjs/graphql";
 import {
   Column,
   CreateDateColumn,
@@ -8,6 +8,7 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from "typeorm";
+
 import { BalanceGame } from "../balance-game/balance-game.model";
 import { User } from "../user/user.model";
 
@@ -18,7 +19,7 @@ export class BalanceGameThumb {
   @PrimaryGeneratedColumn("uuid")
   id: string;
 
-  @ManyToOne((type) => User, (user) => user.balanceGameThumbs, { onDelete: "CASCADE" })
+  @ManyToOne(() => User, (user) => user.balanceGameThumbs, { onDelete: "CASCADE" })
   @JoinColumn({ name: "userId" })
   user: User; // userId
 
@@ -34,15 +35,15 @@ export class BalanceGameThumb {
   @Column()
   balanceGameId: string;
 
-  @Field((type) => String)
+  @Field(() => String)
   @Column()
   status: string;
 
-  @Field((type) => Date)
+  @Field(() => Date)
   @CreateDateColumn({ type: "timestamp" })
   createdAt: string;
 
-  @Field((type) => Date)
+  @Field(() => Date)
   @UpdateDateColumn({ type: "timestamp" })
   updatedAt: Date;
 }

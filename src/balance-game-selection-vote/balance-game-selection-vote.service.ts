@@ -1,15 +1,13 @@
 import { HttpException, HttpStatus, Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
-import { SSL_OP_CIPHER_SERVER_PREFERENCE } from "node:constants";
-import { createInflate } from "node:zlib";
 import { Repository } from "typeorm";
-import { BalanceGameSelection } from "../balance-game-selection/balance-game-selection.model";
-import { BalanceGame } from "../balance-game/balance-game.model";
-import { BalanceGameService } from "../balance-game/balance-game.service";
-import { BalanceGameSelectionVote } from "./balance-game-selection-vote.model";
-import { BalanceGameSelectionVoteModule } from "./balance-game-selection-vote.module";
+
 import { CreateBalanceGameSelectionVoteInput } from "./dto/create-balance-game-selection-vote.input";
 import { UpdateBalanceGameSelectionVoteInput } from "./dto/update-balance-game-selection-vote.input";
+
+import { BalanceGame } from "../balance-game/balance-game.model";
+import { BalanceGameSelection } from "../balance-game-selection/balance-game-selection.model";
+import { BalanceGameSelectionVote } from "./balance-game-selection-vote.model";
 
 @Injectable()
 export class BalanceGameSelectionVoteService {
@@ -80,7 +78,7 @@ export class BalanceGameSelectionVoteService {
       .set({ totalVoteCount: () => "totalVoteCount + 1" })
       .execute();
 
-    // plus voteCout in SELECTION
+    // plus voteCount in SELECTION
     await this.balanceGameSelectionRepository
       .createQueryBuilder()
       .update()
@@ -193,7 +191,7 @@ export class BalanceGameSelectionVoteService {
       .getOne();
 
     if (!voteBeforeUpdate) {
-      throw new HttpException("wrong id inputed/gameId", HttpStatus.BAD_REQUEST);
+      throw new HttpException("Wrong id input/gameId", HttpStatus.BAD_REQUEST);
     }
 
     if (voteBeforeUpdate.balanceGameSelectionId == updateInput.newBalanceGameSelectionId) {
@@ -215,7 +213,7 @@ export class BalanceGameSelectionVoteService {
       throw new HttpException("not deleted/something wrong", HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
-    // minus voteCout in SELECTION
+    // minus voteCount in SELECTION
     await this.balanceGameSelectionRepository
       .createQueryBuilder()
       .update()
@@ -223,7 +221,7 @@ export class BalanceGameSelectionVoteService {
       .set({ voteCount: () => "voteCount - 1" })
       .execute();
 
-    // plus voteCout in SELECTION
+    // plus voteCount in SELECTION
     await this.balanceGameSelectionRepository
       .createQueryBuilder()
       .update()
@@ -248,7 +246,7 @@ export class BalanceGameSelectionVoteService {
       .getOne();
 
     if (!voteBeforeUpdate) {
-      throw new HttpException("wrong id inputed/gameId", HttpStatus.BAD_REQUEST);
+      throw new HttpException("Wrong id input/gameId", HttpStatus.BAD_REQUEST);
     }
 
     if (voteBeforeUpdate["userId"] !== currentUserId) {
@@ -273,7 +271,7 @@ export class BalanceGameSelectionVoteService {
       .set({ totalVoteCount: () => "totalVoteCount - 1" })
       .execute();
 
-    // plus voteCout in SELECTION
+    // plus voteCount in SELECTION
     await this.balanceGameSelectionRepository
       .createQueryBuilder()
       .update()

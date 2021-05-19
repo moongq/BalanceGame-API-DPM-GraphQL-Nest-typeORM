@@ -1,9 +1,10 @@
-import { Injectable } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
-import { CreateNotificationInput } from './dto/create-notification.input';
-import { UpdateNotificationInput } from './dto/update-notification.input';
-import { Notification } from './notification.model';
+import { Injectable } from "@nestjs/common";
+import { InjectRepository } from "@nestjs/typeorm";
+import { Repository } from "typeorm";
+
+import { Notification } from "./notification.model";
+
+import { CreateNotificationInput } from "./dto/create-notification.input";
 
 @Injectable()
 export class NotificationService {
@@ -13,11 +14,10 @@ export class NotificationService {
   ) {}
 
   async create(createNotificationInput: CreateNotificationInput): Promise<Notification> {
-    const newNoti = await this.notificationRepository.create(createNotificationInput)
+    const newNoti = await this.notificationRepository.create(createNotificationInput);
     const savedNoti = await this.notificationRepository.save(newNoti);
 
     return savedNoti;
-  
   }
 
   async findAll(): Promise<Notification[]> {
@@ -25,7 +25,7 @@ export class NotificationService {
   }
 
   async findOne(id: string): Promise<Notification> {
-    return await this.notificationRepository.findOne({ id: id })
+    return await this.notificationRepository.findOne({ id: id });
   }
 
   // update(id: number, updateNotificationInput: UpdateNotificationInput) {

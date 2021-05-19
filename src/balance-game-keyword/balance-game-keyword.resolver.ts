@@ -1,8 +1,9 @@
 import { Resolver, Query, Mutation, Args, Int } from "@nestjs/graphql";
-import { BalanceGameKeywordService } from "./balance-game-keyword.service";
+
 import { BalanceGameKeyword } from "./balance-game-keyword.model";
+import { BalanceGameKeywordService } from "./balance-game-keyword.service";
+
 import { CreateBalanceGameKeywordInput } from "./dto/create-balance-game-keyword.input";
-import { UpdateBalanceGameKeywordInput } from "./dto/update-balance-game-keyword.input";
 
 @Resolver(() => BalanceGameKeyword)
 export class BalanceGameKeywordResolver {

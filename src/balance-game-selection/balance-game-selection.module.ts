@@ -1,10 +1,12 @@
 import { Module } from "@nestjs/common";
-import { BalanceGameSelectionService } from "./balance-game-selection.service";
-import { BalanceGameSelectionResolver } from "./balance-game-selection.resolver";
 import { TypeOrmModule } from "@nestjs/typeorm";
+
+import { BalanceGameSelection } from "./balance-game-selection.model";
+import { BalanceGameSelectionResolver } from "./balance-game-selection.resolver";
+import { BalanceGameSelectionService } from "./balance-game-selection.service";
+
 import { BalanceGame } from "../balance-game/balance-game.model";
 import { User } from "../user/user.model";
-import { BalanceGameSelection } from "./balance-game-selection.model";
 
 @Module({
   imports: [TypeOrmModule.forFeature([BalanceGameSelection, BalanceGame, User])],

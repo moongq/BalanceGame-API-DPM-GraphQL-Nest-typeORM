@@ -1,17 +1,17 @@
 import { HttpException, HttpStatus, Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
-import { User } from "../user/user.model";
 import { Repository } from "typeorm";
+
 import { BalanceGame } from "./balance-game.model";
-import { BalanceGameModule } from "./balance-game.module";
+
+import { BalanceGameList } from "./dto/balance-game-list.output";
 import { CreateBalanceGameInput } from "./dto/create-balance-game.input";
 import { UpdateBalanceGameInput } from "./dto/update-balance-game.input";
-import { BalanceGameList } from "./dto/balance-game-list.output";
+
 import { BalanceGameKeywordService } from "../balance-game-keyword/balance-game-keyword.service";
 import { BalanceGameSelectionService } from "../balance-game-selection/balance-game-selection.service";
 import { FileService } from "../file/file.service";
-import { FileUpload } from "graphql-upload";
-import { BalanceGameSelectionVoteService } from "../balance-game-selection-vote/balance-game-selection-vote.service";
+import { User } from "../user/user.model";
 
 @Injectable()
 export class BalanceGameService {
@@ -29,10 +29,7 @@ export class BalanceGameService {
   ) {}
 
   // :TODO transaction 추가.
-  async update(
-    updateBalanceGameInput: UpdateBalanceGameInput,
-    currentUserId: string
-  ): Promise<BalanceGame> {
+  async update(updateBalanceGameInput: UpdateBalanceGameInput, currentUserId: string): Promise<BalanceGame> {
     // Check Ownership :TODO - guard로 빼는게 좋을듯?
     const result = await this.balanceGameRepository
       .createQueryBuilder("game")
@@ -41,7 +38,7 @@ export class BalanceGameService {
       .getOne();
 
     if (!result) {
-      throw new HttpException("wrong id inputed/gameId", HttpStatus.BAD_REQUEST);
+      throw new HttpException("Wrong id input/gameId", HttpStatus.BAD_REQUEST);
     }
 
     if (result["userId"] !== currentUserId) {
@@ -50,10 +47,10 @@ export class BalanceGameService {
 
     // return;
     // 1. update selections is has selection data
-    for (let balanGameSelectionInput of updateBalanceGameInput.balanceGameSelections) {
+    for (const balanceGameSelectionInput of updateBalanceGameInput.balanceGameSelections) {
       const updatedSelection = await this.balanceGameSelectionService.update(
-        balanGameSelectionInput.id,
-        balanGameSelectionInput
+        balanceGameSelectionInput.id,
+        balanceGameSelectionInput
       );
 
       console.log("updatedSelection");
@@ -64,11 +61,13 @@ export class BalanceGameService {
     // Q: 키워드 다 지워버리고 새로 생성하는 방법으로 일단 진행.
     if (updateBalanceGameInput.balanceGameKeywords.length > 0) {
       // 1. 다 지우고
-      const deletedResult = await this.balanceGameKeywordService.removeKeywordsWithGameId(updateBalanceGameInput.balanceGameId);
+      const deletedResult = await this.balanceGameKeywordService.removeKeywordsWithGameId(
+        updateBalanceGameInput.balanceGameId
+      );
       console.log("deletedResult");
       console.log(deletedResult);
       // 2. 다시 모두 생성
-      for (let balanceGameKeyword of updateBalanceGameInput.balanceGameKeywords) {
+      for (const balanceGameKeyword of updateBalanceGameInput.balanceGameKeywords) {
         const newKeyword = await this.balanceGameKeywordService.create({
           balanceGameId: updateBalanceGameInput.balanceGameId,
           name: balanceGameKeyword.name,
@@ -102,7 +101,7 @@ export class BalanceGameService {
   }
 
   async create(token: string, createBalanceGameInput: CreateBalanceGameInput): Promise<BalanceGame> {
-    const newBalanceGame = await this.balanceGameRepository.create({
+    const newBalanceGame = this.balanceGameRepository.create({
       userId: token,
       description: createBalanceGameInput.description,
     });
@@ -110,7 +109,7 @@ export class BalanceGameService {
     const savedBalanceGame = await this.balanceGameRepository.save(newBalanceGame);
 
     // balanceGameId 추가한 뒤 selections 생성
-    for (let selection of createBalanceGameInput.balanceGameSelections) {
+    for (const selection of createBalanceGameInput.balanceGameSelections) {
       selection.balanceGameId = savedBalanceGame.id;
     }
 
@@ -119,7 +118,7 @@ export class BalanceGameService {
     );
 
     // balanceGameId 추가한 뒤 keywords 생성
-    for (let keyword of createBalanceGameInput.balanceGameKeywords) {
+    for (const keyword of createBalanceGameInput.balanceGameKeywords) {
       keyword.balanceGameId = savedBalanceGame.id;
     }
 
@@ -131,7 +130,6 @@ export class BalanceGameService {
   }
 
   async findAll(limit?: number, offset?: number): Promise<BalanceGameList> {
-    
     const [balanceGames, count] = await this.balanceGameRepository.findAndCount({
       relations: ["balanceGameKeywords", "balanceGameSelections"],
       take: limit,
@@ -144,7 +142,7 @@ export class BalanceGameService {
 
     return {
       num: count,
-      balanceGame: balanceGames
+      balanceGame: balanceGames,
     };
   }
 
@@ -155,7 +153,7 @@ export class BalanceGameService {
     );
 
     if (!result) {
-      throw new HttpException("wrong id inputed/gameId", HttpStatus.BAD_REQUEST);
+      throw new HttpException("Wrong id input/gameId", HttpStatus.BAD_REQUEST);
     }
 
     return result;
@@ -168,7 +166,7 @@ export class BalanceGameService {
   //   return `This action updates a #${id} balanceGame`;
   // }
 
-  async remove(balanceGameId: string, currentUserId: string): Promise<Boolean> {
+  async remove(balanceGameId: string, currentUserId: string): Promise<boolean> {
     // Check Ownership :TODO - guard로 빼는게 좋을듯?
     const result = await this.balanceGameRepository
       .createQueryBuilder("game")
@@ -177,7 +175,7 @@ export class BalanceGameService {
       .getOne();
 
     if (!result) {
-      throw new HttpException("wrong id inputed/gameId", HttpStatus.BAD_REQUEST);
+      throw new HttpException("Wrong id input/gameId", HttpStatus.BAD_REQUEST);
     }
 
     if (result["userId"] !== currentUserId) {

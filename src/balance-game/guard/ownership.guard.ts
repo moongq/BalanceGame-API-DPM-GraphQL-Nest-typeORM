@@ -4,7 +4,7 @@ import * as jwt from "jsonwebtoken";
 import { BalanceGameService } from "../balance-game.service";
 
 @Injectable()
-export class OnwershipGuard implements CanActivate {
+export class Ownership implements CanActivate {
   constructor(@Inject("BalanceGameService") private readonly balanceGameService: BalanceGameService) {}
 
   async canActivate(context: ExecutionContext): Promise<boolean> {
@@ -33,14 +33,14 @@ export class OnwershipGuard implements CanActivate {
 
   async validateToken(auth: string) {
     if (auth.split(" ")[0] !== "Bearer") {
-      throw new HttpException("Invaild token", HttpStatus.UNAUTHORIZED);
+      throw new HttpException("Invalid token", HttpStatus.UNAUTHORIZED);
     }
 
     const token = auth.split(" ")[1];
     try {
-      return await jwt.verify(token, process.env.JWT_SECRET_KEY);
+      return jwt.verify(token, process.env.JWT_SECRET_KEY);
     } catch (e) {
-      throw new HttpException("Invaild token", HttpStatus.UNAUTHORIZED);
+      throw new HttpException("Invalid token", HttpStatus.UNAUTHORIZED);
     }
   }
 }

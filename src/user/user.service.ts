@@ -1,14 +1,15 @@
+import { Injectable } from "@nestjs/common";
+import { InjectRepository } from "@nestjs/typeorm";
+import axios from "axios";
+import jwt from "jsonwebtoken";
+import { Repository } from "typeorm";
 
-import { Injectable } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
-import { UserProfileService } from 'src/user-profile/user-profile.service';
-import { Repository } from 'typeorm';
-import axios, { AxiosPromise } from 'axios';
-import { CreateUserInput } from './dto/create-user.input';
-import { UserJwt } from './dto/user-jwt';
-import { User } from './user.model';
-import * as jwt from 'jsonwebtoken';
+import { User } from "./user.model";
 
+import { CreateUserInput } from "./dto/create-user.input";
+import { UserJwt } from "./dto/user-jwt";
+
+import { UserProfileService } from "../user-profile/user-profile.service";
 
 @Injectable()
 export class UserService {
@@ -41,15 +42,15 @@ export class UserService {
 
     return await this.userRepository.save(newUser);
   }
-  
-  async kakaoToken(token: String) {
+
+  async kakaoToken(token: string) {
     try {
       const kakaoRes = await axios({
         method: "GET",
-        url: 'https://kapi.kakao.com/v2/user/me',
+        url: "https://kapi.kakao.com/v2/user/me",
         headers: {
-          Authorization: `Bearer ${token}`
-        }
+          Authorization: `Bearer ${token}`,
+        },
       });
       const data = kakaoRes.data;
       const kakaoId = data.id;
@@ -59,24 +60,24 @@ export class UserService {
         result: "SUCCESS",
         data: data,
         socialId: kakaoId,
-        socialEmail: kakaoEmail
+        socialEmail: kakaoEmail,
       };
     } catch (e) {
       console.log(e);
       return {
-        result: "FAIL"
+        result: "FAIL",
       };
     }
   }
 
-  async naverToken(token: String) {
+  async naverToken(token: string) {
     try {
       const naverRes = await axios({
         method: "GET",
-        url: 'https://openapi.naver.com/v1/nid/me',
+        url: "https://openapi.naver.com/v1/nid/me",
         headers: {
-          Authorization: `Bearer ${token}`
-        }
+          Authorization: `Bearer ${token}`,
+        },
       });
       const data = naverRes.data;
       console.log("naver token data ", data);
@@ -87,29 +88,25 @@ export class UserService {
         result: "SUCCESS",
         data: data,
         socialId: naverId,
-        socialEmail: naverEmail
+        socialEmail: naverEmail,
       };
-    } catch(e) {
+    } catch (e) {
       console.log(e);
       return {
-        result: "FAIL"
+        result: "FAIL",
       };
     }
   }
 
   createToken(user: UserJwt) {
-    return jwt.sign(
-      user, 
-      process.env.JWT_SECRET_KEY,
-      { expiresIn: '365d' });
+    return jwt.sign(user, process.env.JWT_SECRET_KEY, { expiresIn: "365d" });
   }
 
   async getUserByOauth(socialId: string, platformType: string) {
-    
     return await this.userRepository.findOne({
       socialId: socialId,
-      platformType: platformType
-    })
+      platformType: platformType,
+    });
   }
 
   async findAll() {
@@ -118,17 +115,15 @@ export class UserService {
     return Users;
   }
 
-  async findOne(userId: String) {
+  async findOne(userId: string) {
     const user = this.userRepository.findOne({
       where: {
-        id: userId
-      }
-    })
+        id: userId,
+      },
+    });
 
     return user;
   }
-
-
 
   // create(createUserInput: CreateUserInput) {
   //   return 'This action adds a new user';

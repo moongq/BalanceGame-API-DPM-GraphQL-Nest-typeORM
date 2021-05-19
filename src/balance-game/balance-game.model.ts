@@ -1,25 +1,22 @@
-import { ObjectType, Field, ID, Int } from "@nestjs/graphql";
-import { User } from "../user/user.model";
+import { ObjectType, Field, Int } from "@nestjs/graphql";
 import {
-  Entity,
   Column,
-  PrimaryGeneratedColumn,
-  OneToOne,
-  JoinColumn,
-  UpdateDateColumn,
   CreateDateColumn,
+  Entity,
+  JoinColumn,
   ManyToOne,
-  RelationId,
   OneToMany,
-  AfterLoad,
+  PrimaryGeneratedColumn,
+  UpdateDateColumn,
 } from "typeorm";
+
+import { BalanceGameKeyword } from "../balance-game-keyword/balance-game-keyword.model";
+import { BalanceGameThumb } from "../balance-game-thumb/balance-game-thumb.model";
 import { BalanceGameSelection } from "../balance-game-selection/balance-game-selection.model";
 import { BalanceGameSelectionVote } from "../balance-game-selection-vote/balance-game-selection-vote.model";
-import { BalanceGameThumb } from "../balance-game-thumb/balance-game-thumb.model";
-import { BalanceGameKeyword } from "../balance-game-keyword/balance-game-keyword.model";
 import { Comment } from "../comment/comment.model";
-import { Notification } from "src/notification/notification.model";
-import { IsOptional } from "class-validator";
+import { Notification } from "../notification/notification.model";
+import { User } from "../user/user.model";
 
 @ObjectType()
 @Entity()
@@ -28,7 +25,7 @@ export class BalanceGame {
   @PrimaryGeneratedColumn("uuid")
   id: string;
 
-  @ManyToOne((type) => User, (user) => user.balanceGames)
+  @ManyToOne(() => User, (user) => user.balanceGames)
   @JoinColumn({ name: "userId" })
   user: User; // userId
 
@@ -36,53 +33,53 @@ export class BalanceGame {
   @Column()
   userId: string;
 
-  @OneToMany((type) => BalanceGameSelection, (balanceGameSelection) => balanceGameSelection.balanceGame)
+  @OneToMany(() => BalanceGameSelection, (balanceGameSelection) => balanceGameSelection.balanceGame)
   balanceGameSelections: BalanceGameSelection[];
 
-  @OneToMany((type) => BalanceGameSelectionVote, (balanceGameSelectionVote) => balanceGameSelectionVote.balanceGame)
+  @OneToMany(() => BalanceGameSelectionVote, (balanceGameSelectionVote) => balanceGameSelectionVote.balanceGame)
   balanceGameSelectionVotes: BalanceGameSelectionVote[];
 
-  @Field((type) => Number)
+  @Field(() => Number)
   @Column({ default: 0 })
   balanceGameSelectionVotesCount: number;
 
-  @OneToMany((type) => BalanceGameThumb, (balanceGameThumb) => balanceGameThumb.balanceGame)
+  @OneToMany(() => BalanceGameThumb, (balanceGameThumb) => balanceGameThumb.balanceGame)
   balanceGameThumbs: BalanceGameThumb[];
 
-  @OneToMany(() => BalanceGameKeyword, (balanceGaneKeyword) => balanceGaneKeyword.balanceGame)
+  @OneToMany(() => BalanceGameKeyword, (balanceGameKeyword) => balanceGameKeyword.balanceGame)
   balanceGameKeywords: BalanceGameKeyword[];
 
-  @OneToMany((type) => Notification, (notification) => notification.balanceGame)
+  @OneToMany(() => Notification, (notification) => notification.balanceGame)
   notifications: Notification[];
 
   @OneToMany(() => Comment, (comment) => comment.balanceGame)
   comments: Comment[];
 
-  @Field((type) => String)
+  @Field(() => String)
   @Column()
   description: string;
 
-  @Field((type) => Int)
+  @Field(() => Int)
   @Column({ default: 0 })
   totalVoteCount: number;
 
-  @Field((type) => Int)
+  @Field(() => Int)
   @Column({ default: 0 })
   commentCount: number;
 
-  @Field((type) => Int)
+  @Field(() => Int)
   @Column({ default: 0 })
   thumbs: number;
 
-  @Field((type) => String)
+  @Field(() => String)
   @Column()
   status: string;
 
-  @Field((type) => Date)
+  @Field(() => Date)
   @CreateDateColumn({ type: "timestamp" })
   createdAt: string;
 
-  @Field((type) => Date)
+  @Field(() => Date)
   @UpdateDateColumn({ type: "timestamp" })
   updatedAt: Date;
 }

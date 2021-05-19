@@ -1,5 +1,5 @@
-import { InputType, Int, Field } from "@nestjs/graphql";
-import { IsOptional, Length, MaxLength } from "class-validator";
+import { InputType, Field } from "@nestjs/graphql";
+
 import { CreateUserProfileInput } from "../../user-profile/dto/create-user-profile.input";
 
 @InputType()

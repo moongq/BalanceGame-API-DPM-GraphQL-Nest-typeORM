@@ -1,29 +1,22 @@
-import {
-  Resolver,
-  Query,
-  Mutation,
-  Args,
-  Int,
-  ResolveProperty,
-  Parent,
-  ResolveField,
-  Context
-} from '@nestjs/graphql';
-import { Header, UseGuards, HttpStatus, HttpException } from '@nestjs/common';
-import { UserService } from './user.service';
-import { User } from './user.model';
-import { CreateUserInput } from './dto/create-user.input';
-import { LoginUserInput } from './dto/login-user.input';
-import { LoginUserOutput } from './dto/login-user.output';
-import { SetProfileInput } from './dto/set-profile.input';
-import { UserJwt } from './dto/user-jwt';
-import { UserProfile } from '../user-profile/user-profile.model';
-import { UserProfileService } from '../user-profile/user-profile.service';
-import { AuthGuard } from './auth.guard';
-import { Token } from './lib/user.decorator';
-import * as jwt from 'jsonwebtoken';
+import { Resolver, Query, Mutation, Args, Parent, ResolveField } from "@nestjs/graphql";
+import { UseGuards, HttpStatus, HttpException } from "@nestjs/common";
+
+import { AuthGuard } from "./auth.guard";
+import { Token } from "./lib/user.decorator";
+
+import { User } from "./user.model";
+import { UserService } from "./user.service";
+
+import { CreateUserInput } from "./dto/create-user.input";
+import { LoginUserInput } from "./dto/login-user.input";
+import { LoginUserOutput } from "./dto/login-user.output";
+import { SetProfileInput } from "./dto/set-profile.input";
+import { UserJwt } from "./dto/user-jwt";
+
 import { BalanceGame } from "../balance-game/balance-game.model";
 import { BalanceGameService } from "../balance-game/balance-game.service";
+import { UserProfile } from "../user-profile/user-profile.model";
+import { UserProfileService } from "../user-profile/user-profile.service";
 
 @Resolver(() => User)
 export class UserResolver {
@@ -50,16 +43,13 @@ export class UserResolver {
   }
 
   @Mutation((returns) => LoginUserOutput)
-  async login(
-    @Args('loginUserInput') loginUserInput: LoginUserInput) {
-    let userOauthResponse;
+  async login(@Args("loginUserInput") loginUserInput: LoginUserInput) {
     let socailUserData;
     let status = "LOGIN";
     let userId;
     if (loginUserInput.socialType === "kakao") {
-      // kakao 토큰인증 
+      // kakao 토큰인증
       socailUserData = await this.userService.kakaoToken(loginUserInput.socialKey);
-      
     } else if (loginUserInput.socialType === "naver") {
       // naver 토큰 인증
       socailUserData = await this.userService.naverToken(loginUserInput.socialKey);
@@ -67,20 +57,20 @@ export class UserResolver {
       throw new HttpException("socialType Error ", HttpStatus.UNPROCESSABLE_ENTITY);
     }
     if (socailUserData.result !== "FAIL") {
-      // 가입된 유저인지 체크 
+      // 가입된 유저인지 체크
       const getUser = await this.userService.getUserByOauth(socailUserData.socialId, loginUserInput.socialType);
-      
+
       if (!getUser) {
-        // 가입한 적이 없으면 저장 
+        // 가입한 적이 없으면 저장
         const user = await this.userService.oauthCreateUser({
           socialId: socailUserData.socialId,
           platformType: loginUserInput.socialType,
           profile: {
             email: socailUserData.socialEmail,
             nickname: "닉네임 난수 예정",
-            userImage: ""
-          }
-        })
+            userImage: "",
+          },
+        });
         status = "REGISTER";
         userId = user.id;
       } else {
@@ -89,37 +79,38 @@ export class UserResolver {
     }
     const jwtToken = this.userService.createToken({
       socailId: socailUserData.socialId,
-      userId: userId
+      userId: userId,
     });
 
-    userOauthResponse = {
+    const userOauthResponse = {
       jwt: jwtToken,
       email: socailUserData.socialEmail,
-      status: status
-    }
+      status: status,
+    };
 
     return userOauthResponse;
   }
 
-  // 프로필 업데이트 
+  // 프로필 업데이트
   @Mutation((returns) => UserProfile)
   @UseGuards(new AuthGuard())
-  async setProfile(
-    @Args('setProfileInput') setProfileInput: SetProfileInput,
-    @Token('user') token: UserJwt) {
-      const userData = await this.userService.findOne(token.userId);
-      const userProfile = await this.userProfileService.update(userData.profile.id, setProfileInput.nickname, setProfileInput.email);
-      return userProfile;
-    }
-
-  @Query((returns) => User, { name: 'mypage' })
-  @UseGuards(new AuthGuard())
-  async myPage(@Token('user') token: UserJwt) {
+  async setProfile(@Args("setProfileInput") setProfileInput: SetProfileInput, @Token("user") token: UserJwt) {
     const userData = await this.userService.findOne(token.userId);
-    
-    return userData;
+    const userProfile = await this.userProfileService.update(
+      userData.profile.id,
+      setProfileInput.nickname,
+      setProfileInput.email
+    );
+    return userProfile;
   }
 
+  @Query((returns) => User, { name: "mypage" })
+  @UseGuards(new AuthGuard())
+  async myPage(@Token("user") token: UserJwt) {
+    const userData = await this.userService.findOne(token.userId);
+
+    return userData;
+  }
 
   // @ResolveField()
   // async userProfile(@Parent() parent): Promise<UserProfile> {
