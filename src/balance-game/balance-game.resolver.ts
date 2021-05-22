@@ -61,12 +61,20 @@ export class BalanceGameResolver {
     return balanceGames.balanceGame;
   }
 
-  @Query(() => BalanceGame, { name: "balanceGame" })
-  @UseGuards(new CheckLoginOrNot())
-  async findOne(@Token("user") token: UserJwt, @Args("id") id: string): Promise<BalanceGame> {
+  @Query(() => BalanceGame, { name: "balanceGameLogined" })
+  @UseGuards(new AuthGuard())
+  async findOneLogined(@Token("user") token: UserJwt, @Args("id") id: string): Promise<BalanceGame> {
     const result = await this.balanceGameService.findOne(token.userId, id);
     return result;
   }
+
+  @Query(() => BalanceGame, { name: "balanceGameNotLogined" })
+  async findOneNotLogined(@Token("user") token: UserJwt, @Args("id") id: string): Promise<BalanceGame> {
+    const result = await this.balanceGameService.findOneNotLogined(id);
+    return result;
+  }
+
+  @Query(() => BalanceGame, { name: "nextGameByRandom" })
 
   // :TODO 미들웨어 추가 [로그인, 내 게임인지 여부, 게임 ID가 유효한지.]
   @Mutation(() => BalanceGame)

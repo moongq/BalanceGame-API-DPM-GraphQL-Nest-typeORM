@@ -101,7 +101,7 @@ __decorate([
     __metadata("design:type", String)
 ], BalanceGame.prototype, "status", void 0);
 __decorate([
-    graphql_1.Field(() => Boolean),
+    graphql_1.Field(() => Boolean, { nullable: true }),
     typeorm_1.Column({ nullable: true }),
     __metadata("design:type", Boolean)
 ], BalanceGame.prototype, "isVoted", void 0);

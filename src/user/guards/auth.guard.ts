@@ -8,7 +8,7 @@ export class AuthGuard implements CanActivate {
     const ctx = GqlExecutionContext.create(context).getContext().req;
     // console.log(ctx.headers);
     if (!ctx.headers.authorization) {
-      return false;
+      throw new HttpException("Invalid Token", HttpStatus.UNAUTHORIZED);
     }
     ctx.user = await this.validateToken(ctx.headers.authorization);
 

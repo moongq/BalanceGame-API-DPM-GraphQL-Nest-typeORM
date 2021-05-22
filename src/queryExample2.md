@@ -129,11 +129,41 @@ query {
 }
 ```
 
-- findOne: balanceGame [ RETURN => BalanceGame ]
+- findOne Logined: balanceGameLogined [ RETURN => BalanceGame ]
 
 ```graqhql
  {
-  balanceGame (id:"a0717af5-e8d9-4128-acfc-f9e8b3a1f3c3")
+  balanceGameLogined (id:"a0717af5-e8d9-4128-acfc-f9e8b3a1f3c3")
+	 {
+    id
+    userId
+  	totalVoteCount
+    commentCount
+    isVoted
+    balanceGameSelections{
+      id
+      order
+      voteCount
+      description
+      textColor
+      backgroundColor
+      backgroundImage
+      balanceGameId
+    }
+    balanceGameKeywords {
+      id
+      name
+      balanceGameId
+    }
+  }
+}
+```
+
+- findOne NotLogined: balanceGameNotLogined [ RETURN => BalanceGame ]
+
+```graqhql
+ {
+  balanceGameNotLogined (id:"a0717af5-e8d9-4128-acfc-f9e8b3a1f3c3")
 	 {
     id
     userId

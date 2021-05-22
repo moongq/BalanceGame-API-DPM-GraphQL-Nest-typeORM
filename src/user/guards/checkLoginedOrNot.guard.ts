@@ -8,6 +8,7 @@ export class CheckLoginOrNot implements CanActivate {
     const ctx = GqlExecutionContext.create(context).getContext().req;
     // console.log(ctx.headers);
     if (!ctx.headers.authorization) {
+      console.log(ctx.headers.authorization);
       return true;
     }
     ctx.user = await this.validateToken(ctx.headers.authorization);

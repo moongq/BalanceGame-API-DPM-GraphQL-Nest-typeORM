@@ -140,6 +140,13 @@ let BalanceGameService = class BalanceGameService {
         console.log(result);
         return result;
     }
+    async findOneNotLogined(gameId) {
+        const result = await this.balanceGameRepository.findOne({ id: gameId }, { relations: ["balanceGameKeywords", "balanceGameSelections"] });
+        if (!result) {
+            throw new common_1.HttpException("Wrong id input/gameId", common_1.HttpStatus.BAD_REQUEST);
+        }
+        return result;
+    }
     async findAllByUserID(userId) {
         return await this.balanceGameRepository.find({ userId });
     }

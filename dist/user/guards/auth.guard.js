@@ -14,7 +14,7 @@ let AuthGuard = class AuthGuard {
     async canActivate(context) {
         const ctx = graphql_1.GqlExecutionContext.create(context).getContext().req;
         if (!ctx.headers.authorization) {
-            return false;
+            throw new common_1.HttpException("Invalid Token", common_1.HttpStatus.UNAUTHORIZED);
         }
         ctx.user = await this.validateToken(ctx.headers.authorization);
         return true;

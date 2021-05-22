@@ -15,7 +15,8 @@ export declare class BalanceGameResolver {
     uploadFile(file1: FileUpload): Promise<unknown>;
     findAll(balanceGamesState: BalanceGamesStateInput): Promise<BalanceGameList>;
     findAllTEST(): Promise<BalanceGame[]>;
-    findOne(token: UserJwt, id: string): Promise<BalanceGame>;
+    findOneLogined(token: UserJwt, id: string): Promise<BalanceGame>;
+    findOneNotLogined(token: UserJwt, id: string): Promise<BalanceGame>;
     updateBalanceGame(updateBalanceGameInput: UpdateBalanceGameInput, token: UserJwt): Promise<BalanceGame>;
     removeBalanceGame(id: string, token: UserJwt): Promise<boolean>;
 }

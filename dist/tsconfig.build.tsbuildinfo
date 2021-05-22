@@ -5861,7 +5861,7 @@
         "affectsGlobalScope": false
       },
       "../src/balance-game/balance-game.model.ts": {
-        "version": "fbda10771be3c12b76c5334ead9a88c029b8b42111a6aa0b62bebfe0169c1500",
+        "version": "08de55afedc624c538433c6981af196d6d0feeb1f1a8402bee30e61f453f5167",
         "signature": "db0218de1eda017b17e337353c8518fc23e8d0baab9aa2a3a85fe9fb37dcee81",
         "affectsGlobalScope": false
       },
@@ -5936,8 +5936,8 @@
         "affectsGlobalScope": false
       },
       "../src/balance-game/balance-game.service.ts": {
-        "version": "bb953df093573d418ee2faad34d6f912ce3734e04e7cd453736a82d052537184",
-        "signature": "1dbdd4618d58fa42e796afd8d5cccdc92192346b9a26ea63614faecfdcebb881",
+        "version": "c1b1e522ee10e7cb1c55e816fa717307bc19ece018a14dcb70e22b458a9e9168",
+        "signature": "b519e55c6735ffed249b783084e4b3c88a02dea20e58d6bd51f2345afee57dca",
         "affectsGlobalScope": false
       },
       "../src/balance-game/dto/balance-game-state.input.ts": {
@@ -5951,7 +5951,7 @@
         "affectsGlobalScope": false
       },
       "../src/user/guards/auth.guard.ts": {
-        "version": "83dc7eef377993d7ded3b1486e0f9294cfa93c6b6a75b66192430c74d57cada3",
+        "version": "58813480d297fa47cfd568e135542b5afe57a9fb26040b6983871aac445d2f2c",
         "signature": "a2247a2677fd146c739eabcdb8092fd658c881b730928f7f4b339ca075d4d4f5",
         "affectsGlobalScope": false
       },
@@ -5966,13 +5966,13 @@
         "affectsGlobalScope": false
       },
       "../src/user/guards/checkloginedornot.guard.ts": {
-        "version": "b6d4c78c38366f3bf3338de78194666ad17e9c20bbd774c8abfb48a538df3afe",
+        "version": "d0da8184acb87e75576f3c82d5852e17b9ad5c45fb3ab93fbf28d1aeb154e4af",
         "signature": "7aca09230147b5b1027b3c17aff87eab083def7aa8cf26965e01a764e35ac068",
         "affectsGlobalScope": false
       },
       "../src/balance-game/balance-game.resolver.ts": {
-        "version": "b864c073b7aa581b3df8b165bb44b746ff6320de478856b9647bf235cc917c14",
-        "signature": "a849cfc1a64a450405f2c224f94c6565089d3d7db3366dc502637f63f953e3df",
+        "version": "50ebcb012d1e8493dbe1dff61f2ab14766eb0b1b2014fd07713cc264eef45fda",
+        "signature": "29232f606f445db0ac1e202cd42f6bae3983c599860efe172f2e08a9dd6d6c2a",
         "affectsGlobalScope": false
       },
       "../src/balance-game-selection/balance-game-selection.resolver.ts": {

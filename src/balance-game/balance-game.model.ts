@@ -75,7 +75,7 @@ export class BalanceGame {
   @Column()
   status: string;
 
-  @Field(() => Boolean)
+  @Field(() => Boolean, { nullable: true })
   @Column({ nullable: true })
   isVoted: boolean;
 

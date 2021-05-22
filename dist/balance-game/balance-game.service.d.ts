@@ -21,6 +21,7 @@ export declare class BalanceGameService {
     findAll(limit?: number, offset?: number): Promise<BalanceGameList>;
     findAllTEST(): Promise<BalanceGame[]>;
     findOne(userId: string, gameId: string): Promise<BalanceGame>;
+    findOneNotLogined(gameId: string): Promise<BalanceGame>;
     findAllByUserID(userId: string): Promise<BalanceGame[]>;
     remove(balanceGameId: string, currentUserId: string): Promise<boolean>;
 }

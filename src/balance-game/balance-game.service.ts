@@ -195,6 +195,19 @@ export class BalanceGameService {
     return result;
   }
 
+  async findOneNotLogined(gameId: string): Promise<BalanceGame> {
+    const result = await this.balanceGameRepository.findOne(
+      { id: gameId },
+      { relations: ["balanceGameKeywords", "balanceGameSelections"] }
+    );
+
+    if (!result) {
+      throw new HttpException("Wrong id input/gameId", HttpStatus.BAD_REQUEST);
+    }
+
+    return result;
+  }
+
   async findAllByUserID(userId: string): Promise<BalanceGame[]> {
     return await this.balanceGameRepository.find({ userId });
   }

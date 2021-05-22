@@ -14,6 +14,7 @@ let CheckLoginOrNot = class CheckLoginOrNot {
     async canActivate(context) {
         const ctx = graphql_1.GqlExecutionContext.create(context).getContext().req;
         if (!ctx.headers.authorization) {
+            console.log(ctx.headers.authorization);
             return true;
         }
         ctx.user = await this.validateToken(ctx.headers.authorization);

@@ -26,7 +26,6 @@ const file_service_1 = require("../file/file.service");
 const auth_guard_1 = require("../user/guards/auth.guard");
 const user_jwt_1 = require("../user/dto/user-jwt");
 const user_decorator_1 = require("../user/lib/user.decorator");
-const checkLoginedOrNot_guard_1 = require("../user/guards/checkLoginedOrNot.guard");
 let BalanceGameResolver = class BalanceGameResolver {
     constructor(balanceGameService, fileService) {
         this.balanceGameService = balanceGameService;
@@ -50,8 +49,12 @@ let BalanceGameResolver = class BalanceGameResolver {
         console.log(balanceGames);
         return balanceGames.balanceGame;
     }
-    async findOne(token, id) {
+    async findOneLogined(token, id) {
         const result = await this.balanceGameService.findOne(token.userId, id);
+        return result;
+    }
+    async findOneNotLogined(token, id) {
+        const result = await this.balanceGameService.findOneNotLogined(id);
         return result;
     }
     async updateBalanceGame(updateBalanceGameInput, token) {
@@ -92,14 +95,22 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], BalanceGameResolver.prototype, "findAllTEST", null);
 __decorate([
-    graphql_1.Query(() => balance_game_model_1.BalanceGame, { name: "balanceGame" }),
-    common_1.UseGuards(new checkLoginedOrNot_guard_1.CheckLoginOrNot()),
+    graphql_1.Query(() => balance_game_model_1.BalanceGame, { name: "balanceGameLogined" }),
+    common_1.UseGuards(new auth_guard_1.AuthGuard()),
     __param(0, user_decorator_1.Token("user")), __param(1, graphql_1.Args("id")),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [user_jwt_1.UserJwt, String]),
     __metadata("design:returntype", Promise)
-], BalanceGameResolver.prototype, "findOne", null);
+], BalanceGameResolver.prototype, "findOneLogined", null);
 __decorate([
+    graphql_1.Query(() => balance_game_model_1.BalanceGame, { name: "balanceGameNotLogined" }),
+    __param(0, user_decorator_1.Token("user")), __param(1, graphql_1.Args("id")),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [user_jwt_1.UserJwt, String]),
+    __metadata("design:returntype", Promise)
+], BalanceGameResolver.prototype, "findOneNotLogined", null);
+__decorate([
+    graphql_1.Query(() => balance_game_model_1.BalanceGame, { name: "nextGameByRandom" }),
     graphql_1.Mutation(() => balance_game_model_1.BalanceGame),
     common_1.UseGuards(new auth_guard_1.AuthGuard()),
     __param(0, graphql_1.Args("updateBalanceGameInput")),
