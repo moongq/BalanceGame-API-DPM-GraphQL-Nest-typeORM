@@ -100,4 +100,10 @@ export class BalanceGameResolver {
   ): Promise<boolean> {
     return await this.balanceGameService.remove(id, token.userId);
   }
+
+  @Query(() => [BalanceGame], { name: "myVotedGames" })
+  @UseGuards(new AuthGuard())
+  async myVotedGames(@Token("user") token: UserJwt): Promise<BalanceGame[]> {
+    return await this.balanceGameService.myVotedGames(token.userId);
+  }
 }

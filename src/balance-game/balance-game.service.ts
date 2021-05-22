@@ -1,6 +1,6 @@
 import { HttpException, HttpStatus, Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
-import { Repository } from "typeorm";
+import { In, Repository } from "typeorm";
 
 import { BalanceGame } from "./balance-game.model";
 
@@ -22,6 +22,9 @@ export class BalanceGameService {
 
     @InjectRepository(User)
     private userRepository: Repository<User>,
+
+    @InjectRepository(BalanceGameSelectionVote)
+    private balanceGameSelectionVote: Repository<BalanceGameSelectionVote>,
 
     @InjectRepository(BalanceGameSelectionVote)
     private voteRepository: Repository<BalanceGameSelectionVote>,
@@ -282,5 +285,30 @@ export class BalanceGameService {
     } else {
       return false;
     }
+  }
+
+  async myVotedGames(userId: string): Promise<BalanceGame[]> {
+    const gameArray = await this.balanceGameSelectionVote
+      .createQueryBuilder("vote")
+      .where("userId = :userId", { userId: userId })
+      .select(["vote.balanceGameId"])
+      .getMany();
+
+    if (gameArray.length == 0) {
+      throw new HttpException("dont have voted games", HttpStatus.BAD_REQUEST);
+    }
+
+    let getOnlyGameIds = [];
+
+    for (let game of gameArray) {
+      getOnlyGameIds.push(game.balanceGameId);
+    }
+
+    const games = await this.balanceGameRepository.find({
+      where: { id: In(getOnlyGameIds) },
+      relations: ["balanceGameSelections"],
+    });
+
+    return games;
   }
 }
