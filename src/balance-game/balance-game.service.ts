@@ -164,9 +164,6 @@ export class BalanceGameService {
   }
 
   async findOne(userId: string, gameId: string): Promise<BalanceGame> {
-    console.log("================");
-    console.log(userId);
-
     const result = await this.balanceGameRepository.findOne(
       { id: gameId },
       { relations: ["balanceGameKeywords", "balanceGameSelections"] }
@@ -176,18 +173,18 @@ export class BalanceGameService {
       throw new HttpException("Wrong id input/gameId", HttpStatus.BAD_REQUEST);
     }
 
-    const selections = await this.voteRepository
+    const myGameWithSelection = await this.voteRepository
       .createQueryBuilder()
       .where("userId = :userId", { userId: userId })
       .andWhere("balanceGameId = :gameId", { gameId: gameId })
-      .getMany();
+      .getOne();
 
-    let isVoted = false;
-    if (selections.length > 0) {
-      isVoted = true;
+    if (myGameWithSelection) {
+      const selectionId = myGameWithSelection.balanceGameSelectionId;
+      result.mySelection = selectionId;
+    } else {
+      result.mySelection = null;
     }
-
-    result.isVoted = isVoted;
 
     console.log("put voted");
     console.log(result);

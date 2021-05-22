@@ -5861,8 +5861,8 @@
         "affectsGlobalScope": false
       },
       "../src/balance-game/balance-game.model.ts": {
-        "version": "08de55afedc624c538433c6981af196d6d0feeb1f1a8402bee30e61f453f5167",
-        "signature": "db0218de1eda017b17e337353c8518fc23e8d0baab9aa2a3a85fe9fb37dcee81",
+        "version": "116296e5281eec6d4554ded7f95e77bebff7e3c2a350c1c5e825cc7bd8bfacb7",
+        "signature": "cb2415f3ee8eb6aed53d6682cdad0f0c4bc4d06a80d3b3f7dfe724377968f66d",
         "affectsGlobalScope": false
       },
       "../src/balance-game-keyword/balance-game-keyword.model.ts": {
@@ -5936,7 +5936,7 @@
         "affectsGlobalScope": false
       },
       "../src/balance-game/balance-game.service.ts": {
-        "version": "c1b1e522ee10e7cb1c55e816fa717307bc19ece018a14dcb70e22b458a9e9168",
+        "version": "2a72f8c5895e9f785e4c35218afb41338d076f58277cb393818d7808dcbb2510",
         "signature": "b519e55c6735ffed249b783084e4b3c88a02dea20e58d6bd51f2345afee57dca",
         "affectsGlobalScope": false
       },

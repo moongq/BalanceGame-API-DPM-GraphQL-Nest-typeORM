@@ -75,13 +75,9 @@ export class BalanceGame {
   @Column()
   status: string;
 
-  @Field(() => Boolean, { nullable: true })
+  @Field(() => String, { nullable: true })
   @Column({ nullable: true })
-  isVoted: boolean;
-
-  @Field(() => Number, { nullable: true })
-  @Column({ nullable: true })
-  mySelection: number;
+  mySelection: string;
 
   @Field(() => Date)
   @CreateDateColumn({ type: "timestamp" })
