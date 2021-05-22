@@ -21,7 +21,7 @@ export declare class BalanceGame {
     commentCount: number;
     thumbs: number;
     status: string;
-    isVoted: boolean;
+    mySelection: string;
     createdAt: string;
     updatedAt: Date;
 }

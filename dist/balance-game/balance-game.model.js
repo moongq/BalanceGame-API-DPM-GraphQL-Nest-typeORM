@@ -28,7 +28,7 @@ const notification_model_1 = require("../notification/notification.model");
 const user_model_1 = require("../user/user.model");
 let BalanceGame = class BalanceGame {
     static _GRAPHQL_METADATA_FACTORY() {
-        return { id: { nullable: false, type: () => String }, user: { nullable: false, type: () => require("../user/user.model").User }, userId: { nullable: false, type: () => String }, balanceGameSelections: { nullable: false, type: () => [require("../balance-game-selection/balance-game-selection.model").BalanceGameSelection] }, balanceGameSelectionVotes: { nullable: false, type: () => [require("../balance-game-selection-vote/balance-game-selection-vote.model").BalanceGameSelectionVote] }, balanceGameSelectionVotesCount: { nullable: false, type: () => Number }, balanceGameThumbs: { nullable: false, type: () => [require("../balance-game-thumb/balance-game-thumb.model").BalanceGameThumb] }, balanceGameKeywords: { nullable: false, type: () => [require("../balance-game-keyword/balance-game-keyword.model").BalanceGameKeyword] }, notifications: { nullable: false, type: () => [require("../notification/notification.model").Notification] }, comments: { nullable: false, type: () => [require("../comment/comment.model").Comment] }, description: { nullable: false, type: () => String }, totalVoteCount: { nullable: false, type: () => Number }, commentCount: { nullable: false, type: () => Number }, thumbs: { nullable: false, type: () => Number }, status: { nullable: false, type: () => String }, isVoted: { nullable: false, type: () => Boolean }, createdAt: { nullable: false, type: () => String }, updatedAt: { nullable: false, type: () => Date } };
+        return { id: { nullable: false, type: () => String }, user: { nullable: false, type: () => require("../user/user.model").User }, userId: { nullable: false, type: () => String }, balanceGameSelections: { nullable: false, type: () => [require("../balance-game-selection/balance-game-selection.model").BalanceGameSelection] }, balanceGameSelectionVotes: { nullable: false, type: () => [require("../balance-game-selection-vote/balance-game-selection-vote.model").BalanceGameSelectionVote] }, balanceGameSelectionVotesCount: { nullable: false, type: () => Number }, balanceGameThumbs: { nullable: false, type: () => [require("../balance-game-thumb/balance-game-thumb.model").BalanceGameThumb] }, balanceGameKeywords: { nullable: false, type: () => [require("../balance-game-keyword/balance-game-keyword.model").BalanceGameKeyword] }, notifications: { nullable: false, type: () => [require("../notification/notification.model").Notification] }, comments: { nullable: false, type: () => [require("../comment/comment.model").Comment] }, description: { nullable: false, type: () => String }, totalVoteCount: { nullable: false, type: () => Number }, commentCount: { nullable: false, type: () => Number }, thumbs: { nullable: false, type: () => Number }, status: { nullable: false, type: () => String }, mySelection: { nullable: false, type: () => String }, createdAt: { nullable: false, type: () => String }, updatedAt: { nullable: false, type: () => Date } };
     }
 };
 __decorate([
@@ -101,10 +101,10 @@ __decorate([
     __metadata("design:type", String)
 ], BalanceGame.prototype, "status", void 0);
 __decorate([
-    graphql_1.Field(() => Boolean, { nullable: true }),
+    graphql_1.Field(() => String, { nullable: true }),
     typeorm_1.Column({ nullable: true }),
-    __metadata("design:type", Boolean)
-], BalanceGame.prototype, "isVoted", void 0);
+    __metadata("design:type", String)
+], BalanceGame.prototype, "mySelection", void 0);
 __decorate([
     graphql_1.Field(() => Date),
     typeorm_1.CreateDateColumn({ type: "timestamp" }),
