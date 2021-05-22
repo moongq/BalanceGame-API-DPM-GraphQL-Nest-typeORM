@@ -11,9 +11,10 @@ import { CreateBalanceGameInput } from "./dto/create-balance-game.input";
 import { UpdateBalanceGameInput } from "./dto/update-balance-game.input";
 
 import { FileService } from "../file/file.service";
-import { AuthGuard } from "../user/auth.guard";
+import { AuthGuard } from "../user/guards/auth.guard";
 import { UserJwt } from "../user/dto/user-jwt";
 import { Token } from "../user/lib/user.decorator";
+import { CheckLoginOrNot } from "../user/guards/checkLoginedOrNot.guard";
 
 @Resolver(() => BalanceGame)
 export class BalanceGameResolver {
@@ -61,8 +62,9 @@ export class BalanceGameResolver {
   }
 
   @Query(() => BalanceGame, { name: "balanceGame" })
-  async findOne(@Args("id") id: string): Promise<BalanceGame> {
-    const result = await this.balanceGameService.findOne(id);
+  @UseGuards(new CheckLoginOrNot())
+  async findOne(@Token("user") token: UserJwt, @Args("id") id: string): Promise<BalanceGame> {
+    const result = await this.balanceGameService.findOne(token.userId, id);
     return result;
   }
 

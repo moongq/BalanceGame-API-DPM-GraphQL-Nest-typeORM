@@ -55,15 +55,15 @@ mutation {
       {
         order: 0   # avaiable value:  O | 1
         description: "토맛 토마토",
-        textColor: "주황"
-        backgroundColor: "노랑"
+        textColor: "#ff0000"
+        backgroundColor: "#ff0000"
         backgroundImage: "파일 업로드 구현할게요 !"
       },
       {
         order: 1,
         description:"토마토맛 토"
-        textColor: "빨강",
-        backgroundColor: "똥색"
+        textColor: "#ff0000",
+        backgroundColor: "#ff0000"
         backgroundImage: "파일 업로드 구현할게요 !"
       }
     ],
@@ -104,13 +104,10 @@ mutation {
 
 ```graphql
 query {
-  balanceGames(balanceGamesState: {
-    limit: 2,
-    offset: 1
-  }) {
+  balanceGames(balanceGamesState: { limit: 2, offset: 1 }) {
     num
     balanceGame {
-    	id
+      id
       totalVoteCount
       commentCount
       balanceGameSelections {
@@ -126,9 +123,8 @@ query {
         id
         name
       }
-      createdAt  
+      createdAt
     }
-    
   }
 }
 ```
@@ -143,6 +139,7 @@ query {
     userId
   	totalVoteCount
     commentCount
+    isVoted
     balanceGameSelections{
       id
       order

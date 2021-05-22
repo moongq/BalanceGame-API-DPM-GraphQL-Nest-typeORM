@@ -7,7 +7,7 @@ import { CommentService } from "./comment.service";
 import { CreateCommentInput } from "./dto/create-comment.input";
 import { UpdateCommentInput } from "./dto/update-comment.input";
 
-import { AuthGuard } from "../user/auth.guard";
+import { AuthGuard } from "../user/guards/auth.guard";
 import { Token } from "../user/lib/user.decorator";
 import { UserJwt } from "../user/dto/user-jwt";
 

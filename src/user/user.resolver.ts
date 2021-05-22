@@ -1,7 +1,7 @@
 import { Resolver, Query, Mutation, Args, Parent, ResolveField } from "@nestjs/graphql";
 import { UseGuards, HttpStatus, HttpException } from "@nestjs/common";
 
-import { AuthGuard } from "./auth.guard";
+import { AuthGuard } from "./guards/auth.guard";
 import { Token } from "./lib/user.decorator";
 
 import { User } from "./user.model";

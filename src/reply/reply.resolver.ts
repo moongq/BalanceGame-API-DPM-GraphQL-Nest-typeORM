@@ -7,7 +7,7 @@ import { ReplyService } from "./reply.service";
 import { CreateReplyInput } from "./dto/create-reply.input";
 import { UpdateReplyInput } from "./dto/update-reply.input";
 
-import { AuthGuard } from "../user/auth.guard";
+import { AuthGuard } from "../user/guards/auth.guard";
 import { UserJwt } from "../user/dto/user-jwt";
 import { Token } from "../user/lib/user.decorator";
 

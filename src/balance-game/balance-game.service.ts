@@ -12,6 +12,7 @@ import { BalanceGameKeywordService } from "../balance-game-keyword/balance-game-
 import { BalanceGameSelectionService } from "../balance-game-selection/balance-game-selection.service";
 import { FileService } from "../file/file.service";
 import { User } from "../user/user.model";
+import { BalanceGameSelectionVote } from "../balance-game-selection-vote/balance-game-selection-vote.model";
 
 @Injectable()
 export class BalanceGameService {
@@ -21,6 +22,9 @@ export class BalanceGameService {
 
     @InjectRepository(User)
     private userRepository: Repository<User>,
+
+    @InjectRepository(BalanceGameSelectionVote)
+    private voteRepository: Repository<BalanceGameSelectionVote>,
 
     private balanceGameKeywordService: BalanceGameKeywordService,
     private balanceGameSelectionService: BalanceGameSelectionService,
@@ -159,15 +163,34 @@ export class BalanceGameService {
     return balanceGames;
   }
 
-  async findOne(id: string): Promise<BalanceGame> {
+  async findOne(userId: string, gameId: string): Promise<BalanceGame> {
+    console.log("================");
+    console.log(userId);
+
     const result = await this.balanceGameRepository.findOne(
-      { id: id },
+      { id: gameId },
       { relations: ["balanceGameKeywords", "balanceGameSelections"] }
     );
 
     if (!result) {
       throw new HttpException("Wrong id input/gameId", HttpStatus.BAD_REQUEST);
     }
+
+    const selections = await this.voteRepository
+      .createQueryBuilder()
+      .where("userId = :userId", { userId: userId })
+      .andWhere("balanceGameId = :gameId", { gameId: gameId })
+      .getMany();
+
+    let isVoted = false;
+    if (selections.length > 0) {
+      isVoted = true;
+    }
+
+    result.isVoted = isVoted;
+
+    console.log("put voted");
+    console.log(result);
 
     return result;
   }

@@ -61,7 +61,6 @@ export class BalanceGameSelectionVoteService {
       .andWhere("userId = :userId", { userId: userId })
       .getMany();
 
-    console.log(checkBeforeCreate);
     if (checkBeforeCreate.length > 0) {
       throw new HttpException("already voted", HttpStatus.BAD_REQUEST);
     }

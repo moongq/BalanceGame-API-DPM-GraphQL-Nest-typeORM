@@ -11,10 +11,11 @@ import { BalanceGameSelectionVoteModule } from "../balance-game-selection-vote/b
 
 import { FileModule } from "../file/file.module";
 import { User } from "../user/user.model";
+import { BalanceGameSelectionVote } from "../balance-game-selection-vote/balance-game-selection-vote.model";
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([BalanceGame, User]),
+    TypeOrmModule.forFeature([BalanceGame, User, BalanceGameSelectionVote]),
     BalanceGameKeywordModule,
     BalanceGameSelectionModule,
     BalanceGameSelectionVoteModule,

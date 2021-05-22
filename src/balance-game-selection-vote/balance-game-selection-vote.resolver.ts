@@ -8,7 +8,7 @@ import { CreateBalanceGameSelectionVoteInput } from "./dto/create-balance-game-s
 import { UpdateBalanceGameSelectionVoteInput } from "./dto/update-balance-game-selection-vote.input";
 
 import { BalanceGame } from "../balance-game/balance-game.model";
-import { AuthGuard } from "../user/auth.guard";
+import { AuthGuard } from "../user/guards/auth.guard";
 import { UserJwt } from "../user/dto/user-jwt";
 import { Token } from "../user/lib/user.decorator";
 
