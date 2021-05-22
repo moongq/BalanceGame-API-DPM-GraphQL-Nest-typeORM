@@ -311,4 +311,16 @@ export class BalanceGameService {
 
     return games;
   }
+
+  async myGames(userId: string): Promise<BalanceGame[]> {
+    const games = await this.balanceGameRepository.find({
+      where: { userId: userId },
+      take: 8,
+      relations: ["balanceGameSelections", "balanceGameKeywords"],
+    });
+
+    console.log(games.length);
+
+    return games;
+  }
 }

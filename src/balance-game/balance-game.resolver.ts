@@ -53,6 +53,18 @@ export class BalanceGameResolver {
     return balanceGames;
   }
 
+  // :TODO 스크롤링 추가 ! 지금은 그냥 8개
+  @Query(() => BalanceGameList, { name: "myGames" })
+  @UseGuards(new AuthGuard())
+  async myGames(@Token("user") token: UserJwt): Promise<BalanceGameList> {
+    const games = await this.balanceGameService.myGames(token.userId);
+
+    return {
+      num: games.length,
+      balanceGame: games,
+    };
+  }
+
   @Query(() => [BalanceGame], { name: "balanceGamesTEST" })
   async findAllTEST(): Promise<BalanceGame[]> {
     const balanceGames = await this.balanceGameService.findAll();
