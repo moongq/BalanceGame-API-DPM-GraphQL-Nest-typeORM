@@ -133,10 +133,10 @@ export class UserResolver {
     return this.userService.findAll();
   }
 
-  @ResolveField(() => [BalanceGame])
-  async balanceGames(@Parent() parent): Promise<BalanceGame[]> {
-    const { id } = parent;
-    console.log("id :>> ", id);
-    return this.balanceGameService.findAllByUserID(id);
-  }
+  // @ResolveField(() => [BalanceGame])
+  // async balanceGames(@Parent() parent): Promise<BalanceGame[]> {
+  //   const { id } = parent;
+  //   console.log("id :>> ", id);
+  //   return this.balanceGameService.findAllByUserID(id);
+  // }
 }

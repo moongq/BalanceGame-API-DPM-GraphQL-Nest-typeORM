@@ -9,6 +9,7 @@ export class CheckLoginOrNot implements CanActivate {
     // console.log(ctx.headers);
     if (!ctx.headers.authorization) {
       console.log(ctx.headers.authorization);
+      ctx.user = "notLogined";
       return true;
     }
     ctx.user = await this.validateToken(ctx.headers.authorization);

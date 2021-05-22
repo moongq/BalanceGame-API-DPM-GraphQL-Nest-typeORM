@@ -205,9 +205,51 @@ export class BalanceGameService {
     return result;
   }
 
-  async findAllByUserID(userId: string): Promise<BalanceGame[]> {
-    return await this.balanceGameRepository.find({ userId });
+  // :TODO 정말 랜덤하게 수정
+  // :TODO 최적화..... 정말 막만든 API
+  async findOneByRandom(userId: string): Promise<BalanceGame> {
+    // 내 아이디가 아닌 것.
+
+    if (!userId) {
+      const game = await this.balanceGameRepository.find({
+        relations: ["balanceGameKeywords", "balanceGameSelections"],
+        take: 5,
+      });
+
+      const index = Math.floor(Math.random() * 4);
+      return game[index];
+    }
+
+    const gameIdArray = await this.voteRepository
+      .createQueryBuilder("game")
+      .where("userId = :userId", { userId: userId })
+      .select(["game.id"])
+      .getMany();
+
+    const getOnlyGameIds = [];
+    for (let game of gameIdArray) {
+      getOnlyGameIds.push(game.id);
+    }
+
+    const result = await this.balanceGameRepository
+      .createQueryBuilder("game")
+      .where("id NOT IN (:...gameIdArrays)", { gameIdArrays: getOnlyGameIds })
+      .select("game.id")
+      .getMany();
+
+    const index = Math.floor(Math.random() * Math.floor(result.length));
+
+    const game = await this.balanceGameRepository.findOne(
+      { id: result[index].id },
+      { relations: ["balanceGameKeywords", "balanceGameSelections"] }
+    );
+
+    return game;
   }
+
+  // async findAllByUserID(userId: string): Promise<BalanceGame[]> {
+  //   return await this.balanceGameRepository.find({ userId });
+  // }
   // update(id: number, updateBalanceGameInput: UpdateBalanceGameInput) {
   //   return `This action updates a #${id} balanceGame`;
   // }

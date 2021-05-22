@@ -75,6 +75,11 @@ export class BalanceGameResolver {
   }
 
   @Query(() => BalanceGame, { name: "nextGameByRandom" })
+  @UseGuards(new CheckLoginOrNot())
+  async findOneByRandom(@Token("user") token: UserJwt): Promise<BalanceGame> {
+    const result = await this.balanceGameService.findOneByRandom(token.userId);
+    return result;
+  }
 
   // :TODO 미들웨어 추가 [로그인, 내 게임인지 여부, 게임 ID가 유효한지.]
   @Mutation(() => BalanceGame)
