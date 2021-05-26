@@ -120,7 +120,7 @@ export class UserService {
       where: {
         id: userId,
       },
-      // relations: ["balanceGames", "balanceGameSelectionVotes"],
+      relations: ["profile", "balanceGames", "balanceGameSelectionVotes"],
     });
 
     return user;
