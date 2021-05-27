@@ -2,6 +2,7 @@ import { Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import axios from "axios";
 import * as jwt from "jsonwebtoken";
+import { format } from "date-fns";
 import { Repository } from "typeorm";
 
 import { User } from "./user.model";
@@ -107,6 +108,14 @@ export class UserService {
       socialId: socialId,
       platformType: platformType,
     });
+  }
+
+  async createNickname() {
+    const [users, num] = await this.userRepository.findAndCount({});
+    const toTime = format(new Date(), "MMddHHmm");
+    const autoNickname = "tomato" + toTime + num;
+
+    return autoNickname;
   }
 
   async findAll() {

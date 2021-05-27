@@ -59,7 +59,8 @@ export class UserResolver {
     if (socialUserData.result !== "FAIL") {
       // 가입된 유저인지 체크
       const getUser = await this.userService.getUserByOauth(socialUserData.socialId, loginUserInput.socialType);
-
+      const autoNickname = await this.userService.createNickname();
+      
       if (!getUser) {
         // 가입한 적이 없으면 저장
         const user = await this.userService.oauthCreateUser({
@@ -67,7 +68,7 @@ export class UserResolver {
           platformType: loginUserInput.socialType,
           profile: {
             email: socialUserData.socialEmail,
-            nickname: "닉네임 난수 예정",
+            nickname: autoNickname,
             userImage: "",
           },
         });
