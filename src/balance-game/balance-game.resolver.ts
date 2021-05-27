@@ -16,6 +16,12 @@ import { UserJwt } from "../user/dto/user-jwt";
 import { Token } from "../user/lib/user.decorator";
 import { CheckLoginOrNot } from "../user/guards/checkLoginedOrNot.guard";
 
+// 지울거
+import AWS from "aws-sdk";
+// import { createWriteStream, createReadStream } from "fs";
+import * as fs from "fs";
+////
+
 @Resolver(() => BalanceGame)
 export class BalanceGameResolver {
   constructor(private readonly balanceGameService: BalanceGameService, private fileService: FileService) {}
@@ -28,6 +34,20 @@ export class BalanceGameResolver {
     @Token("user") token: UserJwt,
     @Args("createBalanceGameInput") createBalanceGameInput: CreateBalanceGameInput
   ): Promise<BalanceGame> {
+    return await this.balanceGameService.create(token.userId, createBalanceGameInput);
+  }
+
+  @Mutation(() => BalanceGame)
+  @UseGuards(new AuthGuard())
+  async TESTcreateBalanceGame(
+    @Token("user") token: UserJwt,
+    @Args({ name: "file1", type: () => GraphQLUpload }) imageOfSelection0: FileUpload,
+    @Args({ name: "file2", type: () => GraphQLUpload }) imageOfSelection1: FileUpload,
+    @Args("createBalanceGameInput") createBalanceGameInput: CreateBalanceGameInput
+  ): Promise<BalanceGame> {
+    console.log(imageOfSelection0.createReadStream);
+    console.log(imageOfSelection1);
+
     return await this.balanceGameService.create(token.userId, createBalanceGameInput);
   }
 
