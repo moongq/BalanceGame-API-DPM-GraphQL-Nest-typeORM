@@ -8,6 +8,7 @@ import { UpdateBalanceGameSelectionVoteInput } from "./dto/update-balance-game-s
 import { BalanceGame } from "../balance-game/balance-game.model";
 import { BalanceGameSelection } from "../balance-game-selection/balance-game-selection.model";
 import { BalanceGameSelectionVote } from "./balance-game-selection-vote.model";
+import { CreateBalanceGameSelectionInput } from "../balance-game-selection/dto/create-balance-game-selection.input";
 
 @Injectable()
 export class BalanceGameSelectionVoteService {
@@ -51,17 +52,33 @@ export class BalanceGameSelectionVoteService {
     userId: string,
     createBalanceGameSelectionVoteInput: CreateBalanceGameSelectionVoteInput
   ): Promise<BalanceGame> {
+    // TEST check already voted
+    const getSelections = await this.balanceGameRepository.findOne(
+      { id: createBalanceGameSelectionVoteInput.balanceGameId },
+      { relations: ["balanceGameSelections"] }
+    );
+
     // check already voted
-    const checkBeforeCreate = await this.balanceGameSelectionVoteRepository
+    const checkBeforeCreateSelection0 = await this.balanceGameSelectionVoteRepository
       .createQueryBuilder()
       .where("balanceGameId = :gameId", { gameId: createBalanceGameSelectionVoteInput.balanceGameId })
       .andWhere("balanceGameSelectionId = :selectionId", {
-        selectionId: createBalanceGameSelectionVoteInput.balanceGameSelectionId,
+        selectionId: getSelections.balanceGameSelections[0].id,
       })
       .andWhere("userId = :userId", { userId: userId })
       .getMany();
 
-    if (checkBeforeCreate.length > 0) {
+    // check already voted
+    const checkBeforeCreateSelection1 = await this.balanceGameSelectionVoteRepository
+      .createQueryBuilder()
+      .where("balanceGameId = :gameId", { gameId: createBalanceGameSelectionVoteInput.balanceGameId })
+      .andWhere("balanceGameSelectionId = :selectionId", {
+        selectionId: getSelections.balanceGameSelections[1].id,
+      })
+      .andWhere("userId = :userId", { userId: userId })
+      .getMany();
+
+    if (checkBeforeCreateSelection0.length > 0 || checkBeforeCreateSelection1.length > 0) {
       throw new HttpException("already voted", HttpStatus.BAD_REQUEST);
     }
 
