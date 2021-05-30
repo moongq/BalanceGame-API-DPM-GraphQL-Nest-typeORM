@@ -48,6 +48,9 @@ export class NotificationService {
     const result = await this.notificationRepository.find({
       where: { userForId: userId, createdAt: MoreThan(aMonthAgo) },
       relations: ["comment", "reply"],
+      order: {
+        createdAt: "DESC",
+      },
     });
     return result;
   }

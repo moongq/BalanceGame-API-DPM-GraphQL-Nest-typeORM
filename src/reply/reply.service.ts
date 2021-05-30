@@ -8,6 +8,8 @@ import { CreateReplyInput } from "./dto/create-reply.input";
 import { UpdateReplyInput } from "./dto/update-reply.input";
 
 import { BalanceGameSelectionVoteService } from "../balance-game-selection-vote/balance-game-selection-vote.service";
+import { BalanceGame } from "../balance-game/balance-game.model";
+import { NotificationService } from "../notification/notification.service";
 
 @Injectable()
 export class ReplyService {
@@ -15,7 +17,11 @@ export class ReplyService {
     @InjectRepository(Reply)
     private replyRepository: Repository<Reply>,
 
-    private balanceGameSelectionVoteService: BalanceGameSelectionVoteService
+    @InjectRepository(BalanceGame)
+    private balanceGameRepository: Repository<BalanceGame>,
+
+    private balanceGameSelectionVoteService: BalanceGameSelectionVoteService,
+    private notificationService: NotificationService
   ) {}
 
   async create(userId: string, createReplyInput: CreateReplyInput): Promise<Reply> {
@@ -28,6 +34,21 @@ export class ReplyService {
     const newReply = this.replyRepository.create({ userId, ...createReplyInput });
     const savedReply = await this.replyRepository.save(newReply);
 
+    // make noti
+    const getGameCreatorId = await this.balanceGameRepository.findOne({
+      where: { id: createReplyInput.balanceGameId },
+      select: ["userId"],
+    });
+
+    const setNotiInput = {
+      kind: "new comment",
+      balanceGameId: createReplyInput.balanceGameId,
+      userForId: getGameCreatorId.userId,
+      replyId: savedReply.id,
+      replyContent: savedReply.content,
+    };
+
+    this.notificationService.create(userId, setNotiInput);
     return savedReply;
   }
   async update(userId: string, updateReplyInput: UpdateReplyInput): Promise<Reply> {

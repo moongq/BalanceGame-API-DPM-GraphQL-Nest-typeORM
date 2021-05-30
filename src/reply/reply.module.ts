@@ -6,9 +6,11 @@ import { ReplyService } from "./reply.service";
 import { ReplyResolver } from "./reply.resolver";
 
 import { BalanceGameSelectionVoteModule } from "../balance-game-selection-vote/balance-game-selection-vote.module";
+import { NotificationModule } from "../notification/notification.module";
+import { BalanceGame } from "../balance-game/balance-game.model";
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Reply]), BalanceGameSelectionVoteModule],
+  imports: [TypeOrmModule.forFeature([Reply, BalanceGame]), BalanceGameSelectionVoteModule, NotificationModule],
   providers: [ReplyResolver, ReplyService],
 })
 export class ReplyModule {}
