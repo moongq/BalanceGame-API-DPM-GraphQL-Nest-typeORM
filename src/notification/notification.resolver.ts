@@ -28,9 +28,9 @@ export class NotificationResolver {
     return await this.notificationService.myNotifications(token.userId);
   }
 
-  @Query(() => Notification, { name: "readNoti" })
+  @Mutation(() => Boolean, { name: "readNoti" })
   @UseGuards(new AuthGuard())
-  async readNoti(@Token("user") token: UserJwt, @Args("id", { type: () => String }) id: string) {
+  async readNoti(@Token("user") token: UserJwt, @Args("id", { type: () => String }) id: string): Promise<boolean> {
     return await this.notificationService.readNoti(token.userId, id);
   }
 }

@@ -55,9 +55,18 @@ export class NotificationService {
     return result;
   }
 
-  async readNoti(userId: string, notiId: string): Promise<Notification> {
+  async readNoti(userId: string, notiId: string): Promise<boolean> {
+    // :TODO 리턴 값 바뀔 예정
     // 1. set status to 'red';
 
-    return await this.notificationRepository.findOne({ id: notiId });
+    const setRedToNoti = await this.notificationRepository
+      .createQueryBuilder()
+      .update()
+      .where("id = :notiId", { notiId: notiId })
+      .set({ status: "red" })
+      .execute();
+
+    console.log(setRedToNoti);
+    if (setRedToNoti.affected == 1) return true;
   }
 }
