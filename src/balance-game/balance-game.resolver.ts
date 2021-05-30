@@ -17,9 +17,10 @@ import { Token } from "../user/lib/user.decorator";
 import { CheckLoginOrNot } from "../user/guards/checkLoginedOrNot.guard";
 
 // 지울거
-import AWS from "aws-sdk";
+import { S3, S3Control, S3Outposts } from "aws-sdk";
 // import { createWriteStream, createReadStream } from "fs";
 import * as fs from "fs";
+import { promisify } from "util";
 ////
 
 @Resolver(() => BalanceGame)
@@ -45,8 +46,58 @@ export class BalanceGameResolver {
     @Args({ name: "file2", type: () => GraphQLUpload }) imageOfSelection1: FileUpload,
     @Args("createBalanceGameInput") createBalanceGameInput: CreateBalanceGameInput
   ): Promise<BalanceGame> {
-    console.log(imageOfSelection0.createReadStream);
-    console.log(imageOfSelection1);
+    const s3Uploader = new S3({
+      region: "ap-northeast-2",
+      accessKeyId: "AKIAIW62U7UBSMLS7AHQ",
+      secretAccessKey: "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",
+      // destinationBucketName: "test-stage8",
+    });
+
+    const createReadStream0 = imageOfSelection0.createReadStream;
+    const filename0 = imageOfSelection0.filename;
+    let fileStream0 = createReadStream0();
+
+    const createReadStream1 = imageOfSelection1.createReadStream;
+    const filename1 = imageOfSelection1.filename;
+    let fileStream1 = createReadStream1();
+
+    fileStream0.on("error", (error) => console.log(error));
+    fileStream1.on("error", (error) => console.log(error));
+
+    const params0 = {
+      Bucket: "test-stage8",
+      Key: `graphtomato/${filename0}`,
+      Body: fileStream0,
+      ACL: "public-read",
+      ContentType: "image/jpeg",
+    };
+
+    const params1 = {
+      Bucket: "test-stage8",
+      Key: `graphtomato/${filename1}`,
+      Body: fileStream1,
+      ACL: "public-read",
+      ContentType: "image/jpeg",
+    };
+
+    const uploadPromise0 = (params) => {
+      return new Promise(function (resolve, reject) {
+        s3Uploader.upload(params, function (error, data) {
+          if (error) {
+            console.log(error);
+          }
+          resolve(data.Location);
+        });
+      });
+    };
+
+    const savedLocation0 = await uploadPromise0(params0);
+    const savedLocation1 = await uploadPromise0(params1);
+
+    for (let selection of createBalanceGameInput.balanceGameSelections) {
+      if (selection.order == 0) selection.backgroundImage = savedLocation0.toString();
+      if (selection.order == 1) selection.backgroundImage = savedLocation1.toString();
+    }
 
     return await this.balanceGameService.create(token.userId, createBalanceGameInput);
   }
