@@ -29,18 +29,18 @@ export class BalanceGameResolver {
 
   // :TODO 미들웨어 추가 [로그인 / ]
   // UseGuards를 미들웨어로 빼는 작업 진행
-  @Mutation(() => BalanceGame)
-  @UseGuards(new AuthGuard())
-  async createBalanceGame(
-    @Token("user") token: UserJwt,
-    @Args("createBalanceGameInput") createBalanceGameInput: CreateBalanceGameInput
-  ): Promise<BalanceGame> {
-    return await this.balanceGameService.create(token.userId, createBalanceGameInput);
-  }
+  // @Mutation(() => BalanceGame)
+  // @UseGuards(new AuthGuard())
+  // async createBalanceGame(
+  //   @Token("user") token: UserJwt,
+  //   @Args("createBalanceGameInput") createBalanceGameInput: CreateBalanceGameInput
+  // ): Promise<BalanceGame> {
+  //   return await this.balanceGameService.create(token.userId, createBalanceGameInput);
+  // }
 
   @Mutation(() => BalanceGame)
   @UseGuards(new AuthGuard())
-  async TESTcreateBalanceGame(
+  async createBalanceGame(
     @Token("user") token: UserJwt,
     @Args({ name: "file1", type: () => GraphQLUpload }) imageOfSelection0: FileUpload,
     @Args({ name: "file2", type: () => GraphQLUpload }) imageOfSelection1: FileUpload,
