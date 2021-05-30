@@ -100,6 +100,42 @@ mutation {
 
 ```
 
+# 파일 업로드 되는 createBalanceGame
+
+```graphql
+mutation($imageOfSelection0: Upload!, $imageOfSelection1: Upload!) {
+  createBalanceGame(
+    file1: $imageOfSelection0,
+    file2: $imageOfSelection1,
+    createBalanceGameInput: {
+    description: "파일 업로드 테스트",
+    balanceGameSelections: [{
+      description: "파일업로드 테스트/셀렉션",
+      textColor: "blue",
+      order: 0,
+    },{
+      description: "셀렉션2"
+      textColor: "red",
+      order: 1,
+    }],
+    balanceGameKeywords: [{
+      name: "테스트"
+    }]
+    }) {
+    id
+    balanceGameKeywords {
+      name
+    }
+    balanceGameSelections {
+      id
+      backgroundImage
+    }
+  }
+}
+
+imageOfSelection0, imageOfSelection1 파일 추가
+```
+
 - findAll: balanceGames # [ RETURN => BalanceGame[] ]
 
 ```graphql
