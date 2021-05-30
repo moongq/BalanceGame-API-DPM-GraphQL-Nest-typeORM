@@ -8,6 +8,8 @@ import { CreateCommentInput } from "./dto/create-comment.input";
 
 import { BalanceGame } from "../balance-game/balance-game.model";
 import { BalanceGameSelectionVoteService } from "../balance-game-selection-vote/balance-game-selection-vote.service";
+import { NotificationService } from "../notification/notification.service";
+import { CreateNotificationInput } from "../notification/dto/create-notification.input";
 
 @Injectable()
 export class CommentService {
@@ -18,7 +20,9 @@ export class CommentService {
     @InjectRepository(BalanceGame)
     private balanceGameRepository: Repository<BalanceGame>,
 
-    private balanceGameSelectionVoteService: BalanceGameSelectionVoteService
+    private balanceGameSelectionVoteService: BalanceGameSelectionVoteService,
+
+    private notificationService: NotificationService
   ) {}
 
   async create(userId: string, createCommentInput: CreateCommentInput): Promise<Comment> {
@@ -34,6 +38,22 @@ export class CommentService {
     const savedComment = await this.commentRepository.save(newComment);
 
     await this.plusCommentCount(createCommentInput.balanceGameId);
+
+    // make noti
+    const getGameCreatorId = await this.balanceGameRepository.findOne({
+      where: { id: createCommentInput.balanceGameId },
+      select: ["userId"],
+    });
+
+    const setNotiInput = {
+      kind: "new comment",
+      balanceGameId: createCommentInput.balanceGameId,
+      userForId: getGameCreatorId.userId, // 아 또 쿼리해야해?
+      commentId: savedComment.id,
+      commentContent: savedComment.content,
+    };
+
+    this.notificationService.create(userId, setNotiInput);
 
     return savedComment;
   }

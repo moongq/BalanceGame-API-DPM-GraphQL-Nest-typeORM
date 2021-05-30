@@ -1,7 +1,8 @@
 import { ObjectType, Field } from "@nestjs/graphql";
-import { Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 
 import { BalanceGame } from "../balance-game/balance-game.model";
+import { Notification } from "../notification/notification.model";
 import { Comment } from "../comment/comment.model";
 import { User } from "../user/user.model";
 
@@ -47,6 +48,9 @@ export class Reply {
   @Field(() => String)
   @Column()
   status: string;
+
+  @OneToMany(() => Notification, (notification) => notification.reply)
+  notifications: Notification[];
 
   @Field(() => Date)
   @CreateDateColumn({ type: "timestamp" })

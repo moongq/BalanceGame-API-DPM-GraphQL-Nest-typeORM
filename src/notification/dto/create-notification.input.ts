@@ -3,17 +3,23 @@ import { InputType, Field } from "@nestjs/graphql";
 @InputType()
 export class CreateNotificationInput {
   @Field()
-  userId: string;
+  kind: string;
 
   @Field()
   balanceGameId: string;
 
   @Field()
+  userForId: string;
+
+  @Field()
   commentId?: string;
 
   @Field()
-  content: string;
+  commentContent?: string;
 
   @Field()
-  replyNickname?: string;
+  replyId?: string;
+
+  @Field()
+  replyContent?: string;
 }

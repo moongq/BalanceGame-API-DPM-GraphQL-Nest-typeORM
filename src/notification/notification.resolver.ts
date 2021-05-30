@@ -4,33 +4,33 @@ import { Notification } from "./notification.model";
 import { NotificationService } from "./notification.service";
 
 import { CreateNotificationInput } from "./dto/create-notification.input";
+import { UserJwt } from "../user/dto/user-jwt";
+import { UseGuards } from "@nestjs/common";
+import { AuthGuard } from "../user/guards/auth.guard";
+import { Token } from "../user/lib/user.decorator";
 
 @Resolver(() => Notification)
 export class NotificationResolver {
   constructor(private readonly notificationService: NotificationService) {}
 
-  @Mutation(() => Notification)
-  async createNotification(@Args("createNotificationInput") createNotificationInput: CreateNotificationInput) {
-    return await this.notificationService.create(createNotificationInput);
-  }
-
-  @Query(() => [Notification], { name: "notifications" })
-  async findAll() {
-    return await this.notificationService.findAll();
-  }
-
-  @Query(() => Notification, { name: "notification" })
-  async findOne(@Args("id", { type: () => String }) id: string) {
-    return await this.notificationService.findOne(id);
-  }
-
   // @Mutation(() => Notification)
-  // updateNotification(@Args('updateNotificationInput') updateNotificationInput: UpdateNotificationInput) {
-  //   return this.notificationService.update(updateNotificationInput.id, updateNotificationInput);
+  // @UseGuards(new AuthGuard())
+  // async createNotification(
+  //   @Token("user") token: UserJwt,
+  //   @Args("createNotificationInput") createNotificationInput: CreateNotificationInput
+  // ): Promise<Notification> {
+  //   return await this.notificationService.create(token.userId, createNotificationInput);
   // }
 
-  // @Mutation(() => Notification)
-  // removeNotification(@Args('id', { type: () => Int }) id: number) {
-  //   return this.notificationService.remove(id);
-  // }
+  @Query(() => [Notification], { name: "myNotifications" })
+  @UseGuards(new AuthGuard())
+  async myNotifications(@Token("user") token: UserJwt): Promise<Notification[]> {
+    return await this.notificationService.myNotifications(token.userId);
+  }
+
+  @Query(() => Notification, { name: "readNoti" })
+  @UseGuards(new AuthGuard())
+  async readNoti(@Token("user") token: UserJwt, @Args("id", { type: () => String }) id: string) {
+    return await this.notificationService.readNoti(token.userId, id);
+  }
 }
