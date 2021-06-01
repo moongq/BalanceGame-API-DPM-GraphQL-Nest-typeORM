@@ -169,7 +169,7 @@ export class BalanceGameService {
   async findOne(userId: string, gameId: string): Promise<BalanceGame> {
     const result = await this.balanceGameRepository.findOne(
       { id: gameId },
-      { relations: ["balanceGameKeywords", "balanceGameSelections"] }
+      { relations: ["balanceGameKeywords", "balanceGameSelections", "user", "user.profile"] }
     );
 
     if (!result) {
@@ -198,7 +198,7 @@ export class BalanceGameService {
   async findOneNotLogined(gameId: string): Promise<BalanceGame> {
     const result = await this.balanceGameRepository.findOne(
       { id: gameId },
-      { relations: ["balanceGameKeywords", "balanceGameSelections"] }
+      { relations: ["balanceGameKeywords", "balanceGameSelections", "user", "user.profile"] }
     );
 
     if (!result) {
