@@ -48,9 +48,8 @@ export class BalanceGameResolver {
   ): Promise<BalanceGame> {
     const s3Uploader = new S3({
       region: "ap-northeast-2",
-      accessKeyId: "AKIAIW62U7UBSMLS7AHQ",
-      secretAccessKey: "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",
-      // destinationBucketName: "test-stage8",
+      accessKeyId: `${process.env.AWS_S3_ACCESSKEY}`,
+      secretAccessKey: `${process.env.AWS_S3_SECRET_ACCESSKEY}`,
     });
 
     const createReadStream0 = imageOfSelection0.createReadStream;
@@ -65,7 +64,7 @@ export class BalanceGameResolver {
     fileStream1.on("error", (error) => console.log(error));
 
     const params0 = {
-      Bucket: "test-stage8",
+      Bucket: `${process.env.BUCKET}`,
       Key: `graphtomato/${filename0}`,
       Body: fileStream0,
       ACL: "public-read",
@@ -73,7 +72,7 @@ export class BalanceGameResolver {
     };
 
     const params1 = {
-      Bucket: "test-stage8",
+      Bucket: `${process.env.BUCKET}`,
       Key: `graphtomato/${filename1}`,
       Body: fileStream1,
       ACL: "public-read",

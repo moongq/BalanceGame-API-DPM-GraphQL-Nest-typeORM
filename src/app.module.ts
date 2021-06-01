@@ -30,7 +30,7 @@ import { UserProfileModule } from "./user-profile/user-profile.module";
       password: process.env.DB_PASSWORD,
       database: process.env.DB_NAME,
       entities: [__dirname + "/**/*.model{.ts,.js}"],
-      synchronize: true,
+      synchronize: false,
     }),
     GraphQLModule.forRoot({
       autoSchemaFile: true,
