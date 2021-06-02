@@ -61,13 +61,15 @@ export class UserResolver {
       const getUser = await this.userService.getUserByOauth(socialUserData.socialId, loginUserInput.socialType);
 
       if (!getUser) {
+        // 닉네임 겹치지 않도록 생성
+        const autoNickname = await this.userService.createNickname();
         // 가입한 적이 없으면 저장
         const user = await this.userService.oauthCreateUser({
           socialId: socialUserData.socialId,
           platformType: loginUserInput.socialType,
           profile: {
             email: socialUserData.socialEmail,
-            nickname: "닉네임 난수 예정",
+            nickname: autoNickname,
             userImage: "",
           },
         });
@@ -107,6 +109,7 @@ export class UserResolver {
   @Query((returns) => User, { name: "mypage" })
   @UseGuards(new AuthGuard())
   async myPage(@Token("user") token: UserJwt) {
+    
     const userData = await this.userService.findOne(token.userId);
 
     return userData;

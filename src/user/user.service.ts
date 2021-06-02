@@ -1,6 +1,7 @@
 import { Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import axios from "axios";
+import { format } from "date-fns";
 import * as jwt from "jsonwebtoken";
 import { Repository } from "typeorm";
 
@@ -30,6 +31,14 @@ export class UserService {
     console.log(newUser);
 
     return await this.userRepository.save(newUser);
+  }
+
+  async createNickname() {
+    const num = await this.userRepository.count({});
+    const toTime = format(new Date(), "MMddHHmm");
+    const autoNickname = "tomatto" + toTime + num;
+
+    return autoNickname;
   }
 
   async oauthCreateUser(data: CreateUserInput): Promise<User> {
