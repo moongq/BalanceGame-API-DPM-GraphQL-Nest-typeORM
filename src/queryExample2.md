@@ -392,10 +392,12 @@ mutation {
     id
     content
     color
+    status
     replies {
       id
       content
       color
+      status
     }
   }
 }

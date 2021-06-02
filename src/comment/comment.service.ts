@@ -89,8 +89,7 @@ export class CommentService {
   async findCommentsByGameId(gameId: string): Promise<Comment[]> {
     const result = await this.commentRepository.find({
       where: { 
-        balanceGameId: gameId,
-        status: Not("delete") 
+        balanceGameId: gameId
       },
       relations: ["replies", "user", "user.profile", "replies.user", "replies.user.profile"],
     });
