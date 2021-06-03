@@ -123,6 +123,20 @@ export class BalanceGameResolver {
     return balanceGames;
   }
 
+  // 로그인 된 경우 gameList에서 투표한거 체크
+  @Query(() => BalanceGameList, { name: "balanceGamesLogined", description: "로그인한 경우 투표한 게임의 선택과 밸런스 게임 list 형태로 return" })
+  @UseGuards(new AuthGuard())
+  async findAllLogined(
+    @Args("balanceGamesState", { nullable: true }) balanceGamesState: BalanceGamesStateInput,
+    @Token("user") token: UserJwt
+  ): Promise<BalanceGameList> {
+    const limit = balanceGamesState?.limit;
+    const offset = balanceGamesState?.offset;
+    const balanceGames = await this.balanceGameService.findAllLogined(token.userId, limit, offset);
+
+    return balanceGames;
+  }
+
   // :TODO 스크롤링 추가 ! 지금은 그냥 8개
   @Query(() => BalanceGameList, { name: "myGames" })
   @UseGuards(new AuthGuard())

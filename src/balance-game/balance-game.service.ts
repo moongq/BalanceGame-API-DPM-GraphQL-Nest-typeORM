@@ -14,6 +14,7 @@ import { FileService } from "../file/file.service";
 import { User } from "../user/user.model";
 import { BalanceGameSelectionVote } from "../balance-game-selection-vote/balance-game-selection-vote.model";
 
+
 @Injectable()
 export class BalanceGameService {
   constructor(
@@ -146,6 +147,45 @@ export class BalanceGameService {
         createdAt: "DESC",
       },
     });
+
+    return {
+      num: count,
+      balanceGame: balanceGames,
+    };
+  }
+
+  async findAllLogined(userId: string, limit?: number, offset?: number): Promise<BalanceGameList> {
+    const [balanceGames, count] = await this.balanceGameRepository.findAndCount({
+      relations: ["balanceGameKeywords", "balanceGameSelections"],
+      take: limit,
+      skip: offset,
+      order: {
+        // :TODO 조건 추가
+        createdAt: "DESC",
+      },
+    });
+
+    // lodash가 에러가 나서 추후 추가...
+    const gameIdList = [];
+    for (let i=0; i< balanceGames.length; i++) {
+      gameIdList.push(balanceGames[i].id);
+    }
+    
+    const myGameWithSelection = await this.voteRepository
+      .createQueryBuilder()
+      .where("userId = :userId", { userId: userId })
+      .andWhere("balanceGameId IN (:...gameIdArrays)", { gameIdArrays: gameIdList })
+      .getMany();
+
+    
+    // console.log(myGameWithSelection[0].balanceGameId, myGameWithSelection[0].balanceGameSelectionId);
+    for (let j=0; j< balanceGames.length; j++) {
+      for (let k=0; k< myGameWithSelection.length; k++) {
+        if (balanceGames[j].id === myGameWithSelection[k].balanceGameId) {
+          balanceGames[j].mySelection = myGameWithSelection[k].balanceGameSelectionId;
+        }
+      }
+    }
 
     return {
       num: count,
