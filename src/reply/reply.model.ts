@@ -45,7 +45,7 @@ export class Reply {
   @Column()
   content: string;
 
-  @Field(() => String)
+  @Field(() => String, {description: "delete 면 삭제된 댓글"})
   @Column()
   status: string;
 

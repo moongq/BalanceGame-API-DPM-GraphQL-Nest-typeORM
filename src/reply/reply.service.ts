@@ -94,7 +94,8 @@ export class ReplyService {
 
     const result = await this.replyRepository
       .createQueryBuilder()
-      .delete()
+      .update()
+      .set({status: "delete"})
       .where("id = :replyId", { replyId: replyId })
       .execute();
 
