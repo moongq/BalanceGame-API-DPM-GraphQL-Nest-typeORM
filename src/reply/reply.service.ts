@@ -46,6 +46,7 @@ export class ReplyService {
       userForId: getGameCreatorId.userId,
       replyId: savedReply.id,
       replyContent: savedReply.content,
+      color: savedReply.color,
     };
 
     this.notificationService.create(userId, setNotiInput);
@@ -95,7 +96,7 @@ export class ReplyService {
     const result = await this.replyRepository
       .createQueryBuilder()
       .update()
-      .set({status: "delete"})
+      .set({ status: "delete" })
       .where("id = :replyId", { replyId: replyId })
       .execute();
 

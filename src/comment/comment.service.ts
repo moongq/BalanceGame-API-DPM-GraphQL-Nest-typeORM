@@ -51,6 +51,7 @@ export class CommentService {
       userForId: getGameCreatorId.userId, // 아 또 쿼리해야해?
       commentId: savedComment.id,
       commentContent: savedComment.content,
+      color: savedComment.color,
     };
 
     this.notificationService.create(userId, setNotiInput);
@@ -85,11 +86,11 @@ export class CommentService {
   }
 
   // reply까지 하고서 !
-  // 삭제 처리한 댓글은 보이지 않도록 수정 
+  // 삭제 처리한 댓글은 보이지 않도록 수정
   async findCommentsByGameId(gameId: string): Promise<Comment[]> {
     const result = await this.commentRepository.find({
-      where: { 
-        balanceGameId: gameId
+      where: {
+        balanceGameId: gameId,
       },
       relations: ["replies", "user", "user.profile", "replies.user", "replies.user.profile"],
     });
@@ -107,11 +108,11 @@ export class CommentService {
       throw new HttpException("It is not your comment", HttpStatus.BAD_REQUEST);
     }
 
-    // 댓글 삭제가 아닌 상태값 바꾸는 걸로 수정 
+    // 댓글 삭제가 아닌 상태값 바꾸는 걸로 수정
     const result = await this.commentRepository
       .createQueryBuilder()
       .update()
-      .set({status: "delete"})
+      .set({ status: "delete" })
       .where("id = :commentId", { commentId: commentId })
       .execute();
 

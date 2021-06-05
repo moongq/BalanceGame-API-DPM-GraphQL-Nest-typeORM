@@ -49,6 +49,10 @@ export class Notification {
   @Column()
   userFromNickname: string;
 
+  @Field(() => String, { nullable: true })
+  @Column({ nullable: true })
+  color: string;
+
   @ManyToOne(() => Comment, (comment) => comment.notifications, { nullable: true })
   @JoinColumn({ name: "commentId" })
   comment: Comment;
