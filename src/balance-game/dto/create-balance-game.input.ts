@@ -16,5 +16,5 @@ export class CreateBalanceGameInput {
   balanceGameSelections!: [CreateBalanceGameSelectionInput];
 
   @Field(() => [CreateBalanceGameKeywordInput])
-  balanceGameKeywords!: [CreateBalanceGameKeywordInput];
+  balanceGameKeywords?: [CreateBalanceGameKeywordInput];
 }

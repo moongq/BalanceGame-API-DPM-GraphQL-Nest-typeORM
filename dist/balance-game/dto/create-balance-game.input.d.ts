@@ -3,5 +3,5 @@ import { CreateBalanceGameSelectionInput } from "../../balance-game-selection/dt
 export declare class CreateBalanceGameInput {
     description: string;
     balanceGameSelections: [CreateBalanceGameSelectionInput];
-    balanceGameKeywords: [CreateBalanceGameKeywordInput];
+    balanceGameKeywords?: [CreateBalanceGameKeywordInput];
 }

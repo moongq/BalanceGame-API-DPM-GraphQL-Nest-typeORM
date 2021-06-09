@@ -15,7 +15,7 @@ const create_balance_game_keyword_input_1 = require("../../balance-game-keyword/
 const create_balance_game_selection_input_1 = require("../../balance-game-selection/dto/create-balance-game-selection.input");
 let CreateBalanceGameInput = class CreateBalanceGameInput {
     static _GRAPHQL_METADATA_FACTORY() {
-        return { description: { nullable: false, type: () => String }, balanceGameSelections: { nullable: false, type: () => Object }, balanceGameKeywords: { nullable: false, type: () => Object } };
+        return { description: { nullable: false, type: () => String }, balanceGameSelections: { nullable: false, type: () => Object }, balanceGameKeywords: { nullable: true, type: () => Object } };
     }
 };
 __decorate([

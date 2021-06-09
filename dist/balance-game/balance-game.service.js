@@ -88,12 +88,17 @@ let BalanceGameService = class BalanceGameService {
             selection.balanceGameId = savedBalanceGame.id;
         }
         const gameSelections = await this.balanceGameSelectionService.createBulk(createBalanceGameInput.balanceGameSelections);
-        for (const keyword of createBalanceGameInput.balanceGameKeywords) {
-            keyword.balanceGameId = savedBalanceGame.id;
+        let gameKeywords;
+        if (createBalanceGameInput.balanceGameKeywords) {
+            for (const keyword of createBalanceGameInput.balanceGameKeywords) {
+                keyword.balanceGameId = savedBalanceGame.id;
+            }
+            gameKeywords = await this.balanceGameKeywordService.createBulk(createBalanceGameInput.balanceGameKeywords);
         }
-        const gameKeywords = await this.balanceGameKeywordService.createBulk(createBalanceGameInput.balanceGameKeywords);
         savedBalanceGame.balanceGameSelections = gameSelections;
-        savedBalanceGame.balanceGameKeywords = gameKeywords;
+        if (createBalanceGameInput.balanceGameKeywords) {
+            savedBalanceGame.balanceGameKeywords = gameKeywords;
+        }
         return savedBalanceGame;
     }
     async findAll(limit, offset) {

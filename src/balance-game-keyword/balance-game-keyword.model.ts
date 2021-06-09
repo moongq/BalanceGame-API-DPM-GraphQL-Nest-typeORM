@@ -22,7 +22,7 @@ export class BalanceGameKeyword {
   @Column()
   name: string;
 
-  @ManyToOne(() => BalanceGame, (balanceGame) => balanceGame.balanceGameKeywords, { onDelete: "CASCADE" })
+  @ManyToOne(() => BalanceGame, (balanceGame) => balanceGame.balanceGameKeywords)
   @JoinColumn({ name: "balanceGameId" })
   balanceGame: BalanceGame;
 

@@ -39,45 +39,49 @@ let BalanceGameResolver = class BalanceGameResolver {
             accessKeyId: `${process.env.AWS_S3_ACCESSKEY}`,
             secretAccessKey: `${process.env.AWS_S3_SECRET_ACCESSKEY}`,
         });
-        const createReadStream0 = imageOfSelection0.createReadStream;
-        const filename0 = imageOfSelection0.filename;
-        let fileStream0 = createReadStream0();
-        const createReadStream1 = imageOfSelection1.createReadStream;
-        const filename1 = imageOfSelection1.filename;
-        let fileStream1 = createReadStream1();
-        fileStream0.on("error", (error) => console.log(error));
-        fileStream1.on("error", (error) => console.log(error));
-        const params0 = {
-            Bucket: `${process.env.BUCKET}`,
-            Key: `graphtomato/${filename0}`,
-            Body: fileStream0,
-            ACL: "public-read",
-            ContentType: "image/jpeg",
-        };
-        const params1 = {
-            Bucket: `${process.env.BUCKET}`,
-            Key: `graphtomato/${filename1}`,
-            Body: fileStream1,
-            ACL: "public-read",
-            ContentType: "image/jpeg",
-        };
-        const uploadPromise0 = (params) => {
-            return new Promise(function (resolve, reject) {
-                s3Uploader.upload(params, function (error, data) {
-                    if (error) {
-                        console.log(error);
-                    }
-                    resolve(data.Location);
+        let savedLocation0;
+        let savedLocation1;
+        if (imageOfSelection0 && imageOfSelection1) {
+            const createReadStream0 = imageOfSelection0.createReadStream;
+            const filename0 = imageOfSelection0.filename;
+            let fileStream0 = createReadStream0();
+            const createReadStream1 = imageOfSelection1.createReadStream;
+            const filename1 = imageOfSelection1.filename;
+            let fileStream1 = createReadStream1();
+            fileStream0.on("error", (error) => console.log(error));
+            fileStream1.on("error", (error) => console.log(error));
+            const params0 = {
+                Bucket: `${process.env.BUCKET}`,
+                Key: `graphtomato/${filename0}`,
+                Body: fileStream0,
+                ACL: "public-read",
+                ContentType: "image/jpeg",
+            };
+            const params1 = {
+                Bucket: `${process.env.BUCKET}`,
+                Key: `graphtomato/${filename1}`,
+                Body: fileStream1,
+                ACL: "public-read",
+                ContentType: "image/jpeg",
+            };
+            const uploadPromise0 = (params) => {
+                return new Promise(function (resolve, reject) {
+                    s3Uploader.upload(params, function (error, data) {
+                        if (error) {
+                            console.log(error);
+                        }
+                        resolve(data.Location);
+                    });
                 });
-            });
-        };
-        const savedLocation0 = await uploadPromise0(params0);
-        const savedLocation1 = await uploadPromise0(params1);
-        for (let selection of createBalanceGameInput.balanceGameSelections) {
-            if (selection.order == 0)
-                selection.backgroundImage = savedLocation0.toString();
-            if (selection.order == 1)
-                selection.backgroundImage = savedLocation1.toString();
+            };
+            savedLocation0 = await uploadPromise0(params0);
+            savedLocation1 = await uploadPromise0(params1);
+            for (let selection of createBalanceGameInput.balanceGameSelections) {
+                if (selection.order == 0)
+                    selection.backgroundImage = savedLocation0.toString();
+                if (selection.order == 1)
+                    selection.backgroundImage = savedLocation1.toString();
+            }
         }
         return await this.balanceGameService.create(token.userId, createBalanceGameInput);
     }
@@ -135,8 +139,8 @@ __decorate([
     graphql_1.Mutation(() => balance_game_model_1.BalanceGame),
     common_1.UseGuards(new auth_guard_1.AuthGuard()),
     __param(0, user_decorator_1.Token("user")),
-    __param(1, graphql_1.Args({ name: "file1", type: () => graphql_upload_1.GraphQLUpload })),
-    __param(2, graphql_1.Args({ name: "file2", type: () => graphql_upload_1.GraphQLUpload })),
+    __param(1, graphql_1.Args({ name: "file1", type: () => graphql_upload_1.GraphQLUpload, nullable: true })),
+    __param(2, graphql_1.Args({ name: "file2", type: () => graphql_upload_1.GraphQLUpload, nullable: true })),
     __param(3, graphql_1.Args("createBalanceGameInput")),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [user_jwt_1.UserJwt, Object, Object, create_balance_game_input_1.CreateBalanceGameInput]),
@@ -157,7 +161,10 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], BalanceGameResolver.prototype, "findAll", null);
 __decorate([
-    graphql_1.Query(() => balance_game_list_output_1.BalanceGameList, { name: "balanceGamesLogined", description: "로그인한 경우 투표한 게임의 선택과 밸런스 게임 list 형태로 return" }),
+    graphql_1.Query(() => balance_game_list_output_1.BalanceGameList, {
+        name: "balanceGamesLogined",
+        description: "로그인한 경우 투표한 게임의 선택과 밸런스 게임 list 형태로 return",
+    }),
     common_1.UseGuards(new auth_guard_1.AuthGuard()),
     __param(0, graphql_1.Args("balanceGamesState", { nullable: true })),
     __param(1, user_decorator_1.Token("user")),

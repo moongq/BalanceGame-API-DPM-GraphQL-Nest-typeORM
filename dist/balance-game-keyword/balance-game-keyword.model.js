@@ -30,7 +30,7 @@ __decorate([
     __metadata("design:type", String)
 ], BalanceGameKeyword.prototype, "name", void 0);
 __decorate([
-    typeorm_1.ManyToOne(() => balance_game_model_1.BalanceGame, (balanceGame) => balanceGame.balanceGameKeywords, { onDelete: "CASCADE" }),
+    typeorm_1.ManyToOne(() => balance_game_model_1.BalanceGame, (balanceGame) => balanceGame.balanceGameKeywords),
     typeorm_1.JoinColumn({ name: "balanceGameId" }),
     __metadata("design:type", balance_game_model_1.BalanceGame)
 ], BalanceGameKeyword.prototype, "balanceGame", void 0);

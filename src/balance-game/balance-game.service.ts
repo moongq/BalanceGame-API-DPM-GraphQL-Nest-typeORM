@@ -14,7 +14,6 @@ import { FileService } from "../file/file.service";
 import { User } from "../user/user.model";
 import { BalanceGameSelectionVote } from "../balance-game-selection-vote/balance-game-selection-vote.model";
 
-
 @Injectable()
 export class BalanceGameService {
   constructor(
@@ -125,15 +124,21 @@ export class BalanceGameService {
       createBalanceGameInput.balanceGameSelections
     );
 
-    // balanceGameId 추가한 뒤 keywords 생성
-    for (const keyword of createBalanceGameInput.balanceGameKeywords) {
-      keyword.balanceGameId = savedBalanceGame.id;
+    let gameKeywords;
+    if (createBalanceGameInput.balanceGameKeywords) {
+      // balanceGameId 추가한 뒤 keywords 생성
+      for (const keyword of createBalanceGameInput.balanceGameKeywords) {
+        keyword.balanceGameId = savedBalanceGame.id;
+      }
+
+      gameKeywords = await this.balanceGameKeywordService.createBulk(createBalanceGameInput.balanceGameKeywords);
     }
 
-    const gameKeywords = await this.balanceGameKeywordService.createBulk(createBalanceGameInput.balanceGameKeywords);
-
     savedBalanceGame.balanceGameSelections = gameSelections;
-    savedBalanceGame.balanceGameKeywords = gameKeywords;
+
+    if (createBalanceGameInput.balanceGameKeywords) {
+      savedBalanceGame.balanceGameKeywords = gameKeywords;
+    }
     return savedBalanceGame;
   }
 
@@ -167,20 +172,19 @@ export class BalanceGameService {
 
     // lodash가 에러가 나서 추후 추가...
     const gameIdList = [];
-    for (let i=0; i< balanceGames.length; i++) {
+    for (let i = 0; i < balanceGames.length; i++) {
       gameIdList.push(balanceGames[i].id);
     }
-    
+
     const myGameWithSelection = await this.voteRepository
       .createQueryBuilder()
       .where("userId = :userId", { userId: userId })
       .andWhere("balanceGameId IN (:...gameIdArrays)", { gameIdArrays: gameIdList })
       .getMany();
 
-    
     // console.log(myGameWithSelection[0].balanceGameId, myGameWithSelection[0].balanceGameSelectionId);
-    for (let j=0; j< balanceGames.length; j++) {
-      for (let k=0; k< myGameWithSelection.length; k++) {
+    for (let j = 0; j < balanceGames.length; j++) {
+      for (let k = 0; k < myGameWithSelection.length; k++) {
         if (balanceGames[j].id === myGameWithSelection[k].balanceGameId) {
           balanceGames[j].mySelection = myGameWithSelection[k].balanceGameSelectionId;
         }
