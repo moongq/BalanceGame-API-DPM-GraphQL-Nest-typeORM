@@ -176,20 +176,23 @@ export class BalanceGameService {
       gameIdList.push(balanceGames[i].id);
     }
 
-    const myGameWithSelection = await this.voteRepository
-      .createQueryBuilder()
-      .where("userId = :userId", { userId: userId })
-      .andWhere("balanceGameId IN (:...gameIdArrays)", { gameIdArrays: gameIdList })
-      .getMany();
+    // 투표한 적이 있으면 mySelection 처리
+    if (gameIdList.length !== 0) {
+      const myGameWithSelection = await this.voteRepository
+        .createQueryBuilder()
+        .where("userId = :userId", { userId: userId })
+        .andWhere("balanceGameId IN (:...gameIdArrays)", { gameIdArrays: gameIdList })
+        .getMany();
 
-    // console.log(myGameWithSelection[0].balanceGameId, myGameWithSelection[0].balanceGameSelectionId);
-    for (let j = 0; j < balanceGames.length; j++) {
-      for (let k = 0; k < myGameWithSelection.length; k++) {
-        if (balanceGames[j].id === myGameWithSelection[k].balanceGameId) {
-          balanceGames[j].mySelection = myGameWithSelection[k].balanceGameSelectionId;
+      // console.log(myGameWithSelection[0].balanceGameId, myGameWithSelection[0].balanceGameSelectionId);
+      for (let j = 0; j < balanceGames.length; j++) {
+        for (let k = 0; k < myGameWithSelection.length; k++) {
+          if (balanceGames[j].id === myGameWithSelection[k].balanceGameId) {
+            balanceGames[j].mySelection = myGameWithSelection[k].balanceGameSelectionId;
+          }
         }
       }
-    }
+    };
 
     return {
       num: count,
@@ -276,6 +279,13 @@ export class BalanceGameService {
     const getOnlyGameIds = [];
     for (let game of gameIdArray) {
       getOnlyGameIds.push(game.id);
+    }
+
+    // 투표한 적이 없으면 아무거나 나오도록
+    if (getOnlyGameIds.length === 0) {
+      return await this.balanceGameRepository.findOne({
+        relations: ["balanceGameKeywords", "balanceGameSelections"]
+      });
     }
 
     const result = await this.balanceGameRepository
